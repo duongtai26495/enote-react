@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 
-const TaskItem = ({ task, noteId, updatePercentage  }) => {
+const TaskItem = ({ task, noteId, updatePercentage }) => {
 
     const [item, setItem] = useState(task)
     const [newContent, setNewContent] = useState(task.content)
@@ -22,7 +22,7 @@ const TaskItem = ({ task, noteId, updatePercentage  }) => {
     }
 
     const updateTaskById = () => {
-        let note = {id:noteId}
+        let note = { id: noteId }
         let newTask = item
         newTask.content = newContent
         newTask.done = newDone
@@ -31,6 +31,7 @@ const TaskItem = ({ task, noteId, updatePercentage  }) => {
         updateTask()
         updatePercentage(true);
     }
+
 
     useEffect(() => {
         if (isMounted.current) {
@@ -43,7 +44,7 @@ const TaskItem = ({ task, noteId, updatePercentage  }) => {
     return (
         <div className='flex flex-row gap-3 justify-between items-center px-2'>
             <input
-            className='w-full my-2 p-1'
+                className='w-full my-2 p-1'
                 value={newContent}
                 onChange={(e) => { setNewContent(e.target.value) }}
                 onBlur={updateTaskById}
@@ -58,6 +59,14 @@ const TaskItem = ({ task, noteId, updatePercentage  }) => {
                 type='checkbox'
                 />
             }
+
+            {/* {
+                item.type === "CHECK" &&
+                <button
+                    className={`text-sm rounded-md ${newDone ? "bg-red-500" : "bg-slate-300"} p-1 border`}
+                    onClick={() => setNewDone(true)}
+                >{item.done ? "Resolved" : "Resolve"}</button>
+            } */}
         </div>
     )
 }
