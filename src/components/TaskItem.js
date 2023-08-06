@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 
-const TaskItem = ({ task, noteId, updatePercentage }) => {
+const TaskItem = ({ task, noteId, updatePercentage, updateTaskList }) => {
 
     const [item, setItem] = useState(task)
     const [newContent, setNewContent] = useState(task.content)
@@ -13,10 +13,15 @@ const TaskItem = ({ task, noteId, updatePercentage }) => {
     const updateTask = async () => {
         const token = Cookies.get(access_token)
         if (checkToken(token)) {
-            const result = await fetchApiData(`note/task/update`, token, "PUT", item)
-            if (result.status === "SUCCESS") {
-                const data = result.content
-                setItem(data)
+            if (newContent === "") {
+                await fetchApiData(`note/task/remove/${task.id}`, token, "DELETE")
+                updateTaskList(true)
+            } else {
+                const result = await fetchApiData(`note/task/update`, token, "PUT", item)
+                if (result.status === "SUCCESS") {
+                    const data = result.content
+                    setItem(data)
+                }
             }
         }
     }
@@ -53,10 +58,10 @@ const TaskItem = ({ task, noteId, updatePercentage }) => {
             {
                 item.type === "CHECK" &&
                 <input
-                className='w-4 h-4'
-                defaultChecked={item.done}
-                onChange={e => { setNewDone(e.target.checked) }}
-                type='checkbox'
+                    className='w-4 h-4'
+                    defaultChecked={item.done}
+                    onChange={e => { setNewDone(e.target.checked) }}
+                    type='checkbox'
                 />
             }
 

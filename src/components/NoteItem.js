@@ -87,7 +87,7 @@ const NoteItem = ({ note }) => {
             </div>
             <div className='w-full relative'>
             <div className={`absolute w-full ${newDone ? "h-full" : "h-0"} overflow-hidden transition-all rounded-b-md z-10 bg-white opacity-50 top-0 left-0`}></div>
-                <TaskList id={note.id} />
+                <TaskList note={note} />
             </div>
         </div>
     )
