@@ -4,7 +4,7 @@ import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 
-const NoteList = ({ id }) => {
+const NoteList = ({ id, getNoteCount }) => {
 
     const [noteList, setNoteList] = useState([])
 
@@ -15,6 +15,7 @@ const NoteList = ({ id }) => {
         if (checkToken(token) && id > 0) {
             const result = await fetchApiData(`workspace/get/${id}`, token)
             const data = result.content
+            getNoteCount(data.length)
             setNoteList(data.reverse())
             setUpdateList(false)
         }

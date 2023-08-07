@@ -61,8 +61,9 @@ const NoteItem = ({ note, refreshNoteList }) => {
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div onBlur={() => setOpenCardSub(false)} className={`w-full relative break-inside flex flex-col items-center rounded-xl shadow-sm hover:shadow-xl transition-all mb-3 border border-gray-200`}>
-
+        <div onBlur={() => setOpenCardSub(false)} className={`w-full break-inside-avoid p-3`}>
+            <div className='flex flex-col rounded-lg border shadow bg-white bg-opacity-70'>
+                
             <button onClick={toggleSetNewDone} className={`font-bold w-full rounded-t-md p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                 {newDone ? "Resolved" : "In Progress"}
             </button>
@@ -101,6 +102,8 @@ const NoteItem = ({ note, refreshNoteList }) => {
             <div className='w-full relative'>
                 <div className={`absolute w-full ${newDone ? "h-full" : "h-0"} overflow-hidden transition-all rounded-b-md z-10 bg-white opacity-50 top-0 left-0`}></div>
                 <TaskList note={note} />
+            </div>
+            
             </div>
         </div>
     )
