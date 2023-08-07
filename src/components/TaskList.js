@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskItem from './TaskItem'
@@ -12,15 +12,7 @@ const TaskList = ({ note }) => {
     const [isUpdateList, setUpdateList] = useState(false)
     const hasDoneItem = taskList.some(item => item.type === "CHECK")
 
-    const getAllTaskByNoteId = async () => {
-        const token = Cookies.get(access_token)
-        if (checkToken(token) && note.id > 0) {
-            const result = await fetchApiData(`note/tasks/${note.id}`, token)
-            const data = result.content
-            setTaskList(data)
-            setUpdateList(false)
-        }
-    }
+
     const updateNoteProgress = async () => {
         const token = Cookies.get(access_token)
         if (checkToken(token) && note.id > 0) {
@@ -29,6 +21,14 @@ const TaskList = ({ note }) => {
             const data = result.content
             setPercent(data.progress)
         }
+    }
+
+    const addNewTask = async () => {
+        const token = Cookies.get(access_token)
+        const newTask = ({ content: "New task", type: "CHECK", note: { id: note.id } })
+        const result = await fetchApiData(`note/task/add`, token, "POST", newTask)
+        const data = result.content
+        setTaskList(oldData => [data, ...oldData])
     }
 
     const updatePercentage = (newPercentage) => {
@@ -44,17 +44,57 @@ const TaskList = ({ note }) => {
         PercentageDone()
     }, [isUpdateProgress])
 
+    const getAllTaskByNoteId = async () => {
+        const token = Cookies.get(access_token)
+        if (checkToken(token) && note.id > 0) {
+            const result = await fetchApiData(`note/tasks/${note.id}`, token)
+            const data = result.content
+            setTaskList(data.reverse());
+            setUpdateList(false)
+        }
+    }
 
     useEffect(() => {
-        getAllTaskByNoteId()
+        const timeout = setTimeout(() => {
+            getAllTaskByNoteId()
+        }, 300);
+
+        return () => clearTimeout(timeout);
     }, [note.id, isUpdateList])
-
-
+ 
+    const PleaceholderTask = () => {
+        return (
+            <li onClick={() => addNewTask()} className='flex flex-row gap-2 items-center p-2 text-slate-600 rounded-md border border-slate-400 mx-2 my-1 cursor-pointer hover:bg-slate-500 hover:text-white hover:fill-white bg-white transition-all justify-center'>
+                New task <svg className='fill-slate-400 ' height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m2.513 12.833 9.022 5.04a.995.995 0 0 0 .973.001l8.978-5a1 1 0 0 0-.002-1.749l-9.022-5a1 1 0 0 0-.968-.001l-8.978 4.96a1 1 0 0 0-.003 1.749z" /><path d="m3.485 15.126-.971 1.748 9 5a1 1 0 0 0 .971 0l9-5-.971-1.748L12 19.856l-8.515-4.73zM20 8V6h2V4h-2V2h-2v2h-2v2h2v2z" /></svg>
+            </li>
+        )
+    }
+    const sortTaskList = (currentList, step) => {
+        const newTaskList = taskList
+        for (let i = 0; i < currentList.length; i += step) {
+            for (let j = i; j < i + step; j++) {
+              if (j < currentList.length) {
+                const item = currentList[j];
+                newTaskList.push(
+                    item
+                );
+              }
+            }
+        }
+        console.log(newTaskList)
+            return newTaskList
+      }
+      
 
     const RenderTaskList = () => {
+
         return (
-            taskList.map(item => (
-                <TaskItem updateTaskList={updateTaskList} updatePercentage={updatePercentage} task={item} noteId={note.id} key={item.id} />
+            taskList.map((item, index) => (
+                <li key={index}
+                    className='flex flex-row gap-2 items-center justify-between transition-all'>
+                    <TaskItem updateTaskList={updateTaskList} updatePercentage={updatePercentage} task={item} noteId={note.id} />
+
+                </li>
             ))
         )
     }
@@ -69,20 +109,18 @@ const TaskList = ({ note }) => {
             setUpdateProgress(false)
         }
     }
+
     return (
         <>
-            {
-                hasDoneItem ?
-                    <div className='w-full h-fit'>
-                        <div className='w-full flex flex-col gap-2'>
-                            <span className='py-1 px-2 font-bold text-emerald-700 '>Progress : {Math.round(percentage)}%</span>
-                            <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} transition-all`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
-                        </div>
-                    </div>
-                    :
-                    ""
-            }
-            <RenderTaskList />
+            <div className={`${hasDoneItem ? "block" : "hidden"} w-full h-fit`}>
+                <div className='w-full flex flex-col gap-2'>
+                    <span className='py-1 px-2 font-bold text-sm'>Progress : {Math.round(percentage)}%</span>
+                    <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} transition-all`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
+                </div>
+            </div>
+            <PleaceholderTask />
+            < RenderTaskList />
+
         </>
     )
 }

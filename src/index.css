@@ -13,3 +13,43 @@ code {
 }
 
 
+.slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.async-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.async-slide-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.async-slide-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.auto-growing-textarea {
+  overflow: hidden;
+  resize: none;
+  min-height: 30px;
+}
+
+.user-masonry-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  gap: 1rem;
+}
+

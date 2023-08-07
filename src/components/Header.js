@@ -61,7 +61,7 @@ const Header = () => {
                             <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
                             <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
                         </div>
-                        <div className={`w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
+                        <div className={`w-fit border-l-2 pl-2 border-l-neutral-500 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
                             {
                                 userInfo &&
                                 <p onClick={toggleLogoutBadge} className="text-center w-fit px-2 flex flex-row gap-2 items-center text-slate-700">Hi, <strong>{userInfo.f_name} {userInfo.l_name}</strong>
