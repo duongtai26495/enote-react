@@ -13,11 +13,18 @@ const NoteList = ({ id, getNoteCount }) => {
     const getAllNoteByWs = async () => {
         const token = Cookies.get(access_token)
         if (checkToken(token) && id > 0) {
-            const result = await fetchApiData(`workspace/get/${id}`, token)
-            const data = result.content
-            getNoteCount(data.length)
-            setNoteList(data.reverse())
-            setUpdateList(false)
+            try {
+                const result = await fetchApiData(`workspace/get/${id}`, token)
+                if (result.status !== 403) {
+                    const data = result.content
+                    getNoteCount(data.length)
+                    setNoteList(data.reverse())
+                    setUpdateList(false)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 
@@ -33,7 +40,10 @@ const NoteList = ({ id, getNoteCount }) => {
     }
 
     useEffect(() => {
-        getAllNoteByWs()
+        const timeout = setTimeout(() => {
+            getAllNoteByWs()
+        }, 300);
+        return () => clearTimeout(timeout);
     }, [id, isUpdateList])
 
     return (

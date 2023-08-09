@@ -42,8 +42,7 @@ export const fetchApiData = async (endpoint, access_token, method = 'GET', data 
       const response = await axios(config);
       return response.data;
     } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-      throw error;
+      return error.response
     }
   };
   

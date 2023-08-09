@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
+import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskList from './TaskList'
 
@@ -10,6 +11,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
     const [newDone, setNewDone] = useState(note.done)
     const isMounted = useRef(false);
     const cardRef = useRef(null);
+
     const updateNoteById = () => {
         let newNote = item
         newNote.name = newName
@@ -61,7 +63,8 @@ const NoteItem = ({ note, refreshNoteList }) => {
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div onBlur={() => setOpenCardSub(false)} className={`w-full break-inside-avoid p-3`}>
+        <div onBlur={() => setOpenCardSub(false)} className={`w-full break-inside-avoid p-3 relative`}>
+          
             <div className='flex flex-col rounded-lg border shadow bg-white bg-opacity-70'>
                 
             <button onClick={toggleSetNewDone} className={`font-bold w-full rounded-t-md p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>

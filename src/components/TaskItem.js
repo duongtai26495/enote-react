@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
+import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskList from './TaskList'
 
-const TaskItem = ({ task, noteId, updatePercentage, updateTaskList }) => {
+const TaskItem = ({ task, noteId, updatePercentage, updateTaskList, isUpdateList }) => {
 
     const [item, setItem] = useState(task)
     const [newContent, setNewContent] = useState(task.content)
@@ -66,12 +67,15 @@ const TaskItem = ({ task, noteId, updatePercentage, updateTaskList }) => {
     const toggleSubSetting = () => setOpenSetting(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div className={` bg-slate-100 m-2 rounded-md flex-1 flex flex-row gap-3 justify-between items-start px-2 relative`}>
+        <div className={`bg-transparent m-2 rounded-md flex-1 flex flex-row gap-3 justify-between items-start px-2 relative border`}>
             <div className={`${isOpenSetting ? "visible" : "invisible"} h-full w-full transition-all rounded-md z-10 overflow-hidden absolute top-0 left-0`}>
                 <div className='w-full h-full rounded-md flex flex-row items-center justify-center m-auto gap-3 border bg-opacity-50 bg-black'>
                     <button onClick={()=>deleteTask()} className=' p-1 rounded-md bg-orange-600 text-white text-sm'>Delete</button>
                     <button onClick={toggleSubSetting} className=' p-1 rounded-md bg-slate-600 text-white text-sm'>Cancel</button>
                 </div>
+            </div>
+            <div className={`${isUpdateList ? "visible" : "invisible"} absolute top-0 left-0 w-full h-full bg-white rounded-md flex flex-row items-center justify-center`}>
+                <img src={loading_gif} className='w-8 h-8' />
             </div>
             <div className='flex flex-col items-center w-4 h-full justify-center gap-3 m-auto'>
                 <p onClick={toggleSubSetting} className='cursor-pointer hover:scale-125 transition-all flex-1'>

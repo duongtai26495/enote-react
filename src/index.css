@@ -11,7 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+.ws-item:hover .ws-action
+{
+  visibility: visible;
+}
+.bg-body{
+  z-index: -1;
+  background: url('./assets/images/bg_body-3.jpg');
+  background-position: center center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  filter: blur(50px);
+}
 
 .slide-up {
   opacity: 0;

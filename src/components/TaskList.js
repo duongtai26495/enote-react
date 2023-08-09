@@ -57,7 +57,7 @@ const TaskList = ({ note }) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             getAllTaskByNoteId()
-        }, 300);
+        }, 500);
 
         return () => clearTimeout(timeout);
     }, [note.id, isUpdateList])
@@ -69,31 +69,13 @@ const TaskList = ({ note }) => {
             </li>
         )
     }
-    const sortTaskList = (currentList, step) => {
-        const newTaskList = taskList
-        for (let i = 0; i < currentList.length; i += step) {
-            for (let j = i; j < i + step; j++) {
-              if (j < currentList.length) {
-                const item = currentList[j];
-                newTaskList.push(
-                    item
-                );
-              }
-            }
-        }
-        console.log(newTaskList)
-            return newTaskList
-      }
-      
-
+  
     const RenderTaskList = () => {
-
         return (
             taskList.map((item, index) => (
                 <li key={index}
                     className='flex flex-row gap-2 items-center justify-between transition-all'>
-                    <TaskItem updateTaskList={updateTaskList} updatePercentage={updatePercentage} task={item} noteId={note.id} />
-
+                    <TaskItem updateTaskList={updateTaskList} isUpdateList={isUpdateList} updatePercentage={updatePercentage} task={item} noteId={note.id} />
                 </li>
             ))
         )
@@ -119,8 +101,7 @@ const TaskList = ({ note }) => {
                 </div>
             </div>
             <PleaceholderTask />
-            < RenderTaskList />
-
+            <RenderTaskList />
         </>
     )
 }
