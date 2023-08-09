@@ -6,7 +6,6 @@ import { checkToken, fetchApiData } from '../utils/functions'
 const WorkspaceItem = ({ wsItem, editState, setUpdateWs }) => {
     const [newNameWs, setNewNameWs] = useState(wsItem.name)
     const [currentWssItem, setCurrentWsItem] = useState(wsItem)
-
     const updateWsName = async () => {
         const token = Cookies.get(access_token)
         if (token !== null && checkToken(token)) {
@@ -23,6 +22,8 @@ const WorkspaceItem = ({ wsItem, editState, setUpdateWs }) => {
             }
         }
     }
+
+
 
     return (
 

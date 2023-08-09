@@ -4,7 +4,7 @@ import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 
-const NoteList = ({ id, getNoteCount }) => {
+const NoteList = ({ id, getNoteCount, addNoteState }) => {
 
     const [noteList, setNoteList] = useState([])
 
@@ -18,7 +18,7 @@ const NoteList = ({ id, getNoteCount }) => {
                 if (result.status !== 403) {
                     const data = result.content
                     getNoteCount(data.length)
-                    setNoteList(data.reverse())
+                    setNoteList(data)
                     setUpdateList(false)
                 }
             } catch (error) {
@@ -27,6 +27,10 @@ const NoteList = ({ id, getNoteCount }) => {
 
         }
     }
+
+    useEffect(()=>{
+        getAllNoteByWs()
+    },[addNoteState])
 
     const refreshNoteList = (update) => {
         setUpdateList(update)

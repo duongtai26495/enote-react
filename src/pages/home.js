@@ -10,12 +10,13 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [noteCount, setNoteCount] = useState(0)
   const [editState, setEditState] = useState(false)
+  const [addNoteState, setAddNoteState] = useState(false)
   const getWsAll = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
       const result = await fetchApiData("workspace/all", token)
       const data = result.content
-      setWsList(data.reverse())
+      setWsList(data)
     }
   }
   const [wsList, setWsList] = useState([])
@@ -45,6 +46,22 @@ const Home = () => {
     }
   }
 
+  const addNewNote = async (wsId) => {
+    setAddNoteState(true)
+    const token = Cookies.get(access_token)
+    if (token !== null && checkToken(token)) {
+        const newNote = {}
+        newNote.workspace = {id:wsId}
+        newNote.name = "Unnamed note"
+        try {
+            await fetchApiData(`note/add`, token, "POST", newNote)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    setAddNoteState(false)
+}
 
   const toggleEdit = () => setEditState(preState => !preState)
 
@@ -69,11 +86,14 @@ const Home = () => {
           className={`${selectedWs === item.id ? "border-b-8 border-slate-800" : ""} flex flex-row gap-1 items-center ws-item whitespace-nowrap hover:border-b-8 py-5 cursor-pointer transition-all w-fit`}
           key={item.id}>
           <WorkspaceItem setUpdateWs={setUpdateWs} editState={editState} wsItem={item} />
-          <div className={`w-full  flex-row items-center justify-around ws-action ${selectedWs === item.id ? "flex" : "hidden"}`}>
+          <div className={`w-full flex-row items-center justify-around ws-action relative ${selectedWs === item.id ? "flex" : "hidden"}`}>
+            <span className=''>
+              <svg height={"20"} width={"20"} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
+            </span>
             <span className='flex flex-row items-center ws-edit-btn ml-2 hover:scale-110' onClick={toggleEdit} >
               {
-                editState 
-                ?
+                editState
+                  ?
                   <svg height={"22"} width={"22"} version="1.1" viewBox="0 0 24 24" ><g id="info" />
                     <g id="icons"><path d="M10,18c-0.5,0-1-0.2-1.4-0.6l-4-4c-0.8-0.8-0.8-2,0-2.8c0.8-0.8,2.1-0.8,2.8,0l2.6,2.6l6.6-6.6   c0.8-0.8,2-0.8,2.8,0c0.8,0.8,0.8,2,0,2.8l-8,8C11,17.8,10.5,18,10,18z" id="check" /></g></svg>
                   :
@@ -83,6 +103,9 @@ const Home = () => {
             </span>
             <span onClick={() => { removeWs(item.id) }} className='hover:scale-110 text-xs text-red-700 rounded ml-2 text-center ws-remove-btn transition-all'>
               <svg height={"14"} width={"14"} viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z" /></svg>
+            </span>
+            <span onClick={()=>{addNewNote(item.id)}} className='w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1 hover:scale-110 bg-white text-black transition-all text-xs ml-3'>
+              Add note
             </span>
           </div>
 
@@ -111,8 +134,9 @@ const Home = () => {
           <p className='font-bold text-xl'>Workspace</p>
           <ul className={"flex flex-row gap-5 w-fit"}>
             <li onClick={() => addWorkspace()}
-              className='py-2 px-3 cursor-pointer hover:bg-teal-500 transition-all rounded-full bg-teal-600 whitespace-nowrap text-white font-bold text-sm'>
-              Add workspace +</li>
+              className='py-2 px-3 cursor-pointer  transition-all rounded-full whitespace-nowrap text-black bg-white hover:scale-105 font-bold text-sm'>
+              Add plan +
+              </li>
           </ul>
         </div>
         <div className='flex flex-row justify-between items-center'>
@@ -122,7 +146,7 @@ const Home = () => {
 
         </div>
         <div className={`columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 pt-5 slide-up  ${isVisible ? 'visible' : ''}`}>
-          <NoteList getNoteCount={getNoteCount} id={selectedWs} />
+          <NoteList addNoteState={addNoteState} getNoteCount={getNoteCount} id={selectedWs} />
         </div>
       </div>
       <div className='w-1/3 min-h-full hidden lg:flex bg-transparent border p-3'>

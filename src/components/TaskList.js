@@ -49,7 +49,7 @@ const TaskList = ({ note }) => {
         if (checkToken(token) && note.id > 0) {
             const result = await fetchApiData(`note/tasks/${note.id}`, token)
             const data = result.content
-            setTaskList(data.reverse());
+            setTaskList(data)
             setUpdateList(false)
         }
     }
@@ -61,7 +61,7 @@ const TaskList = ({ note }) => {
 
         return () => clearTimeout(timeout);
     }, [note.id, isUpdateList])
- 
+
     const PleaceholderTask = () => {
         return (
             <li onClick={() => addNewTask()} className='flex flex-row gap-2 items-center p-2 text-slate-600 rounded-md border border-slate-400 mx-2 my-1 cursor-pointer hover:bg-slate-500 hover:text-white hover:fill-white bg-white transition-all justify-center'>
@@ -69,7 +69,7 @@ const TaskList = ({ note }) => {
             </li>
         )
     }
-  
+
     const RenderTaskList = () => {
         return (
             taskList.map((item, index) => (
@@ -87,7 +87,10 @@ const TaskList = ({ note }) => {
             const totalCount = taskList.filter(item => item.type === "CHECK").length;
             const setpercentage = (countDone / totalCount) * 100;
             setPercent(setpercentage)
-            updateNoteProgress()
+            const timeout = setTimeout(() => {
+                updateNoteProgress()
+            }, 500);
+            clearTimeout(timeout);
             setUpdateProgress(false)
         }
     }
@@ -97,7 +100,7 @@ const TaskList = ({ note }) => {
             <div className={`${hasDoneItem ? "block" : "hidden"} w-full h-fit`}>
                 <div className='w-full flex flex-col gap-2'>
                     <span className='py-1 px-2 font-bold text-sm'>Progress : {Math.round(percentage)}%</span>
-                    <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} transition-all`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
+                    <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} transition-all duration-500 ease-in-out`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
                 </div>
             </div>
             <PleaceholderTask />
