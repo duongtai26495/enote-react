@@ -11,10 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.ws-item:hover .ws-action
-{
-  visibility: visible;
-}
+
 .bg-body{
   z-index: -1;
   background: url('./assets/images/bg_body-3.jpg');

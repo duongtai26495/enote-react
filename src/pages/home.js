@@ -11,6 +11,7 @@ const Home = () => {
   const [noteCount, setNoteCount] = useState(0)
   const [editState, setEditState] = useState(false)
   const [addNoteState, setAddNoteState] = useState(false)
+  const [isOpenAction, setOpenAction] = useState(false)
   const getWsAll = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
@@ -77,6 +78,8 @@ const Home = () => {
     getWsAll()
   }, [noteCount])
 
+  const toggleActions = () => setOpenAction(preState => !preState)
+
   const RenderWsList = () => {
     return (
       wsList &&
@@ -86,11 +89,12 @@ const Home = () => {
           className={`${selectedWs === item.id ? "border-b-8 border-slate-800" : ""} flex flex-row gap-1 items-center ws-item whitespace-nowrap hover:border-b-8 py-5 cursor-pointer transition-all w-fit`}
           key={item.id}>
           <WorkspaceItem setUpdateWs={setUpdateWs} editState={editState} wsItem={item} />
-          <div className={`w-full flex-row items-center justify-around ws-action relative ${selectedWs === item.id ? "flex" : "hidden"}`}>
-            <span className=''>
-              <svg height={"20"} width={"20"} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
+          <span className='' onClick={toggleActions}>
+              <svg className={`${isOpenAction ? "rotate-0" : "rotate-180"} transition-all`} height={"24"} width={"24"} id="Layer_1" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="M327.3,98.9l-2.1,1.8l-156.5,136c-5.3,4.6-8.6,11.5-8.6,19.2c0,7.7,3.4,14.6,8.6,19.2L324.9,411l2.6,2.3  c2.5,1.7,5.5,2.7,8.7,2.7c8.7,0,15.8-7.4,15.8-16.6h0V112.6h0c0-9.2-7.1-16.6-15.8-16.6C332.9,96,329.8,97.1,327.3,98.9z"/></svg>
             </span>
-            <span className='flex flex-row items-center ws-edit-btn ml-2 hover:scale-110' onClick={toggleEdit} >
+          <div className={`${isOpenAction ? "w-full" : "w-0"} transition-all ease-out duration-700 overflow-hidden flex-row items-center justify-around ws-action relative ${selectedWs === item.id ? "flex" : "hidden"}`}>
+            
+            <span className='flex flex-row items-center ws-edit-btn hover:scale-110' onClick={toggleEdit} >
               {
                 editState
                   ?
@@ -104,7 +108,7 @@ const Home = () => {
             <span onClick={() => { removeWs(item.id) }} className='hover:scale-110 text-xs text-red-700 rounded ml-2 text-center ws-remove-btn transition-all'>
               <svg height={"14"} width={"14"} viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z" /></svg>
             </span>
-            <span onClick={()=>{addNewNote(item.id)}} className='w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1 hover:scale-110 bg-white text-black transition-all text-xs ml-3'>
+            <span onClick={()=>{addNewNote(item.id)}} className='w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs ml-3'>
               Add note
             </span>
           </div>

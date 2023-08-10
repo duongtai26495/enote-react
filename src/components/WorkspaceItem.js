@@ -37,7 +37,7 @@ const WorkspaceItem = ({ wsItem, editState, setUpdateWs }) => {
                 defaultValue={newNameWs}
                 onChange={(e) => { setNewNameWs(e.target.value) }} />
             :
-            <span className='w-fit ws-item bg-transparent px-2 py-1'>
+            <span onClick={()=>{}} className='w-fit ws-item bg-transparent px-2 py-1'>
                 {currentWssItem.name}
             </span>
     )

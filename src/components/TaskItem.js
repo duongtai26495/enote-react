@@ -11,7 +11,6 @@ const TaskItem = ({ task, noteId, updatePercentage, updateTaskList, isUpdateList
     const [newContent, setNewContent] = useState(task.content)
     const [newDone, setNewDone] = useState(task.done)
     const isMounted = useRef(false);
-    const dragItem = useRef();
     const [isUpdating, setUpdating] = useState(false)
     const [isOpenSetting, setOpenSetting] = useState(false)
     const updateTask = async () => {
