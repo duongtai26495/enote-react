@@ -8,7 +8,6 @@ export const loadNavigationItem = (item) => {
 
 export const checkToken = (accessToken) => {
 
-    const secretKey = process.env.SECRET_KEY; // Đảm bảo key này giống với khi bạn đã ký token
     if (accessToken) {
         try {
             const decoded = jwt_decode(accessToken)
@@ -17,6 +16,9 @@ export const checkToken = (accessToken) => {
             if (decoded.exp > currentTime) {
                 // Xử lý khi token đã hết hạn, ví dụ như đăng xuất người dùng
                 return true
+            }
+            else{
+              console.log("Token hết hạn")
             }
         } catch (error) {
             console.error('Lỗi xác minh token:', error);

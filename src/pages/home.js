@@ -146,11 +146,13 @@ const Home = () => {
         </div>
         <div className='flex flex-row justify-between items-center'>
           <ul className={`flex flex-row border-b gap-5 w-full overflow-x-auto`}>
+            {/* List of Workspace */}
             <RenderWsList />
           </ul>
 
         </div>
         <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}>
+          {/* List of Note list */}
           <NoteList addNoteState={addNoteState} getNoteCount={getNoteCount} id={selectedWs} />
         </div>
       </div>

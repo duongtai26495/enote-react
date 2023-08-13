@@ -5,7 +5,7 @@ import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 
-const NoteList = ({ id, getNoteCount, addNoteState }) => {
+const NoteList = ({ id, addNoteState }) => {
 
     const [noteList, setNoteList] = useState([])
 
@@ -18,7 +18,6 @@ const NoteList = ({ id, getNoteCount, addNoteState }) => {
                 const result = await fetchApiData(`workspace/get/${id}`, token)
                 if (result && result.status !== 403) {
                     const data = result.content
-                    getNoteCount(data.length)
                     setNoteList(data)
                     setUpdateList(false)
                 }
