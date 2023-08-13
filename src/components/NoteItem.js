@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import { access_token } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData } from '../utils/functions'
@@ -46,31 +46,31 @@ const NoteItem = ({ note, refreshNoteList }) => {
         }
     }, [newDone])
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (cardRef.current && !cardRef.current.contains(event.target)) {
-                setOpenCardSub(false)
-            }
-        };
-        document.addEventListener('click', handleClickOutside);
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (cardRef.current && !cardRef.current.contains(event.target)) {
+    //             setOpenCardSub(false)
+    //         }
+    //     };
+    //     document.addEventListener('click', handleClickOutside);
 
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [])
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, [])
 
     const [openCardSub, setOpenCardSub] = useState(false)
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div onBlur={() => setOpenCardSub(false)} className={`w-full break-inside-avoid p-3 relative`}>
+        <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative `}>
           
-            <div className='flex flex-col rounded-lg border shadow bg-white bg-opacity-70'>
+            <div className='flex flex-col rounded-lg bg-white bg-opacity-75'>
                 
-            <button onClick={toggleSetNewDone} className={`font-bold w-full rounded-t-md p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
+            <button onClick={toggleSetNewDone}className={`progress-bar relative font-bold w-full rounded-t-md p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                 {newDone ? "Resolved" : "In Progress"}
             </button>
-            <div className='w-full border-b flex flex-col p-2'>
+            <div className='w-full border-b flex flex-col p-2  '>
 
                 {/* <div ref={cardRef} className='flex flex-row gap-2 w-full items-center justify-end '>
                     <div className={`flex flex-row gap-2 items-center justify-end overflow-hidden transition-all ${openCardSub ? "w-full" : "w-0"}`}>
@@ -102,12 +102,13 @@ const NoteItem = ({ note, refreshNoteList }) => {
                         type='text' />
                 </div>
             </div>
+           
             <div className='w-full relative'>
-                <div className={`absolute w-full ${newDone ? "h-full" : "h-0"} overflow-hidden transition-all rounded-b-md z-10 bg-white opacity-50 top-0 left-0`}></div>
+                <div className={`absolute w-full ${newDone ? "h-full" : "h-0"} bg-white overflow-hidden transition-all rounded-b-md z-10 opacity-50 top-0 left-0`}></div>
                 <TaskList note={note} />
             </div>
-            
             </div>
+            
         </div>
     )
 }

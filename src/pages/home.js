@@ -4,7 +4,6 @@ import { access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
 import WorkspaceItem from '../components/WorkspaceItem'
-
 const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -16,8 +15,10 @@ const Home = () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
       const result = await fetchApiData("workspace/all", token)
-      const data = result.content
-      setWsList(data)
+      if(result && result.status !== 403){
+        const data = result.content
+        setWsList(data)
+      }
     }
   }
   const [wsList, setWsList] = useState([])
@@ -89,8 +90,8 @@ const Home = () => {
           className={`${selectedWs === item.id ? "border-b-8 border-slate-800" : ""} flex flex-row gap-1 items-center ws-item whitespace-nowrap hover:border-b-8 py-5 cursor-pointer transition-all w-fit`}
           key={item.id}>
           <WorkspaceItem setUpdateWs={setUpdateWs} editState={editState} wsItem={item} />
-          <span className='' onClick={toggleActions}>
-              <svg className={`${isOpenAction ? "rotate-0" : "rotate-180"} transition-all`} height={"24"} width={"24"} id="Layer_1" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="M327.3,98.9l-2.1,1.8l-156.5,136c-5.3,4.6-8.6,11.5-8.6,19.2c0,7.7,3.4,14.6,8.6,19.2L324.9,411l2.6,2.3  c2.5,1.7,5.5,2.7,8.7,2.7c8.7,0,15.8-7.4,15.8-16.6h0V112.6h0c0-9.2-7.1-16.6-15.8-16.6C332.9,96,329.8,97.1,327.3,98.9z"/></svg>
+          <span className={`${selectedWs === item.id ? "block": "hidden"} transition-all`} onClick={toggleActions}>
+              <svg className={`${(isOpenAction && selectedWs === item.id) ? "rotate-0" : "rotate-180"} transition-all`} height={"24"} width={"24"} id="Layer_1" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="M327.3,98.9l-2.1,1.8l-156.5,136c-5.3,4.6-8.6,11.5-8.6,19.2c0,7.7,3.4,14.6,8.6,19.2L324.9,411l2.6,2.3  c2.5,1.7,5.5,2.7,8.7,2.7c8.7,0,15.8-7.4,15.8-16.6h0V112.6h0c0-9.2-7.1-16.6-15.8-16.6C332.9,96,329.8,97.1,327.3,98.9z"/></svg>
             </span>
           <div className={`${isOpenAction ? "w-full" : "w-0"} transition-all ease-out duration-700 overflow-hidden flex-row items-center justify-around ws-action relative ${selectedWs === item.id ? "flex" : "hidden"}`}>
             
@@ -132,7 +133,7 @@ const Home = () => {
   }
 
   return (
-    <div className='w-full flex flex-row'>
+    <div className='w-full flex flex-row '>
       <div className='w-full lg:w-2/3 py-2 overflow-y-auto'>
         <div className='w-full flex flex-row gap-5 items-center pb-2'>
           <p className='font-bold text-xl'>Workspace</p>
@@ -149,7 +150,7 @@ const Home = () => {
           </ul>
 
         </div>
-        <div className={`columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-0 pt-5 slide-up  ${isVisible ? 'visible' : ''}`}>
+        <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}>
           <NoteList addNoteState={addNoteState} getNoteCount={getNoteCount} id={selectedWs} />
         </div>
       </div>

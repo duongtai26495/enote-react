@@ -1,8 +1,9 @@
 import Cookies from 'js-cookie'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 
 const NoteList = ({ id, getNoteCount, addNoteState }) => {
 
@@ -15,7 +16,7 @@ const NoteList = ({ id, getNoteCount, addNoteState }) => {
         if (checkToken(token) && id > 0) {
             try {
                 const result = await fetchApiData(`workspace/get/${id}`, token)
-                if (result.status !== 403) {
+                if (result && result.status !== 403) {
                     const data = result.content
                     getNoteCount(data.length)
                     setNoteList(data)
@@ -28,18 +29,24 @@ const NoteList = ({ id, getNoteCount, addNoteState }) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getAllNoteByWs()
-    },[addNoteState])
+    }, [addNoteState])
 
     const refreshNoteList = (update) => {
         setUpdateList(update)
     }
     const RenderNote = () => {
         return (
-            noteList.map(item => (
-                <NoteItem refreshNoteList={refreshNoteList} note={item} key={item.id} />
-            ))
+            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1280: 4 }}>
+                <Masonry>
+                    {
+                        noteList.map(item => (
+                            <NoteItem refreshNoteList={refreshNoteList} note={item} key={item.id} />
+                        ))
+                    }
+                </Masonry>
+            </ResponsiveMasonry>
         )
     }
 

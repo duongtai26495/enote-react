@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { access_token } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData } from '../utils/functions'
-import TaskList from './TaskList'
 
 const TaskItem = ({ task, noteId, updatePercentage, updateTaskList, isUpdateList }) => {
 
@@ -126,4 +125,4 @@ const TaskItem = ({ task, noteId, updatePercentage, updateTaskList, isUpdateList
     )
 }
 
-export default React.memo(TaskItem)
+export default TaskItem
