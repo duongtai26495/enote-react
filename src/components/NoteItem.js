@@ -12,6 +12,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
     const isMounted = useRef(false);
     const cardRef = useRef(null);
 
+    const token = Cookies.get(access_token)
     const updateNoteById = () => {
         let newNote = item
         newNote.name = newName
@@ -21,11 +22,9 @@ const NoteItem = ({ note, refreshNoteList }) => {
     }
 
     const updateNote = async () => {
-        const token = Cookies.get(access_token)
         if (checkToken(token)) {
             if(newName === "" && note.tasks.length === 0){
-                await fetchApiData(`note/remove/${note.id}`, token, "DELETE")
-                refreshNoteList(true)
+                await removeNote()
             }else{
                 setItem({})
                 const result = await fetchApiData(`note/update`, token, "PUT", item)
@@ -37,6 +36,12 @@ const NoteItem = ({ note, refreshNoteList }) => {
             
         }
     }
+
+    const removeNote = async () => {
+        await fetchApiData(`note/remove/${note.id}`, token, "DELETE")
+        refreshNoteList(true)
+    }
+
 
     useEffect(() => {
         if (isMounted.current) {
@@ -65,11 +70,16 @@ const NoteItem = ({ note, refreshNoteList }) => {
     return (
         <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative `}>
           
-            <div className='flex flex-col rounded-lg bg-white bg-opacity-75'>
-                
-            <button onClick={toggleSetNewDone}className={`progress-bar relative font-bold w-full rounded-t-md p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
+            <div className='flex flex-col rounded-lg bg-white bg-opacity-75 pr-2'>
+                <div className='flex flex-row gap-2'>
+
+            <button onClick={toggleSetNewDone}className={`progress-bar flex-1 relative font-bold w-full  rounded-tl-md  p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                 {newDone ? "Resolved" : "In Progress"}
             </button>
+            <button onClick={() => removeNote()}>
+                <svg viewBox="0 0 448 512" width={"14"} height={"14"} xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z"/></svg>
+            </button>
+                </div>
             <div className='w-full border-b flex flex-col p-2  '>
 
                 {/* <div ref={cardRef} className='flex flex-row gap-2 w-full items-center justify-end '>

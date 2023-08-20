@@ -1,9 +1,10 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import { access_token } from '../utils/constants'
+import { CHECK_TYPE, NOTE_TYPE, access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskItem from './TaskItem'
 import { memo } from 'react'
+import TaskRow from './TaskRow'
 
 const TaskList = ({ note }) => {
 
@@ -12,6 +13,7 @@ const TaskList = ({ note }) => {
     const [isUpdateProgress, setUpdateProgress] = useState(false)
     const [isExpandTask, setExpandTask] = useState(false)
     const [isUpdateList, setUpdateList] = useState(false)
+    const [deleteId, setDeleteId] = useState(null)
     const hasDoneItem = taskList.some(item => item.type === "CHECK")
 
 
@@ -29,9 +31,9 @@ const TaskList = ({ note }) => {
         }
     }
 
-    const addNewTask = async () => {
+    const addNewTask = async (type) => {
         const token = Cookies.get(access_token)
-        const newTask = ({ content: "New task", type: "CHECK", note: { id: note.id } })
+        const newTask = ({ content: "New task", type, note: { id: note.id } })
         const result = await fetchApiData(`note/task/add`, token, "POST", newTask)
         const data = result.content
         setTaskList(oldData => [data, ...oldData])
@@ -45,6 +47,9 @@ const TaskList = ({ note }) => {
         setUpdateList(update)
     }
 
+    const deleteTaskId = (value) => {
+        setDeleteId(value)
+    }
     const toggleExpand = () => setExpandTask(preState => !preState)
 
     useEffect(() => {
@@ -61,6 +66,19 @@ const TaskList = ({ note }) => {
         }
     }
 
+    const deleteTask = async () => {
+        if (deleteId !== null) {
+            const token = Cookies.get(access_token)
+            await fetchApiData(`note/task/remove/${deleteId}`, token, "DELETE")
+
+        }
+        setUpdateList(true)
+    }
+
+    useEffect(() => {
+        deleteTask()
+    }, [deleteId])
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             getAllTaskByNoteId()
@@ -71,24 +89,32 @@ const TaskList = ({ note }) => {
 
     const PleaceholderTask = () => {
         return (
-            <li onClick={() => addNewTask()} className='flex flex-row w-fit gap-2 text-xs font-bold items-center p-1 text-slate-600 rounded-md border border-slate-400 mx-2 cursor-pointer hover:bg-slate-500 hover:text-white hover:fill-white bg-white transition-all justify-center'>
-                New task <svg className='fill-slate-400 ' height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m2.513 12.833 9.022 5.04a.995.995 0 0 0 .973.001l8.978-5a1 1 0 0 0-.002-1.749l-9.022-5a1 1 0 0 0-.968-.001l-8.978 4.96a1 1 0 0 0-.003 1.749z" /><path d="m3.485 15.126-.971 1.748 9 5a1 1 0 0 0 .971 0l9-5-.971-1.748L12 19.856l-8.515-4.73zM20 8V6h2V4h-2V2h-2v2h-2v2h2v2z" /></svg>
-            </li>
+            <ul className='w-full flex flex-row gap-1'>
+                <li onClick={() => addNewTask(CHECK_TYPE)} className='flex flex-row w-fit gap-2 text-xs font-bold items-center p-1 text-slate-600 rounded-md border border-slate-400 mx-2 cursor-pointer hover:bg-slate-500 hover:text-white hover:fill-white bg-white transition-all justify-center'>
+                    New note <svg className='fill-slate-400 ' height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 22h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2h-2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1H5c-1.103 0-2 .897-2 2v15c0 1.103.897 2 2 2zM5 5h2v2h10V5h2v15H5V5z" /><path d="m11 13.586-1.793-1.793-1.414 1.414L11 16.414l5.207-5.207-1.414-1.414z" /></svg>
+                </li>
+                <li onClick={() => addNewTask(NOTE_TYPE)} className='flex flex-row w-fit gap-2 text-xs font-bold items-center p-1 text-slate-600 rounded-md border border-slate-400 mx-2 cursor-pointer hover:bg-slate-500 hover:text-white hover:fill-white bg-white transition-all justify-center'>
+                    New task <svg className='fill-slate-200 ' height="21" strokeWidth="1" viewBox="0 0 24 24" width="21" xmlns="http://www.w3.org/2000/svg">
+                        <path className='stroke-slate-400' d="M16 5L18.2929 2.70711C18.6834 2.31658 19.3166 2.31658 19.7071 2.70711L21.2929 4.29289C21.6834 4.68342 21.6834 5.31658 21.2929 5.70711L19 8M16 5L10.2929 10.7071C10.1054 10.8946 10 11.149 10 11.4142V13C10 13.5523 10.4477 14 11 14H12.5858C12.851 14 13.1054 13.8946 13.2929 13.7071L19 8M16 5L19 8" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" />
+                        <path className='stroke-slate-400' d="M6 14H5C3.89543 14 3 14.8954 3 16V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 18.8954 21 20V20C21 21.1046 20.1046 22 19 22H15" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
+                </li>
+            </ul>
         )
     }
 
     const RenderTaskList = () => {
         return (
-            <div className={`${isExpandTask ? "h-fit" : "h-0"} duration-500 overflow-y-hidden transition-all`}>
+            <div className={`${isExpandTask ? "max-h-fit" : "max-h-20"} duration-500 overflow-y-hidden transition-all`}>
                 {
                     taskList.map((item, index) => (
                         <li key={index}
-                            className={`flex flex-row gap-2 items-center justify-between transition-all`}>
-                            <TaskItem updateTaskList={updateTaskList} isUpdateList={isUpdateList} updatePercentage={updatePercentage} task={item} noteId={note.id} />
+                            className={`flex flex-row gap-2 items-center justify-between transition-all `}>
+                            <TaskRow isExpandTask={isExpandTask} deleteTaskId={deleteTaskId} updateTaskList={updateTaskList} isUpdateList={isUpdateList} updatePercentage={updatePercentage} task={item} noteId={note.id} />
                         </li>
                     ))
                 }
             </div>
+
         )
     }
 
@@ -106,16 +132,16 @@ const TaskList = ({ note }) => {
     return (
         <>
             <div className=' py-2'>
-                <div className={`${hasDoneItem ? "block" : "hidden"} w-full h-fit mb-2 transition-all`}>
-                    <div className='w-full flex flex-col gap-2'>
+                <div className={`w-full h-fit mb-2 transition-all`}>
+                    <div className='w-full relative flex flex-col gap-2'>
                         <span className='py-1 px-2 font-bold text-sm'>Progress : {Math.round(percentage)}%</span>
                         <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} transition-all duration-500 ease-in-out`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
                     </div>
                 </div>
                 <PleaceholderTask />
             </div>
-                <RenderTaskList />
-            <div onClick={toggleExpand} className={`${taskList.length > 0 ? "flex" : "hidden"} w-full p-2  transition-all hover:bg-opacity-100 rounded-b-md cursor-pointer`}>
+            <RenderTaskList />
+            <div onClick={toggleExpand} className={`h-fit w-full p-2  transition-all hover:bg-opacity-100 rounded-b-md cursor-pointer`}>
                 <svg className={`${isExpandTask ? "rotate-180" : "rotate-0"} duration-300 transition-all fill-slate-700 m-auto`}
                     height="12" width="12" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 330 330">
@@ -127,5 +153,7 @@ const TaskList = ({ note }) => {
         </>
     )
 }
+
+
 
 export default React.memo(TaskList)

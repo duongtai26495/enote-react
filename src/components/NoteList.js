@@ -5,7 +5,7 @@ import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 
-const NoteList = ({ id, addNoteState }) => {
+const NoteList = ({ id, addNoteState, setAddNote }) => {
 
     const [noteList, setNoteList] = useState([])
 
@@ -19,10 +19,12 @@ const NoteList = ({ id, addNoteState }) => {
                 if (result && result.status !== 403) {
                     const data = result.content
                     setNoteList(data)
-                    setUpdateList(false)
                 }
             } catch (error) {
                 console.log(error)
+            } finally {
+                setUpdateList(false)
+                setAddNote(false)
             }
 
         }
@@ -52,7 +54,7 @@ const NoteList = ({ id, addNoteState }) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             getAllNoteByWs()
-        }, 300);
+        }, 500);
         return () => clearTimeout(timeout);
     }, [id, isUpdateList])
 

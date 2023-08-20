@@ -12,14 +12,14 @@ code {
     monospace;
 }
 
-.bg-body{
+.bg-body {
   z-index: -1;
   background: url('./assets/images/bg_body-3.jpg');
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   filter: blur(50px);
-  
+
 }
 
 .slide-up {
@@ -61,4 +61,20 @@ code {
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   gap: 1rem;
 }
+.selected_ws::after {
+  width: 0;
+  content: "";
+  height: 5px;
+  color: black;
+  background-color: black;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: width .3s;
+  
+}
 
+.selected_ws:hover::after, 
+.selected_ws_true::after {
+  width: 100%; 
+}
