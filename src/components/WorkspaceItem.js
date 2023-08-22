@@ -62,7 +62,7 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
                     {currentWssItem.name}
                 </span>
         }
-            <span onClick={() => { addNewNote(currentWssItem.id) }} className={`${selectedWs === currentWssItem.id ? "flex" : "hidden"} hover:bg-slate-200 w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs `}>
+            <span onClick={() => { addNewNote(currentWssItem.id) }} className={`${selectedWs === currentWssItem.id ? "flex" : "hidden"} button_style-1  hover:bg-slate-200 w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs `}>
                 Add note
             </span>
             <span className={`${selectedWs === currentWssItem.id ? "block" : "hidden"} transition-all`} onClick={toggleActions}>

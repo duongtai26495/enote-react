@@ -4,6 +4,7 @@ import { access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
 import WorkspaceItem from '../components/WorkspaceItem'
+import ChatAssist from '../components/ChatAssist'
 const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -89,13 +90,13 @@ const Home = () => {
   }
 
   return (
-    <div className='w-full flex flex-row '>
+    <div className='w-full h-full flex flex-row '>
       <div className='w-full lg:w-2/3 py-2 overflow-y-auto'>
         <div className='w-full flex flex-row gap-5 items-center pb-2'>
           <p className='font-bold text-xl'>Workspace</p>
           <ul className={"flex flex-row gap-5 w-fit"}>
             <li onClick={() => addWorkspace()}
-              className='py-2 px-3 cursor-pointer  transition-all rounded-full whitespace-nowrap text-black bg-white hover:scale-105 font-bold text-sm'>
+              className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white hover:scale-105 font-bold text-sm'>
               Add plan +
               </li>
           </ul>
@@ -113,7 +114,7 @@ const Home = () => {
         </div>
       </div>
       <div className='w-1/3 min-h-full hidden lg:flex bg-transparent border p-3'>
-        Chat
+        <ChatAssist />
       </div>
     </div>
   )

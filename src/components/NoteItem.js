@@ -68,9 +68,9 @@ const NoteItem = ({ note, refreshNoteList }) => {
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative `}>
+        <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative`}>
           
-            <div className='flex flex-col rounded-lg bg-white bg-opacity-75 pr-2'>
+            <div className='note_style-1 border flex flex-col rounded-lg bg-white bg-opacity-75 pr-2'>
                 <div className='flex flex-row gap-2'>
 
             <button onClick={toggleSetNewDone}className={`progress-bar flex-1 relative font-bold w-full  rounded-tl-md  p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>

@@ -14,7 +14,7 @@ code {
 
 .bg-body {
   z-index: -1;
-  background: url('./assets/images/bg_body-3.jpg');
+  /* background: url('./assets/images/bg_body-3.jpg'); */
   background-position: center center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -61,6 +61,7 @@ code {
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   gap: 1rem;
 }
+
 .selected_ws::after {
   width: 0;
   content: "";
@@ -71,10 +72,24 @@ code {
   left: 0;
   bottom: 0;
   transition: width .3s;
-  
+
 }
 
-.selected_ws:hover::after, 
+.selected_ws:hover::after,
 .selected_ws_true::after {
-  width: 100%; 
+  width: 100%;
+}
+
+.button_style-1 {
+  border-radius: 50%;
+  background: #fafafa;
+  box-shadow: 1px 1px 2px #e1e1e1,
+    -1px -1px 2px #ffffff;
+}
+
+.note_style-1 {
+  border-radius: 15px;
+  background: linear-gradient(145deg, #f3f3f3, #ffffff);
+  box-shadow:  6px 6px 12px #dfdfdf,
+               -6px -6px 12px #ffffff;
 }
