@@ -106,7 +106,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
                 <div className='w-full flex flex-col justify-between items-center relative'>
                     <input
                         onChange={(e) => { setNewName(e.target.value) }}
-                        className='min-h-fit w-full h-fit m-auto font-bold text-base mt-2 text-center bg-transparent'
+                        className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-base mt-2 text-center bg-transparent'
                         value={newName}
                         onBlur={updateNoteById}
                         type='text' />
@@ -127,4 +127,4 @@ const NoteItem = ({ note, refreshNoteList }) => {
     )
 }
 
-export default React.memo(NoteItem)
+export default NoteItem

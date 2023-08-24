@@ -45,7 +45,7 @@ const NoteList = ({ id, addNoteState, setAddNote }) => {
     }
     const RenderNote = () => {
         return (
-            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1280: 4 }}>
+            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1366: 4 }}>
                 <Masonry>
                     {
                         noteList.map(item => (

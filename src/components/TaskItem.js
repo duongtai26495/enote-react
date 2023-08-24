@@ -29,8 +29,8 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
         console.log(newTaskContent)
         setNewContent(newTaskContent);
         adjustTextAreaHeight(e.target);
-      
-      };
+
+    };
 
     const updateTaskById = () => {
         console.log(newContent)
@@ -83,11 +83,13 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
                         <svg width={"18"} height={"18"} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"  ><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
                     </p>
                     <input
-                        className={`w-6 h-6 ${item.type === "CHECK" ? "block" : "hidden"} flex-1`}
+                        id='new_done'
+                        className={`hidden`}
                         defaultChecked={item.done}
                         onChange={e => { setNewDone(e.target.checked) }}
                         type='checkbox'
                     />
+                    <label htmlFor='new_done' className={`${item.type === "CHECK" ? "block" : "hidden"}`}>resolve</label>
                 </div>
 
                 {/* <button onClick={toggleSetNewDone} className={`${item.type === "CHECK" ? "block" : "hidden"} w-fit rounded-sm p-1 shadow-sm text-white text-sm ${newDone ? "bg-emerald-700" : "bg-sky-600"}`}>
@@ -108,7 +110,7 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
                         disabled={isUpdating}
                         className='w-full my-2 p-1 bg-transparent'
                         value={newContent}
-                        onChange={e =>  {updateContent(e)}}
+                        onChange={e => { updateContent(e) }}
                         onBlur={updateTaskById}
                     ></textarea>
                 }
