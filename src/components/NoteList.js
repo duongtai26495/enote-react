@@ -74,7 +74,6 @@ const NoteList = ({ id, addNoteState, setAddNote }) => {
                 }
                 break;
         }
-        console.log(currentPage)
     }
 
 
@@ -96,7 +95,10 @@ const NoteList = ({ id, addNoteState, setAddNote }) => {
     return (
         <>
             <RenderNote />
+            {
+                noteList.length > 0 &&
             <Pagination />
+            }
         </>
     )
 }

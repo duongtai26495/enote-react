@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState } from 'react'
 import { access_token, currentWs } from '../utils/constants'
-import { checkToken, fetchApiData } from '../utils/functions'
+import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
+
 
 const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
     const [newNameWs, setNewNameWs] = useState(wsItem.name)
@@ -58,8 +59,12 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
                     defaultValue={newNameWs}
                     onChange={(e) => { setNewNameWs(e.target.value) }} />
                 :
-                <span onClick={() => { }} className='w-fit ws-item bg-transparent px-2 py-1'>
+                <span onClick={() => { }} className='w-fit ws-item flex flex-col bg-transparent px-2 py-1'>
                     {currentWssItem.name}
+                    {
+                        currentWssItem.updated_at &&
+                        <span className={`text-xs text-slate-400 italic`}>{getTheTime(currentWssItem.updated_at)}</span>
+                    }
                 </span>
         }
             <span onClick={() => { addNewNote(currentWssItem.id) }} className={`${selectedWs === currentWssItem.id ? "flex" : "hidden"} button_style-1  hover:bg-slate-200 w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs `}>

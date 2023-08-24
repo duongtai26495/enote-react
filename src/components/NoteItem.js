@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState, memo } from 'react'
 import { access_token } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
-import { checkToken, fetchApiData } from '../utils/functions'
+import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 import TaskList from './TaskList'
 
 const NoteItem = ({ note, refreshNoteList }) => {
@@ -103,13 +103,17 @@ const NoteItem = ({ note, refreshNoteList }) => {
                     </p>
 
                 </div> */}
-                <div className='w-full flex flex-col justify-between items-center gap-3 relative'>
+                <div className='w-full flex flex-col justify-between items-center relative'>
                     <input
                         onChange={(e) => { setNewName(e.target.value) }}
-                        className='min-h-fit w-full h-fit m-auto font-bold text-base my-2 text-center bg-transparent'
+                        className='min-h-fit w-full h-fit m-auto font-bold text-base mt-2 text-center bg-transparent'
                         value={newName}
                         onBlur={updateNoteById}
                         type='text' />
+                    {
+                            item.updated_at &&
+                        <span className={`text-xs text-slate-400 italic`}>{getTheTime(item.updated_at)}</span>
+                    }
                 </div>
             </div>
            
@@ -123,4 +127,4 @@ const NoteItem = ({ note, refreshNoteList }) => {
     )
 }
 
-export default NoteItem
+export default React.memo(NoteItem)
