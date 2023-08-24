@@ -74,7 +74,6 @@ const NoteList = ({ id, addNoteState, setAddNote }) => {
                 }
                 break;
         }
-        console.log(currentPage)
     }
 
 
