@@ -67,7 +67,7 @@ const Home = () => {
       wsList.map(item => (
         <li
           onClick={() => setCurrentWs(item.id)}
-          className={`${selectedWs === item.id ? "selected_ws_true":""} relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap py-5 cursor-pointer transition-all w-fit`}
+          className={`${selectedWs === item.id ? "selected_ws_true":""} relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap py-3 md:py-5 cursor-pointer transition-all w-fit`}
           key={item.id}>
           <WorkspaceItem setAddNoteState={setAddNoteState} removeWs={removeWs} wsItem={item} />
           

@@ -47,7 +47,8 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
 
 
     return (
-        <>{
+        <div className={`flex flex-col md:flex-row items-center`}>
+            {
             (isEdit && Number(localStorage.getItem(currentWs)) === currentWssItem.id)
                 ?
                 <input
@@ -62,14 +63,16 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
                     {currentWssItem.name}
                 </span>
         }
-            <span onClick={() => { addNewNote(currentWssItem.id) }} className={`${selectedWs === currentWssItem.id ? "flex" : "hidden"} button_style-1  hover:bg-slate-200 w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs `}>
+        <div className={`flex flex-row gap-2 m-auto w-fit`}>
+            <span onClick={() => { addNewNote(currentWssItem.id) }} 
+            className={`${selectedWs === currentWssItem.id ? "flex" : "hidden"} button_style-1  hover:bg-slate-200 w-fit h-fit font-bold rounded-full px-2 text-center z-10 p-1  bg-white text-black transition-all text-xs `}>
                 Add note
             </span>
-            <span className={`${selectedWs === currentWssItem.id ? "block" : "hidden"} transition-all`} onClick={toggleActions}>
+            <span className={`${selectedWs === currentWssItem.id ? "hidden md:block" : "hidden"} transition-all`} onClick={toggleActions}>
                 <svg className={`${(isOpenAction && selectedWs === currentWssItem.id) ? "rotate-0" : "rotate-180"} transition-all`} height={"24"} width={"24"} id="Layer_1" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="M327.3,98.9l-2.1,1.8l-156.5,136c-5.3,4.6-8.6,11.5-8.6,19.2c0,7.7,3.4,14.6,8.6,19.2L324.9,411l2.6,2.3  c2.5,1.7,5.5,2.7,8.7,2.7c8.7,0,15.8-7.4,15.8-16.6h0V112.6h0c0-9.2-7.1-16.6-15.8-16.6C332.9,96,329.8,97.1,327.3,98.9z" /></svg>
             </span>
 
-            <div className={`${isOpenAction ? "w-full" : "w-0"} transition-all ease-out duration-700 overflow-hidden flex-row items-center justify-around ws-action relative ${selectedWs === currentWssItem.id ? "flex" : "hidden"}`}>
+            <div className={`${isOpenAction ? "w-full" : "w-fit md:w-0"} transition-all ease-out duration-700 overflow-hidden flex-row items-center justify-around ws-action relative ${selectedWs === currentWssItem.id ? "flex" : "hidden"}`}>
 
                 <span className='flex flex-row items-center ws-edit-btn hover:scale-110' onClick={toggleEdit} >
                     {
@@ -87,8 +90,8 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
                 </span>
 
             </div>
-
-        </>
+        </div>
+        </div>
     )
 }
 

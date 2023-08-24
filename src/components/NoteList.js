@@ -96,7 +96,10 @@ const NoteList = ({ id, addNoteState, setAddNote }) => {
     return (
         <>
             <RenderNote />
+            {
+                noteList.length > 0 &&
             <Pagination />
+            }
         </>
     )
 }
