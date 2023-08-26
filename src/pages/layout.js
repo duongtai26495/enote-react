@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 function Layout() {
   return (
-    <div className='w-full h-screen m-auto'>
+    <div className='w-full m-auto'>
       <div className='absolute w-full h-full top-0 left-0 bg-body'></div>
     <Header />
     <main className='px-2 h-full'>

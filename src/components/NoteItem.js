@@ -6,11 +6,11 @@ import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../util
 import TaskList from './TaskList'
 import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import loading_icon from '../assets/images/loading_icon.png'
-const NoteItem = ({ note, refreshNoteList }) => {
+const NoteItem = ({ note, removeNote }) => {
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
     const [newDone, setNewDone] = useState(note.done)
-    const [featured_image, setFeatured_Image] = useState(item.featured_image)
+    const [featured_image, setFeatured_Image] = useState(note.featured_image)
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewImage, setPreviewImage] = useState("")
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
@@ -43,9 +43,8 @@ const NoteItem = ({ note, refreshNoteList }) => {
         }
     }
 
-    const removeNote = async () => {
-        await fetchApiData(`note/remove/${note.id}`, token, "DELETE")
-        refreshNoteList(true)
+    const removeHandle = async () => {
+        removeNote(item)
     }
 
 
@@ -76,6 +75,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
 
     useEffect(()=>{
        let clear = setTimeout(()=>{
+        setChanging(true)
             updateImage()
         },1000)
        return ()=> clearTimeout(clear);
@@ -83,7 +83,6 @@ const NoteItem = ({ note, refreshNoteList }) => {
 
     const updateImage = async () => {
         if (checkToken(token)) {
-            setChanging(true)
             if (selectedImage) {
                 const data = new FormData()
                 data.append('f_image', selectedImage)
@@ -100,7 +99,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
         const selectedFile = e.target.files[0];
 
         if (selectedFile) {
-            if (selectedFile.size <= 2 * 1024 * 1024) {
+            if (selectedFile.size <= 5 * 1024 * 1024) {
                 const imageUrl = URL.createObjectURL(selectedFile);
                 setSelectedImage(selectedFile);
                 setPreviewImage(imageUrl)
@@ -108,7 +107,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
             }
             else {
                 setPreviewImage("")
-                setChangeImageLabel("File too large (<2mb)")
+                setChangeImageLabel("File too large (<5mb)")
                let clear = setTimeout(() => {
                     setChangeImageLabel("Change Image")
                 }, 2000);
@@ -130,11 +129,11 @@ const NoteItem = ({ note, refreshNoteList }) => {
                     <button onClick={toggleSetNewDone} className={`progress-bar flex-1 relative font-bold w-full  rounded-tl-md  p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                         {newDone ? "Resolved" : "In Progress"}
                     </button>
-                    <button className='mr-2' onClick={() => removeNote()}>
+                    <button className='mr-2' onClick={() => removeHandle()}>
                         <svg viewBox="0 0 448 512" width={"14"} height={"14"} xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z" /></svg>
                     </button>
                 </div>
-                <div className='w-full relative'>
+                <div className='w-full relative  '>
                     <input onChange={(e) => { changeImageHandle(e) }} type='file' ref={fileInputRef} className='hidden' name='f_image' id='f_image' />
 
                     {
@@ -142,7 +141,7 @@ const NoteItem = ({ note, refreshNoteList }) => {
                         <CustomLazyLoadedImage
                             src={previewImage ? previewImage : baseURL + "public/image/" + featured_image}
                             alt={item.title}
-                            style={`w-full m-auto object-cover aspect-square px-1`}
+                            style={`w-full m-auto object-cover aspect-square`}
                         />
                     }
                     <div
@@ -205,4 +204,4 @@ const NoteItem = ({ note, refreshNoteList }) => {
     )
 }
 
-export default NoteItem
+export default React.memo(NoteItem)
