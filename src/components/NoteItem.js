@@ -1,17 +1,19 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState, memo } from 'react'
-import { access_token } from '../utils/constants'
+import { access_token, baseURL } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 import TaskList from './TaskList'
+import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 
 const NoteItem = ({ note, refreshNoteList }) => {
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
     const [newDone, setNewDone] = useState(note.done)
+    const [featured_image, setFeatured_Image] = useState(note.featured_image)
     const isMounted = useRef(false);
     const cardRef = useRef(null);
-
+    const fileInputRef = useRef(null);
     const token = Cookies.get(access_token)
     const updateNoteById = () => {
         let newNote = item
@@ -64,21 +66,43 @@ const NoteItem = ({ note, refreshNoteList }) => {
     //     };
     // }, [])
 
+    const changeImageHandle = (e) => {
+        const selectedFile = e.target.files[0];
+    // Xử lý tệp đã chọn ở đây
+    console.log('File selected:', selectedFile.name);
+    }
+
     const [openCardSub, setOpenCardSub] = useState(false)
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
         <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative`}>
           
-            <div className='note_style-1 border flex flex-col rounded-lg bg-white bg-opacity-75 pr-2'>
+            <div className='note_style-1 border flex flex-col rounded-lg bg-white bg-opacity-75'>
                 <div className='flex flex-row gap-2'>
 
             <button onClick={toggleSetNewDone}className={`progress-bar flex-1 relative font-bold w-full  rounded-tl-md  p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                 {newDone ? "Resolved" : "In Progress"}
             </button>
-            <button onClick={() => removeNote()}>
+            <button className='mr-2' onClick={() => removeNote()}>
                 <svg viewBox="0 0 448 512" width={"14"} height={"14"} xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z"/></svg>
             </button>
+                </div>
+                <div className='w-full relative '>
+                    <input onChange={(e)=>{changeImageHandle(e)}} type='file' ref={fileInputRef} className='hidden' name='f_image' id='f_image' />
+                    
+                {
+                    featured_image &&
+                    <CustomLazyLoadedImage 
+                    src={baseURL + "public/image/"+ featured_image}
+                    alt={item.title}
+                    style={`w-full m-auto object-cover aspect-square`}
+                    />
+                }
+                <div 
+                onClick={()=> {fileInputRef.current.click()}} 
+                className={`w-full bg-white bg-opacity-60  text-center cursor-pointer hover:bg-opacity-90 transition-all py-1 absolute bottom-0 left-0`} 
+                >Change Image</div>
                 </div>
             <div className='w-full border-b flex flex-col p-2  '>
 
