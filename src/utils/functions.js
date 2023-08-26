@@ -48,6 +48,27 @@ export const fetchApiData = async (endpoint, access_token, method = 'GET', data 
   }
 };
 
+export const uploadDataFileApi = async (endpoint, access_token, method = 'POST', data = null) => {
+  const url = `${baseURL}${endpoint}`
+  const config = {
+    method,
+    url,
+    maxBodyLength: Infinity,
+    headers: {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+    data,
+  };
+
+try {
+  const response = await axios(config);
+  return response.data;
+} catch (error) {
+  return error.response
+}
+};
+
 
 export const getTheTime = (time) => {
   const timestamp = time
