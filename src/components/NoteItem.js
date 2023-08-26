@@ -187,10 +187,8 @@ const NoteItem = ({ note, removeNote }) => {
                             value={newName}
                             onBlur={updateNoteById}
                             type='text' />
-                        {
-                            item.updated_at &&
-                            <span className={`text-xs text-slate-400 italic`}>{getTheTime(item.updated_at)}</span>
-                        }
+                            <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
+                        
                     </div>
                 </div>
 

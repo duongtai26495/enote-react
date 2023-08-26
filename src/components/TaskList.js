@@ -141,7 +141,7 @@ const TaskList = ({ note }) => {
                 <PleaceholderTask />
             </div>
             <RenderTaskList />
-            <div onClick={toggleExpand} className={`h-fit w-full p-2  transition-all hover:bg-opacity-100 rounded-b-md cursor-pointer`}>
+            <div onClick={toggleExpand} className={`     h-fit w-full p-2  transition-all hover:bg-opacity-100 rounded-b-md cursor-pointer`}>
                 <svg className={`${isExpandTask ? "rotate-180" : "rotate-0"} duration-300 transition-all fill-slate-700 m-auto`}
                     height="12" width="12" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 330 330">

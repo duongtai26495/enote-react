@@ -80,8 +80,10 @@ const NoteList = ({ id }) => {
             newNote.name = "Unnamed note"
             try {
                 const result = await fetchApiData(`note/add`, token, "POST", newNote)
+                
                 const data = result.content
-                setNoteList(oldData => [data, ...oldData])
+                const newList = [data, ...noteList]
+                setNoteList(newList)
             } catch (error) {
                 console.log(error)
             }
