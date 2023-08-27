@@ -41,7 +41,7 @@ const NoteList = ({ id }) => {
     }
     const RenderNote = React.memo(() => {
         return (
-            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 2, 750: 2, 900: 3, 1366: 4 }}>
+            <ResponsiveMasonry columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1366: 5 }}>
                 <Masonry>
                     {
                         noteList.map(item => (
