@@ -91,7 +91,7 @@ const Home = () => {
 
   return (
     <div className='w-full h-full flex flex-row '>
-      <div className='w-full lg:w-2/3 py-2 overflow-y-auto'>
+      <div className='w-full py-2 overflow-y-auto'>
         <div className='w-full flex flex-row gap-5 items-center pb-2'>
           <p className='font-bold text-xl'>Workspace</p>
           <ul className={"flex flex-row gap-5 w-fit"}>
@@ -113,9 +113,7 @@ const Home = () => {
           <NoteList addNoteState={addNoteState} setAddNote={setAddNote} getNoteCount={getNoteCount} id={selectedWs} />
         </div>
       </div>
-      <div className='w-1/3 min-h-full hidden lg:flex bg-transparent border p-3'>
-        <ChatAssist />
-      </div>
+      
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../util
 import TaskList from './TaskList'
 import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import loading_icon from '../assets/images/loading_icon.png'
+import { Link } from 'react-router-dom'
 const NoteItem = ({ note, removeNote }) => {
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
@@ -73,13 +74,13 @@ const NoteItem = ({ note, removeNote }) => {
     //     };
     // }, [])
 
-    useEffect(()=>{
-       let clear = setTimeout(()=>{
-        setChanging(true)
+    useEffect(() => {
+        let clear = setTimeout(() => {
+            setChanging(true)
             updateImage()
-        },1000)
-       return ()=> clearTimeout(clear);
-    },[previewImage])
+        }, 1000)
+        return () => clearTimeout(clear);
+    }, [previewImage])
 
     const updateImage = async () => {
         if (checkToken(token)) {
@@ -103,16 +104,16 @@ const NoteItem = ({ note, removeNote }) => {
                 const imageUrl = URL.createObjectURL(selectedFile);
                 setSelectedImage(selectedFile);
                 setPreviewImage(imageUrl)
-                
+
             }
             else {
                 setPreviewImage("")
                 setChangeImageLabel("File too large (<5mb)")
-               let clear = setTimeout(() => {
+                let clear = setTimeout(() => {
                     setChangeImageLabel("Change Image")
                 }, 2000);
 
-                return ()=> clearTimeout(clear);
+                return () => clearTimeout(clear);
             }
         }
     }
@@ -121,10 +122,10 @@ const NoteItem = ({ note, removeNote }) => {
     const toggleOpenCardSub = () => setOpenCardSub(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div onBlur={() => setOpenCardSub(false)} className={`w-full block break-inside-avoid p-3 relative`}>
+        <Link to={"/note/" + note.id} className={`w-full block break-inside-avoid p-3 relative`}>
 
-            <div className='note_style-1 border flex flex-col rounded-lg bg-white bg-opacity-75'>
-                <div className='flex flex-row gap-2'>
+            <div className='note_style-1 border flex flex-col rounded-lg bg-white bg-opacity-75 transition-all hover:-translate-y-3'>
+                {/* <div className='flex flex-row gap-2'>
 
                     <button onClick={toggleSetNewDone} className={`progress-bar flex-1 relative font-bold w-full  rounded-tl-md  p-1 shadow-sm text-black text-sm hover:bg-sky-600 hover:text-white transition-all`}>
                         {newDone ? "Resolved" : "In Progress"}
@@ -132,30 +133,30 @@ const NoteItem = ({ note, removeNote }) => {
                     <button className='mr-2' onClick={() => removeHandle()}>
                         <svg viewBox="0 0 448 512" width={"14"} height={"14"} xmlns="http://www.w3.org/2000/svg"><path d="M53.21 467c1.562 24.84 23.02 45 47.9 45h245.8c24.88 0 46.33-20.16 47.9-45L416 128H32L53.21 467zM432 32H320l-11.58-23.16c-2.709-5.42-8.25-8.844-14.31-8.844H153.9c-6.061 0-11.6 3.424-14.31 8.844L128 32H16c-8.836 0-16 7.162-16 16V80c0 8.836 7.164 16 16 16h416c8.838 0 16-7.164 16-16V48C448 39.16 440.8 32 432 32z" /></svg>
                     </button>
-                </div>
+                </div> */}
                 <div className='w-full relative  '>
-                    <input onChange={(e) => { changeImageHandle(e) }} type='file' ref={fileInputRef} className='hidden' name='f_image' id='f_image' />
+                    {/* <input onChange={(e) => { changeImageHandle(e) }} type='file' ref={fileInputRef} className='hidden' name='f_image' id='f_image' /> */}
 
                     {
                         featured_image &&
                         <CustomLazyLoadedImage
                             src={previewImage ? previewImage : baseURL + "public/image/" + featured_image}
                             alt={item.title}
-                            style={`w-full m-auto object-cover aspect-square`}
+                            style={`w-full m-auto object-cover aspect-auto  `}
                         />
                     }
-                    <div
+                    {/* <div
                         onClick={() => { fileInputRef.current.click() }}
-                        className={`${featured_image ? "absolute" : "relative"} text-sm w-full bg-white bg-opacity-60  text-center cursor-pointer hover:bg-opacity-90 transition-all py-1 bottom-0 left-0`}
+                        className={`${featured_image ? "absolute" : "relative"} w-full bg-transparent bg-opacity-60  text-center cursor-pointer hover:bg-opacity-90 transition-all p-2 bottom-0 left-0`}
                     >
                         {
                             isChanging
                                 ?
                                 <img src={loading_icon} className='w-5 h-5 animate-spin m-auto' />
                                 :
-                                <span>{changeImageLabel}</span>
+                                <span className={`bg-white rounded-md text-xs py-1 px-2 shadow-sm border`}>{changeImageLabel}</span>
                         }
-                    </div>
+                    </div> */}
                 </div>
                 <div className='w-full border-b flex flex-col p-2  '>
 
@@ -181,24 +182,21 @@ const NoteItem = ({ note, removeNote }) => {
 
                 </div> */}
                     <div className='w-full flex flex-col justify-between items-center relative'>
-                        <input
-                            onChange={(e) => { setNewName(e.target.value) }}
-                            className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-base mt-2 text-center bg-transparent'
-                            value={newName}
-                            onBlur={updateNoteById}
-                            type='text' />
-                            <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
-                        
+                        <p className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-base mt-2 text-center bg-transparent'>
+                            {note.name}
+                        </p>
+                        <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
+
                     </div>
                 </div>
 
-                <div className='w-full relative'>
+                {/* <div className='w-full relative'>
                     <div className={`absolute w-full ${newDone ? "h-full" : "h-0"} bg-white overflow-hidden transition-all rounded-b-md z-10 opacity-50 top-0 left-0`}></div>
                     <TaskList note={note} />
-                </div>
+                </div> */}
             </div>
 
-        </div>
+        </Link>
     )
 }
 

@@ -11,7 +11,7 @@ const Header = () => {
     const navigate = useNavigate()
     const checkLogin = () => {
         const token = Cookies.get(access_token)
-        checkToken(token) ? navigate("/") : navigate("/login?unlogin")
+        !checkToken(token) && navigate("/login?unlogin")
 
     }
 
