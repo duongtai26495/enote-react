@@ -17,6 +17,7 @@ const TaskList = ({ note, updateProgressState }) => {
         const newTask = ({ content: "New task", type, note: { id: note.id } })
         const result = await fetchApiData(`note/task/add`, token, "POST", newTask)
         const data = result.content
+        updateProgressState(true)
         setTaskList(oldData => [data, ...oldData])
     }
 
@@ -50,6 +51,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
         }
         setUpdateList(true)
+        updateProgressState(true)
     }
 
     useEffect(() => {

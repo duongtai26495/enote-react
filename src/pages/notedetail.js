@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { access_token, baseURL } from '../utils/constants';
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions';
@@ -11,8 +11,9 @@ const NoteDetail = () => {
     const token = Cookies.get(access_token)
     const [isUpdateProgress, setUpdateProgress] = useState(false)
     const [item, setItem] = useState({})
-    const [percentage, setPercent] = useState(item.progress)
-    const hasDoneItem = item.tasks?.some(item => item.type === "CHECK")
+    const [newName, setNewName] = useState(item.name)
+    const [newDone, setNewDone] = useState(item.done)
+    const isMounted = useRef(false);
 
     useEffect(() => {
         const getNoteDetail = async () => {
@@ -20,45 +21,56 @@ const NoteDetail = () => {
                 const result = await fetchApiData(`note/get/` + id, token)
                 if (result.status === "SUCCESS") {
                     const data = result.content
-                    setItem(data)
+                    setItem(data) 
+                    setUpdateProgress(false)
                 }
             }
         }
         getNoteDetail()
-    }, [])
+    }, [isUpdateProgress])
+   
+    const removeNote = async () => {
 
-    const updateNoteProgress = async () => {
-        const token = Cookies.get(access_token)
-        if (checkToken(token) && item.id > 0) {
-            item.progress = percentage
-            const result = await fetchApiData(`note/update`, token, "PUT", item)
-            const data = result.content
-            setPercent(data.progress)
+        if (item.tasks === null || item.tasks.length < 1) {
+            await fetchApiData(`note/remove/${item.id}`, token, "DELETE")
+            navigate("/")
         }
-
-        setUpdateProgress(false)
     }
+
+
+    const updateNoteById = () => {
+        let newNote = item
+        newNote.name = newName
+        newNote.done = newDone
+        setItem(newNote)
+        updateNote()
+    }
+
+    useEffect(() => {
+        if (isMounted.current) {
+            updateNoteById()
+        } else {
+            isMounted.current = true;
+        }
+    }, [newDone])
 
     const updateProgressState = (value) => {
         setUpdateProgress(value)
     }
 
-    useEffect(() => {
-        PercentageDone()
-    }, [isUpdateProgress])
+    const updateNote = async () => {
+        if (checkToken(token)) {
+            if (newName === "" && item.tasks.length === 0) {
+                await removeNote()
+            } else {
+                setItem({})
+                const result = await fetchApiData(`note/update`, token, "PUT", item)
+                if (result.status === "SUCCESS") {
+                    const data = result.content
+                    setItem(data)
+                }
+            }
 
- 
-    useEffect(()=>{
-        updateNoteProgress()
-    },[percentage])
-
-    const PercentageDone = async () => {
-        if (hasDoneItem) {
-            const taskList = item.tasks
-            const countDone = taskList.filter(item => item.done && item.type === "CHECK").length;
-            const totalCount = taskList.filter(item => item.type === "CHECK").length;
-            const setpercentage = (countDone / totalCount) * 100;
-            setPercent(setpercentage)
         }
     }
 
@@ -75,7 +87,8 @@ const NoteDetail = () => {
                 <div className='w-full flex flex-col'>
                     <input
                         className={`text-xl text-black w-fit`}
-                        onChange={(e) => { }}
+                        onChange={(e) => { setNewName(e.target.value)}}
+                        onBlur={updateNoteById}
                         defaultValue={item.name}
                         placeholder={'Note title'} />
                     <span className={`h-5 text-sm text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
@@ -88,9 +101,9 @@ const NoteDetail = () => {
                 <div className='w-full relative flex flex-col gap-2'>
                     <span className='font-bold text-sm '>Progress</span>
                     <span className='w-full bg-slate-200 h-2 relative'>
-                        <span className={`h-2 ${percentage === 100 ? "bg-emerald-700" : "bg-red-700 "} absolute top-0 left-0 progress-bar-card transition-all duration-500 ease-in-out`} style={{ width: "" + percentage + "%", minWidth: "5px" }}></span>
+                        <span className={`h-2 ${item.progress === 100 ? "bg-emerald-700" : "bg-red-700 "} absolute top-0 left-0 progress-bar-card transition-all duration-500 ease-in-out`} style={{ width: "" + item.progress + "%", minWidth: "5px" }}></span>
                     </span>
-                    <span className='text-right text-sm font-bold'>{Math.round(percentage)}%</span>
+                    <span className='text-right text-sm font-bold'>{Math.round(item.progress)}%</span>
                 </div>
             </div>
             <div>

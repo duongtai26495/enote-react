@@ -26,24 +26,27 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
 
     const updateContent = (e) => {
         let newTaskContent = e.target.value;
-        console.log(newTaskContent)
-        setNewContent(newTaskContent);
-        adjustTextAreaHeight(e.target);
+        if (newTaskContent !== item.content) {
+            setNewContent(newTaskContent);
+            adjustTextAreaHeight(e.target);
+        }
 
     };
 
     const updateTaskById = () => {
-        console.log(newContent)
-        setUpdating(true)
-        let note = { id: noteId }
-        let newTask = item
-        newTask.content = newContent
-        newTask.done = newDone
-        newTask.note = note
-        setItem(newTask)
-        updateTask()
-        updatePercentage(true);
-        setUpdating(false)
+        console.log(newContent !== task.content || newDone !== task.done)
+        if (newContent !== task.content || newDone !== task.done) {
+            setUpdating(true)
+            let note = { id: noteId }
+            let newTask = item
+            newTask.content = newContent
+            newTask.done = newDone
+            newTask.note = note
+            setItem(newTask)
+            updateTask()
+            updatePercentage(true)
+            setUpdating(false)
+        }
     }
 
     const removeTask = () => {
@@ -84,7 +87,7 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
                     </p>
                     <input
                         id='new_done'
-                        className={`hidden`}
+                        className={`hidden inputSafari`}
                         defaultChecked={item.done}
                         onChange={e => { setNewDone(e.target.checked) }}
                         type='checkbox'
@@ -127,7 +130,6 @@ const TaskItem = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId, 
     })
 
     const toggleSubSetting = () => setOpenSetting(preState => !preState)
-    const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
         <RenderTask />
     )

@@ -34,7 +34,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
     }
 
     const updateTaskById = async () => {
-        if(newContent === ""){
+        if (newContent === "") {
             removeTask()
         }
         let item = task
@@ -47,7 +47,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
     }
 
     const updateContent = (e) => {
- 
+
         let newTaskContent = e.target.value
         setNewContent(newTaskContent)
     }

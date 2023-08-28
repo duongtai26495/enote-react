@@ -32,8 +32,7 @@ const NoteList = ({ id }) => {
 
 
     const removeNote = async (note) => {
-
-        if (note.tasks === null || note.tasks.length < 1) {
+        if (note.tasks == null || note.tasks?.length < 1) {
             await fetchApiData(`note/remove/${note.id}`, token, "DELETE")
             const updatedItems = noteList.filter(item => item.id !== note.id);
             setNoteList(updatedItems);

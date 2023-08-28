@@ -17,10 +17,9 @@ const NoteItem = ({ note, removeNote }) => {
     const [previewImage, setPreviewImage] = useState("")
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
     const isMounted = useRef(false);
-    const cardRef = useRef(null);
-    const fileInputRef = useRef(null);
     const [isChanging, setChanging] = useState(false)
     const token = Cookies.get(access_token)
+    
     const updateNoteById = () => {
         let newNote = item
         newNote.name = newName
@@ -46,9 +45,8 @@ const NoteItem = ({ note, removeNote }) => {
     }
 
     const removeHandle = () => {
-        console.log(item.id)
+        removeNote(note)
         toggleOpenCardSub()
-        // removeNote(item)
     }
 
 
