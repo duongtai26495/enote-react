@@ -83,14 +83,14 @@ const NoteDetail = () => {
     return (
         <div className='w-full'>
             <div className='bg-slate-200 p-1'>
-                <button className='p-2 hover:bg-slate-100 text-xs rounded bg-white shadow' onClick={() => navigate(-1)}>
+                <button className='p-2 lg:hover:bg-slate-100 text-xs rounded bg-white shadow' onClick={() => navigate(-1)}>
                     Back to Home
                 </button>
             </div>
             <div className='w-full flex flex-row gap-2 p-2 justify-between'>
-                <div className='w-full flex flex-col'>
+                <div className='w-full flex flex-col '>
                     <input
-                        className={`text-xl text-black w-fit`}
+                        className={`text-xl text-black w-full`}
                         onChange={(e) => { setNewName(e.target.value)}}
                         onBlur={updateNoteById}
                         defaultValue={item.name}

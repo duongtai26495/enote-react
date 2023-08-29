@@ -72,10 +72,13 @@ code {
   left: 0;
   bottom: 0;
   transition: width .3s;
-
+  
 }
-
-.selected_ws:hover::after,
+@media (min-width:767px){
+.selected_ws:hover::after{
+  width: 100%;
+}
+}
 .selected_ws_true::after {
   width: 100%;
 }
@@ -98,4 +101,15 @@ code {
   -moz-appearance: none;
   appearance: none;
 }
+.pagingation-num:hover,
+.page-active {
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+}
 
+.pagingation-num {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

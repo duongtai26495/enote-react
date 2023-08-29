@@ -118,9 +118,9 @@ const Register = () => {
                         </svg>
                         <input className="pl-2 outline-none border-none w-full" type="password" name="" id="password" placeholder="Password" />
                     </div>
-                    <button type="submit" className="block w-full bg-indigo-500 hover:bg-indigo-600 py-2 rounded-lg text-white font-semibold my-5">Join now</button>
+                    <button type="submit" className="block w-full bg-indigo-500 lg:hover:bg-indigo-600 py-2 rounded-lg text-white font-semibold my-5">Join now</button>
 
-                    <span className="text-sm ml-2">Already have an account ? <Link className={`underline hover:text-blue-600 text-blue-500 font-bold`} to={"/login"}>Login now</Link></span>
+                    <span className="text-sm ml-2">Already have an account ? <Link className={`underline lg:hover:text-blue-600 text-blue-500 font-bold`} to={"/login"}>Login now</Link></span>
 
                     {err && <p className='text-red-600 text-center w-full m-auto my-5'>Something went wrong !</p>}
                 </form>

@@ -110,16 +110,16 @@ const NoteItem = ({ note, removeNote }) => {
     return (
         <div className={`w-full block break-inside-avoid p-3 relative`}>
 
-            <div className='note_style-1 relative border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all hover:-translate-y-1'>
+            <div className='note_style-1 relative border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all lg:hover:-translate-y-1'>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
-                        <li className='py-1 px-2 text-sm cursor-pointer hover:bg-slate-300 transition-all'>Done</li>
-                        <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer hover:bg-slate-300 transition-all'>Delete</li>
+                        <li className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Done</li>
+                        <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Delete</li>
                     </ul>
 
                 </div>
                 <div className='w-full gap-2 p-1 flex flex-row justify-between items-center border-b'>
-                    <span className={`h-4 text-xs text-slate-400 italic whitespace-nowrap`}>{item.created_at}</span>
+                    <span className={`h-4 text-xs text-slate-400 italic whitespace-nowrap`}>{item.created_at && getTheTime(item.created_at)}</span>
                     <span className='h-4 text-xs w-full text-end font-bold'>
                          { item.tasks?.length > 0 &&
                         "("+(item.tasks.length > 5 ? "5+" : item.tasks.length)+")"

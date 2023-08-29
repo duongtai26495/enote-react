@@ -101,7 +101,7 @@ const Home = () => {
           <p className='font-bold text-xl'>Workspace</p>
           <ul className={"flex flex-row gap-5 w-fit"}>
             <li onClick={() => addWorkspace()}
-              className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white hover:scale-105 font-bold text-sm'>
+              className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
               Add plan +
               </li>
           </ul>
