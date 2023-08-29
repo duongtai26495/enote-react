@@ -20,6 +20,9 @@ const Login = () => {
         checkLogin()
     }, [])
 
+    useEffect(()=>{
+        document.title = "User login - Ememo Application"
+      },[])
 
     const handleSubmit = async (e) => {
 

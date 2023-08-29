@@ -52,7 +52,7 @@ const Header = () => {
 
                         <svg className="cursor-pointer  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 " width="26" height="26" viewBox="0 0 24 24" id="search"><g data-name="Layer 2">
                             <path d="m20.71 19.29-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8 7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 11a6 6 0 1 1 6 6 6 6 0 0 1-6-6z" data-name="search"></path>
-                        </g>
+                        </g> 
                         </svg>
                         <div className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
                             <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >

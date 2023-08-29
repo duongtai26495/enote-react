@@ -14,7 +14,6 @@ const NoteDetail = () => {
     const [newName, setNewName] = useState(item.name)
     const [newDone, setNewDone] = useState(item.done)
     const isMounted = useRef(false);
-
     useEffect(() => {
         const getNoteDetail = async () => {
             if (checkToken(token)) {
@@ -29,6 +28,11 @@ const NoteDetail = () => {
         getNoteDetail()
     }, [isUpdateProgress])
    
+
+    useEffect(()=>{
+        document.title = item.name
+    },[item.name])
+
     const removeNote = async () => {
 
         if (item.tasks === null || item.tasks.length < 1) {

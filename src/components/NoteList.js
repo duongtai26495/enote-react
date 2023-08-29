@@ -15,7 +15,7 @@ const NoteList = ({ id }) => {
         if (checkToken(token) && id > 0) {
             try {
                 let page = Number(currentPage) - 1
-                let url = `workspace/get/${id}?page=${page}`
+                let url = `workspace/get/${id}?page=${page}&size=20`
                 const result = await fetchApiData(url, token)
                 if (result && result.status !== 403) {
                     setMaxPage(result.totalPages)
@@ -111,10 +111,10 @@ const NoteList = ({ id }) => {
                 </span>
             </div>
             <RenderNote />
-            {
+            {/* {
                 noteList.length > 0 &&
                 <Pagination />
-            }
+            } */}
         </>
     )
 }

@@ -9,22 +9,27 @@ const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [noteCount, setNoteCount] = useState(0)
+  const [wsList, setWsList] = useState([])
+  const [selectedWs, setSelectedWs] = useState(Number(localStorage.getItem(currentWs)))
   const [addNoteState, setAddNoteState] = useState(false)
+  
   const getWsAll = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
       const result = await fetchApiData("workspace/all", token)
       if(result && result.status !== 403){
         const data = result.content
-        setWsList(data)
+        if(data.length > 0){
+          setSelectedWs(data[0].id)
+          setWsList(data)
+        }
+        
       }
     }
   }
   const setAddNote = (value) => {
     setAddNoteState(value)
   }
-  const [wsList, setWsList] = useState([])
-  const [selectedWs, setSelectedWs] = useState(Number(localStorage.getItem(currentWs)))
 
   const setCurrentWs = (id) => {
     setSelectedWs(id)

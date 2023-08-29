@@ -14,6 +14,9 @@ const Register = () => {
     const [err, setErr] = useState(false)
 
     const navigate = useNavigate()
+    useEffect(()=>{
+        document.title = "User register - Ememo Application"
+      },[])
 
     useEffect(() => {
         const checkLogin = () => {

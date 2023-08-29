@@ -99,32 +99,3 @@ code {
   appearance: none;
 }
 
-input[type=checkbox],
-input[type=checkbox]:checked {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-input[type=checkbox]+span {
-  height: 16px;
-  width: 16px;
-  border: solid 1px red;
-  color: white;
-}
-
-input[type=checkbox]:checked+span {
-  height: 16px;
-  width: 16px;
-  border: solid 1px #4b4b4b;
-  background: #4b4b4b;
-  color: #ff0000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding-top: 1px;
-  padding-left: 1px;
-  font-size: 0.75rem;
-}
