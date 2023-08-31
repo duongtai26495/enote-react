@@ -7,7 +7,7 @@ import ChatAssist from '../components/ChatAssist';
 
 function Layout() {
   return (
-    <div className='w-full lg:container bg-slate-100 m-auto relative'>
+    <div className='w-full lg:container  m-auto relative'>
       <div className='absolute w-full top-0 left-0 bg-body'></div>
       <Header />
       <main className='w-full  px-2 h-full flex flex-row min-h-screen'>

@@ -37,7 +37,9 @@ const Home = () => {
     setSelectedWs(id)
     localStorage.setItem(currentWs, id)
   }
-
+  useEffect(()=>{
+    document.title = "Ememo Application"
+  },[])  
   useEffect(() => {
     const getSortItems = async () => {
       const token = Cookies.get(access_token)
