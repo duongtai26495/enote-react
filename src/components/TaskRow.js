@@ -82,7 +82,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
 
                 <div onClick={toggleNewState} className={`${task.type === "CHECK" ? "block" : "hidden"} cursor-pointer h-4 w-4 text-start border relative`}>
 
-                    <svg height="16px" style={{marginTop:"-1px"}} version="1.1" viewBox="0 0 18 18" width="16px" xmlns="http://www.w3.org/2000/svg" ><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g fill="#000000" id="Core" transform="translate(-3.000000, -87.000000)"><g id="check-box-outline-blank" transform="translate(3.000000, 87.000000)"><path d="M16,2 L16,16 L2,16 L2,2 L16,2 L16,2 Z M16,0 L2,0 C0.9,0 0,0.9 0,2 L0,16 C0,17.1 0.9,18 2,18 L16,18 C17.1,18 18,17.1 18,16 L18,2 C18,0.9 17.1,0 16,0 L16,0 L16,0 Z" id="Shape" /></g></g></g></svg>
+                    <svg height="16px" style={{ marginTop: "-1px" }} version="1.1" viewBox="0 0 18 18" width="16px" xmlns="http://www.w3.org/2000/svg" ><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g fill="#000000" id="Core" transform="translate(-3.000000, -87.000000)"><g id="check-box-outline-blank" transform="translate(3.000000, 87.000000)"><path d="M16,2 L16,16 L2,16 L2,2 L16,2 L16,2 Z M16,0 L2,0 C0.9,0 0,0.9 0,2 L0,16 C0,17.1 0.9,18 2,18 L16,18 C17.1,18 18,17.1 18,16 L18,2 C18,0.9 17.1,0 16,0 L16,0 L16,0 Z" id="Shape" /></g></g></g></svg>
 
                     <span className={`absolute w-fit left-0 ${newState ? "block" : "hidden"}`} style={{ bottom: "-1px" }}>
                         <svg fill='red' width={`20px`} height={`20px`} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M480 128c0 8.188-3.125 16.38-9.375 22.62l-256 256C208.4 412.9 200.2 416 192 416s-16.38-3.125-22.62-9.375l-128-128C35.13 272.4 32 264.2 32 256c0-18.28 14.95-32 32-32c8.188 0 16.38 3.125 22.62 9.375L192 338.8l233.4-233.4C431.6 99.13 439.8 96 448 96C465.1 96 480 109.7 480 128z" /></svg>
@@ -92,6 +92,8 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
             {
                 task.type === CHECK_TYPE ?
                     <textarea
+                    id='content_task'
+                    name='content_task'
                         disabled={isUpdating}
                         className='w-full my-2 p-1 bg-transparent'
                         value={newContent}
@@ -101,6 +103,8 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                     ></textarea>
                     :
                     <input
+                        id='content_task'
+                        name='content_task'
                         type='text'
                         disabled={isUpdating}
                         className='w-full my-2 p-1 bg-transparent'

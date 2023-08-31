@@ -4,12 +4,13 @@ import { access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 
 
-const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
+const WorkspaceItem = ({ wsItem, removeWs }) => {
     const [newNameWs, setNewNameWs] = useState(wsItem.name)
     const [currentWssItem, setCurrentWsItem] = useState(wsItem)
     const [selectedWs, setSelectedWs] = useState(Number(localStorage.getItem(currentWs)))
     const [isOpenAction, setOpenAction] = useState(false)
     const [isEdit, setEditWs] = useState(false)
+    
     const updateWsName = async () => {
         const token = Cookies.get(access_token)
         if (token !== null && checkToken(token)) {
@@ -39,6 +40,8 @@ const WorkspaceItem = ({ wsItem, removeWs, setAddNoteState }) => {
                 (isEdit && selectedWs === currentWssItem.id)
                     ?
                     <input
+                        id='ws_name'
+                        name='ws_name'
                         onBlur={() => { updateWsName() }}
                         autoFocus
                         className='m-w-fit ws-item bg-transparent px-2 py-1'

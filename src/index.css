@@ -13,6 +13,7 @@ code {
 }
 
 .bg-body {
+  min-height: 100vh;
   z-index: -1;
   /* background: url('./assets/images/bg_body-3.jpg'); */
   background-position: center center;
@@ -96,11 +97,6 @@ code {
     -6px -6px 12px #ffffff;
 }
 
-.inputSafari {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
 .pagingation-num:hover,
 .page-active {
   border-radius: 50%;
@@ -112,4 +108,20 @@ code {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
 }

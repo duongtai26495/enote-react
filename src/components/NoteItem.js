@@ -141,7 +141,7 @@ const NoteItem = ({ note, removeNote }) => {
                             <span className='text-right text-sm font-bold'>{Math.round(note.progress)}%</span>
                         </div>
                     </div>
-                    <p className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-base text-center bg-transparent'>
+                    <p className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
                         {note.name}
                     </p>
                     <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>

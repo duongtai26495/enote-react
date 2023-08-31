@@ -7,14 +7,14 @@ import ChatAssist from '../components/ChatAssist';
 
 function Layout() {
   return (
-    <div className='w-full m-auto'>
-      <div className='absolute w-full h-full top-0 left-0 bg-body'></div>
+    <div className='w-full lg:container bg-slate-100 m-auto relative'>
+      <div className='absolute w-full top-0 left-0 bg-body'></div>
       <Header />
-      <main className='w-full px-2 h-full flex flex-row'>
-        <Outlet className="w-2/3" /> {/* Hiển thị các thành phần con */}
-        <div className='w-1/3 min-h-full hidden lg:flex bg-transparent border p-3'>
+      <main className='w-full  px-2 h-full flex flex-row min-h-screen'>
+        <Outlet/> {/* Hiển thị các thành phần con */}
+        {/* <div className='w-1/3 min-h-full hidden lg:flex bg-transparent border p-3'>
           <ChatAssist />
-        </div>
+        </div> */}
       </main>
       <Footer />
     </div>

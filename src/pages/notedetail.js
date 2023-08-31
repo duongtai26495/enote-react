@@ -20,18 +20,18 @@ const NoteDetail = () => {
                 const result = await fetchApiData(`note/get/` + id, token)
                 if (result.status === "SUCCESS") {
                     const data = result.content
-                    setItem(data) 
+                    setItem(data)
                     setUpdateProgress(false)
                 }
             }
         }
         getNoteDetail()
     }, [isUpdateProgress])
-   
 
-    useEffect(()=>{
+
+    useEffect(() => {
         document.title = item.name
-    },[item.name])
+    }, [item.name])
 
     const removeNote = async () => {
 
@@ -87,18 +87,20 @@ const NoteDetail = () => {
                     Back to Home
                 </button>
             </div>
-            <div className='w-full flex flex-row gap-2 p-2 justify-between'>
+            <div className='w-full flex flex-col lg:flex-row gap-2 p-2 justify-start lg:justify-between'>
                 <div className='w-full flex flex-col '>
                     <input
-                        className={`text-xl text-black w-full`}
-                        onChange={(e) => { setNewName(e.target.value)}}
+                        name='name_task'
+                        id='name_task'
+                        className={`text-xl text-black w-full bg-transparent`}
+                        onChange={(e) => { setNewName(e.target.value) }}
                         onBlur={updateNoteById}
                         defaultValue={item.name}
                         placeholder={'Note title'} />
-                    <span className={`h-5 text-sm text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
+                    <span className={`h-fit lg:h-5 text-sm text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
                 </div>
                 <div className='w-fit whitespace-nowrap h-fit'>
-                    <span className={`h-5 text-sm text-slate-800 italic`}>{item.created_at}</span>
+                    <span className={`h-fit lg:h-5 text-sm text-slate-800 italic`}>{item.created_at}</span>
                 </div>
             </div>
             <div className={`w-full h-fit mb-2 transition-all`}>
