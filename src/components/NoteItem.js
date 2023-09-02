@@ -7,6 +7,8 @@ import TaskList from './TaskList'
 import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import loading_icon from '../assets/images/loading_icon.png'
 import { Link } from 'react-router-dom'
+import ProgressBar from './ProgressBar'
+
 const NoteItem = ({ note, removeNote }) => {
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
@@ -135,24 +137,16 @@ const NoteItem = ({ note, removeNote }) => {
                     <p className='min-h-fit my-5 whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
                         {note.name}
                     </p>
-                    <div className={`w-full h-fit transition-all`}>
-                        <div className='w-full relative flex flex-col gap-2'>
-                            <span className='font-bold text-sm '>Progress</span>
-                            <span className='w-full bg-slate-200 h-2 relative'>
-                                <span
-                                    className={`h-2 ${note.progress === 100 ? "bg-emerald-700" : "bg-red-700 "} absolute top-0 left-0 progress-bar-card transition-all duration-500 ease-in-out`}
-                                    style={{ width: "" + note.progress + "%", minWidth: "5px" }}></span>
-                            </span>
-                            <span className='text-right text-sm font-bold'>{Math.round(note.progress)}%</span>
-                        </div>
-                    </div>
+
+                    <ProgressBar percentage={note.progress} />
+
+                
 
                     <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
                 </Link>
 
             </div>
-
-        </div>
+        </div >
     )
 }
 

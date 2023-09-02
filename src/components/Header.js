@@ -37,7 +37,7 @@ const Header = () => {
     }, [])
 
     return (
-        <div className={`mx-auto w-full bg-white shadow`}>
+        <div className={`mx-auto w-full bg-white border-b`}>
             <div className="p-3 w-full lg:max-w-screen-xl mx-auto">
                 <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0">
                     <div className="lg:pr-16 pr-0">

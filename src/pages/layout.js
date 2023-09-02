@@ -28,7 +28,7 @@ function Layout() {
       <main className='w-full lg:max-w-screen-xl mx-auto px-2 h-full flex flex-col lg:flex-row min-h-screen'>
         <div className={`${isExpandSidebar ? "w-full lg:w-3/4" : "w-full"} duration-500 delay-200 ease-out transition-all relative flex flex-row`}>
           <Outlet /> {/* Hiển thị các thành phần con */}
-          <div className='w-1 h-full hidden lg:flex flex-col border-r relative justify-center' onClick={() => handleExpandSidebar()}>
+          <div className='h-full hidden lg:flex flex-col border-r relative justify-center' onClick={() => handleExpandSidebar()}>
               <span className={`bg-red-700 w-fit h-fit py-8 m-auto rounded-l-md transition-all absolute right-0`}>
               <svg className={`fill-white  ${isExpandSidebar ? "rotate-0" : "rotate-180"} transition-all`} 
               height="22"  width="22" id="Layer_1" 

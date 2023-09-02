@@ -43,7 +43,7 @@ const NoteList = ({ id }) => {
     }
     const RenderNote = React.memo(() => {
         return (
-            <ResponsiveMasonry className='min-h-screen' columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 3, 1366: 4, 1920: 5 }}>
+            <ResponsiveMasonry className='min-h-screen' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
                 <Masonry>
                     {
                         noteList?.map(item => (
