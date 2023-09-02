@@ -19,7 +19,7 @@ const NoteItem = ({ note, removeNote }) => {
     const isMounted = useRef(false);
     const [isChanging, setChanging] = useState(false)
     const token = Cookies.get(access_token)
-    
+
     const updateNoteById = () => {
         let newNote = item
         newNote.name = newName
@@ -121,31 +121,35 @@ const NoteItem = ({ note, removeNote }) => {
                 <div className='w-full gap-2 p-1 flex flex-row justify-between items-center border-b'>
                     <span className={`h-4 text-xs text-slate-400 italic whitespace-nowrap`}>{item.created_at && getTheTime(item.created_at)}</span>
                     <span className='h-4 text-xs w-full text-end font-bold'>
-                         { item.tasks?.length > 0 &&
-                        "("+(item.tasks.length > 5 ? "5+" : item.tasks.length)+")"
-                         }
+                        {item.tasks?.length > 0 &&
+                            "(" + (item.tasks.length > 5 ? "5+" : item.tasks.length) + ")"
+                        }
                     </span>
                     <span className='cursor-pointer' onClick={toggleOpenCardSub}>
                         <svg height={16} width={16} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"  ><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
                     </span>
                 </div>
+
                 <Link to={"/note/" + note.id} className='w-full flex flex-col justify-between items-center relative'>
-                    <div className={`w-full h-fit mb-2 transition-all`}>
+
+                    <p className='min-h-fit my-5 whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
+                        {note.name}
+                    </p>
+                    <div className={`w-full h-fit transition-all`}>
                         <div className='w-full relative flex flex-col gap-2'>
                             <span className='font-bold text-sm '>Progress</span>
                             <span className='w-full bg-slate-200 h-2 relative'>
-                                <span 
-                                className={`h-2 ${note.progress === 100 ? "bg-emerald-700" : "bg-red-700 "} absolute top-0 left-0 progress-bar-card transition-all duration-500 ease-in-out`} 
-                                style={{ width: "" + note.progress + "%", minWidth: "5px" }}></span>
+                                <span
+                                    className={`h-2 ${note.progress === 100 ? "bg-emerald-700" : "bg-red-700 "} absolute top-0 left-0 progress-bar-card transition-all duration-500 ease-in-out`}
+                                    style={{ width: "" + note.progress + "%", minWidth: "5px" }}></span>
                             </span>
                             <span className='text-right text-sm font-bold'>{Math.round(note.progress)}%</span>
                         </div>
                     </div>
-                    <p className='min-h-fit whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
-                        {note.name}
-                    </p>
+
                     <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
                 </Link>
+
             </div>
 
         </div>

@@ -37,7 +37,7 @@ const Header = () => {
     }, [])
 
     return (
-        <div className={`2xl:w-full 2xl:mx-auto `}>
+        <div className={`mx-auto w-full`}>
             <div className="p-3">
                 <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0">
                     <div className="lg:pr-16 pr-0">

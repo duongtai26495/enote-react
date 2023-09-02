@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import { access_token, baseURL } from "./constants";
 import axios from "axios";
 import { formatDistanceToNow, parse, getTime  } from 'date-fns';
+
 export const loadNavigationItem = (item) => {
   localStorage.setItem("current-nav-item", item)
 }
@@ -71,10 +72,14 @@ try {
 
 
 export const getTheTime = (time) => {
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const timestamp = time
-  const parsedDate = parse(timestamp, 'MM/dd/yyyy - HH:mm:ss', new Date());
+  const parsedDate = parse(timestamp, 'MM/dd/yyyy - HH:mm:ss', new Date())
 
   const milliseconds = getTime(parsedDate);
-  const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true });
-  return timeAgo
+  const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true })
+  return capitalize(timeAgo)
 }

@@ -1,12 +1,9 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { SORT_ITEMS, access_token, currentWs } from '../utils/constants'
+import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
 import WorkspaceItem from '../components/WorkspaceItem'
-import ChatAssist from '../components/ChatAssist'
-import { stringify } from 'postcss'
-import { json } from 'react-router-dom'
 const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -45,16 +42,23 @@ const Home = () => {
       const token = Cookies.get(access_token)
       if (token && checkToken(token)) {
         const result = await fetchApiData("note/sort_value", token)
+        const result_task = await fetchApiData("note/task/sort_value", token)
         if (result && result.status !== 403) {
           if (result.length > 0) {
             localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
             setSortItem(result)
           }
         }
+        if (result_task && result_task.status !== 403) {
+          if (result_task.length > 0) {
+            localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
+          }
+        }
       }
     }
     getSortItems()
   }, [])
+
 
 
   const removeWs = async (id) => {

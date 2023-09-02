@@ -76,7 +76,7 @@ const NoteList = ({ id }) => {
 
     const addNewNote = async () => {
         const token = Cookies.get(access_token)
-        if (token !== null && checkToken(token)) {
+        if (token !== null && checkToken(token) && id) {
             const newNote = {}
             newNote.workspace = { id }
             newNote.name = "Unnamed note"
@@ -104,7 +104,7 @@ const NoteList = ({ id }) => {
 
     const RenderSort = () => {
         return (
-            <select className='bg-transparent border p-1 rounded-md text-sm' value={selectedSort} onChange={(e) => sortHandle(e)}>
+            <select className='w-1/3 lg:w-fit bg-transparent border p-1 rounded-md text-sm' name='sort_note' id='sort_note' value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
                     const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
                     const value = item[keys]; // Lấy giá trị
@@ -121,8 +121,8 @@ const NoteList = ({ id }) => {
 
     const Pagination = () => {
         return (
-            <div className='w-full mt-5 lg:mt-10 bg-slate-200'>
-                <p className='text-sm w-1/2 lg:w-1/5 m-auto text-center py-2 flex flex-row items-center justify-between'>
+            <div className='w-1/3 lg:w-full flex flex-row justify-end'>
+                <p className='text-sm w-full lg:w-1/5 text-center flex flex-row items-center justify-between'>
                     <span className={`cursor-pointer pagingation-num transition-all ${currentPage === firstPage && 'fill-slate-300'}`} onClick={() => setPage("PREV")}>
                         <svg className='rotate-180' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>
                     </span>
@@ -149,21 +149,19 @@ const NoteList = ({ id }) => {
 
     return (
         <>
-            <div className={`w-full  p-2 flex flex-row items-center justify-between bg-slate-100 h-fit`}>
+            <div className={`w-full p-2 gap-2 flex flex-row items-center justify-between bg-slate-100 h-fit`}>
                 <span onClick={() => { addNewNote() }}
-                    className={`cursor-pointer button_style-1 lg:hover:bg-slate-200 w-fit h-fit font-bold px-2 text-center rounded-lg p-1  bg-white text-black transition-all text-sm`}>
+                    className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-lg p-1  bg-white text-black transition-all text-sm`}>
                     Add note
                 </span>
                 <RenderSort />
+                <Pagination />
             </div>
             {
                 noteList.length > 0 ?
-                <>
                     <RenderNote />
-                    <Pagination />
-                </>
-                :
-                <EmptyList />
+                    :
+                    <EmptyList />
             }
         </>
     )
