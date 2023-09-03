@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { Home, Login, Register, Layout, About, NoteDetail, UserProfile, Recovery, ConfirmRecovery } from '../pages';
+import { Home, Login, Register, Layout, About, NoteDetail, UserProfile, Recovery, ConfirmRecovery, LoginPage, RegisterPage } from '../pages';
 
 const Navigation = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                {/* <Route path="/login" element={<Login />} /> */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
                 <Route path="/recovery" element={<Recovery />} />
                 <Route path="/confirm-recovery" element={<ConfirmRecovery />} />
                 <Route path="/" element={<Layout />}>

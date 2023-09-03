@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import { access_token, baseURL } from "./constants";
 import axios from "axios";
-import { formatDistanceToNow, parse, getTime  } from 'date-fns';
+import { formatDistanceToNow, parse, getTime } from 'date-fns';
 
 export const loadNavigationItem = (item) => {
   localStorage.setItem("current-nav-item", item)
@@ -28,36 +28,28 @@ export const checkToken = (accessToken) => {
   }
   return false
 }
+export const fetchApiData = async (endpoint, access_token = null, method = 'GET', data = null) => {
+  const url = `${baseURL}${endpoint}`;
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
-export const fetchApiData = async (endpoint, access_token, method = 'GET', data = null) => {
-  const url = `${baseURL}${endpoint}`
-  const config = {}
-if(access_token){
+  if (access_token) {
+    headers['Authorization'] = `Bearer ${access_token}`;
+  }
 
-  config = {
+  const config = {
     method,
     url,
-    headers: {
-      'Authorization': `Bearer ${access_token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
     data,
   };
-}else{
- config = {
-    method,
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  };
-}
-  
+
   try {
     const response = await axios(config);
     return response.data;
   } catch (error) {
-    return error.response
+    return error.response;
   }
 };
 
@@ -74,12 +66,12 @@ export const uploadDataFileApi = async (endpoint, access_token, method = 'POST',
     data,
   };
 
-try {
-  const response = await axios(config);
-  return response.data;
-} catch (error) {
-  return error.response
-}
+  try {
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    return error.response
+  }
 };
 
 

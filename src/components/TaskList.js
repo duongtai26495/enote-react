@@ -16,7 +16,7 @@ const TaskList = ({ note, updateProgressState }) => {
     const addNewTask = async (type) => {
         const token = Cookies.get(access_token)
         const newTask = ({ content: "New task", type, note: { id: note.id } })
-        const result = await fetchApiData(`note/task/add`, token, "POST", newTask)
+        const result = await fetchApiData(`note/task/add`, "POST", newTask)
         const data = result.content
         updateProgressState(true)
         setTaskList(oldData => [data, ...oldData])
