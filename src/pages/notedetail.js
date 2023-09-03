@@ -87,10 +87,11 @@ const NoteDetail = () => {
         <div className='w-full'>
             <div className='w-full flex flex-col lg:flex-row gap-2'>
                 <div className='w-full'>
-                    <Breadcrumbs />
+                    
                     <div style={{backgroundImage:`url(${item.featured_image ? baseURL + "public/image/" + item.featured_image : "https://source.unsplash.com/random"})`}} 
                     className='w-full h-60 flex bg-center bg-no-repeat relative bg-cover flex-col lg:flex-row gap-2 justify-start lg:justify-between'>
                         <div className='w-full h-full absolute top-0 left-0 flex flex-row px-5 z-10'>
+                        
                             <div className='w-full flex flex-col justify-center'>
                                 <input
                                     name='name_task'
@@ -107,6 +108,7 @@ const NoteDetail = () => {
                         </div>
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
+                    <Breadcrumbs text={"Back to home"} className={`border-b`} />
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>
 

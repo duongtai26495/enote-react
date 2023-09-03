@@ -14,7 +14,7 @@ const NoteList = ({ id }) => {
     const firstPage = 1
     const token = Cookies.get(access_token)
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
-    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)))
+    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
     const getAllNoteByWs = async () => {
         if (checkToken(token) && id > 0) {
             try {
@@ -43,11 +43,11 @@ const NoteList = ({ id }) => {
     }
     const RenderNote = React.memo(() => {
         return (
-            <ResponsiveMasonry className='min-h-screen' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
+            <ResponsiveMasonry className='min-h-screen masonry-wrapper' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
                 <Masonry>
                     {
-                        noteList?.map(item => (
-                            <NoteItem removeNote={removeNote} note={item} key={item.id} />
+                        noteList?.map((item, index) => (
+                            <NoteItem removeNote={removeNote} note={item} key={item.id} subclass={``}/>
                         ))
                     }
                 </Masonry>
@@ -104,7 +104,8 @@ const NoteList = ({ id }) => {
 
     const RenderSort = () => {
         return (
-            <select className='w-1/3 lg:w-fit bg-transparent border p-1 rounded-md text-sm' name='sort_note' id='sort_note' value={selectedSort} onChange={(e) => sortHandle(e)}>
+            <select className='w-1/3 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note' 
+            value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
                     const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
                     const value = item[keys]; // Lấy giá trị

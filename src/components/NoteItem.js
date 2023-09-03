@@ -4,12 +4,11 @@ import { access_token, baseURL } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions'
 import TaskList from './TaskList'
-import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import loading_icon from '../assets/images/loading_icon.png'
 import { Link } from 'react-router-dom'
 import ProgressBar from './ProgressBar'
 
-const NoteItem = ({ note, removeNote }) => {
+const NoteItem = ({ note, removeNote, subclass }) => {
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
     const [newDone, setNewDone] = useState(note.done)
@@ -110,9 +109,9 @@ const NoteItem = ({ note, removeNote }) => {
     const toggleOpenCardSub = () => setOpenSetting(preState => !preState)
     const toggleSetNewDone = () => setNewDone(preState => !preState)
     return (
-        <div className={`w-full block break-inside-avoid p-3 relative`}>
+        <div className={`w-full block break-inside-avoid py-3 relative ${subclass}`}>
 
-            <div className='note_style-1 relative border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all lg:hover:-translate-y-1'>
+            <div className='relative  shadow-lg border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all lg:hover:-translate-y-1'>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
                         <li className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Done</li>

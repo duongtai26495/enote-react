@@ -9,7 +9,7 @@ const TaskList = ({ note, updateProgressState }) => {
     const [taskList, setTaskList] = useState(note.tasks)
     const [isUpdateList, setUpdateList] = useState(false)
     const [deleteId, setDeleteId] = useState(null)
-    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)))
+    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)) ?? "updated_at_desc")
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
 
 
@@ -39,7 +39,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     const RenderSort = () => {
         return (
-            <select className='bg-transparent border p-1 rounded-md text-sm mx-2' name='sort_task' id='sort_task' value={selectedSort} onChange={(e) => sortHandle(e)}>
+            <select className='bg-transparent border p-1 bg-white rounded-md text-sm mx-2' name='sort_task' id='sort_task' value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
                     const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
                     const value = item[keys]; // Lấy giá trị

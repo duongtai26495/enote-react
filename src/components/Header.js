@@ -77,7 +77,7 @@ const Header = () => {
                                     s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
                                     </svg>
                                 </p>}
-                            <div className={`w-fit absolute z-10 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
+                            <div className={`w-fit absolute z-20 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
                                 <p className="flex cursor-pointer flex-row gap-2 whitespace-nowrap items-center bg-white border shadow transition-all p-2 " onClick={() => { profileDirect() }}>
                                     Profile
                                 </p>
