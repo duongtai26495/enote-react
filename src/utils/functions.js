@@ -31,7 +31,10 @@ export const checkToken = (accessToken) => {
 
 export const fetchApiData = async (endpoint, access_token, method = 'GET', data = null) => {
   const url = `${baseURL}${endpoint}`
-  const config = {
+  const config = {}
+if(access_token){
+
+  config = {
     method,
     url,
     headers: {
@@ -40,7 +43,16 @@ export const fetchApiData = async (endpoint, access_token, method = 'GET', data 
     },
     data,
   };
-
+}else{
+ config = {
+    method,
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  };
+}
+  
   try {
     const response = await axios(config);
     return response.data;

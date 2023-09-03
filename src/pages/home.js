@@ -4,9 +4,12 @@ import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs } from '../utils/c
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
 import WorkspaceItem from '../components/WorkspaceItem'
+import LoadingAnimation from '../components/LoadingAnimation'
+
 const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setLoading] = useState(true)
   const [noteCount, setNoteCount] = useState(0)
   const [wsList, setWsList] = useState([])
   const [selectedWs, setSelectedWs] = useState(localStorage.getItem(currentWs))
@@ -34,9 +37,9 @@ const Home = () => {
     setSelectedWs(id)
     localStorage.setItem(currentWs, id)
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Ememo Application"
-  },[])  
+  }, [])
   useEffect(() => {
     const getSortItems = async () => {
       const token = Cookies.get(access_token)
@@ -55,6 +58,7 @@ const Home = () => {
           }
         }
       }
+      setLoading(false)
     }
     getSortItems()
   }, [])
@@ -119,31 +123,34 @@ const Home = () => {
   }
 
   return (
-    <div className={`w-full h-full flex flex-row`}>
-      <div className='w-full py-2 overflow-y-auto'>
-        <div className='w-full flex flex-row gap-5 items-center pb-2'>
-          <p className='font-bold text-xl'>Workspace</p>
-          <ul className={"flex flex-row gap-5 w-fit"}>
-            <li onClick={() => addWorkspace()}
-              className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
-              Add plan +
-            </li>
-          </ul>
-        </div>
-        <div className='flex flex-row justify-between items-center'>
-          <ul className={`flex flex-row  w-full overflow-x-auto relative`}>
-            {/* List of Workspace */}
-            <RenderWsList />
-          </ul>
+    <>
+      <LoadingAnimation className={`${isLoading ? "flex" : "hidden"}`} />
 
-        </div>
-        <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}>
-          {/* List of Note list */}
-          <NoteList addNoteState={addNoteState} setAddNote={setAddNote} getNoteCount={getNoteCount} id={selectedWs} />
+      <div className={`${isLoading ? "hidden" : "flex"} w-full h-full flex-row`}>
+        <div className='w-full py-2 overflow-y-auto'>
+          <div className='w-full flex flex-row gap-5 items-center pb-2'>
+            <p className='font-bold text-xl'>Workspace</p>
+            <ul className={"flex flex-row gap-5 w-fit"}>
+              <li onClick={() => addWorkspace()}
+                className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
+                Add plan +
+              </li>
+            </ul>
+          </div>
+          <div className='flex flex-row justify-between items-center'>
+            <ul className={`flex flex-row  w-full overflow-x-auto relative`}>
+              {/* List of Workspace */}
+              <RenderWsList />
+            </ul>
+
+          </div>
+          <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}>
+            {/* List of Note list */}
+            <NoteList addNoteState={addNoteState} setAddNote={setAddNote} getNoteCount={getNoteCount} id={selectedWs} />
+          </div>
         </div>
       </div>
-
-    </div>
+    </>
   )
 }
 
