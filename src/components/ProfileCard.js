@@ -13,9 +13,13 @@ const ProfileCard = () => {
     const [newFname, setNewFname] = useState(user.f_name)
     const [newLname, setNewLname] = useState(user.l_name)
     const [selectedImage, setSelectedImage] = useState(null)
-    const [profileImage, setProfileImage] = useState((baseURL + "public/image/" + user.profile_image) ?? "https://source.unsplash.com/random")
+    const [profileImage, setProfileImage] = useState(user.profile_image ? baseURL + "public/image/" + user.profile_image : "https://source.unsplash.com/random")
     const [previewImage, setPreviewImage] = useState(null)
-    const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
+    const [changeImageLabel, setChangeImageLabel] = useState("")
+    const [changePasswordLabel, setChangePwLabel] = useState("Update password")
+    const [isUpdatePassword, setUpdatePasswordState] = useState(false)
+    const [newPassword, setNewPasword] = useState("")
+    const [newPasswordConfirm, setNewPwConfirm] = useState("")
     const imageRef = useRef(null)
     const navigate = useNavigate()
 
@@ -30,6 +34,10 @@ const ProfileCard = () => {
             }
         }
     }
+    useEffect(() => {
+        document.title = user.f_name + " " + user.l_name + " - eMemo Application"
+    }, [])
+
 
     useEffect(() => {
         getUserProfile()
@@ -40,7 +48,6 @@ const ProfileCard = () => {
             const result = await fetchApiData(`user/update`, token, "PUT", JSON.stringify(newUser))
             if (result.status === "SUCCESS") {
                 let updatedUser = result.content
-                console.log(updatedUser)
                 setUser(updatedUser)
                 localStorage.removeItem(localUser)
                 localStorage.setItem(localUser, JSON.stringify(updatedUser))
@@ -71,7 +78,7 @@ const ProfileCard = () => {
                 setPreviewImage(null)
                 setChangeImageLabel("File too large (<5mb)")
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("Change Image")
+                    setChangeImageLabel("")
                 }, 2000);
 
                 return () => clearTimeout(clear);
@@ -99,18 +106,47 @@ const ProfileCard = () => {
                 setProfileImage(baseURL + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
+                setChangeImageLabel("Image changed success")
+                let clear = setTimeout(() => {
+                    setChangeImageLabel("")
+                }, 5000);
+
+                return () => clearTimeout(clear);
             }
         }
     }
 
+    const changePasswordHandle = async () => {
+        if (checkToken(token)) {
 
+            if (newPassword === newPasswordConfirm) {
+                let newUser = {
+                    password: newPassword,
+                    username: user.username
+                }
+                const result = await fetchApiData("user/update-password", token, "PUT", JSON.stringify(newUser))
+                if (result.status === "SUCCESS") {
+                    setUpdatePasswordState(false)
+                    setChangePwLabel("Password updated")
+                    let clear = setTimeout(() => {
+                        setChangePwLabel("Update password")
+                    }, 5000);
+
+                    return () => clearTimeout(clear);
+                }
+            }
+        }
+    }
+
+    const toggleUpdatePassword = () => { setUpdatePasswordState(prevState => !prevState) }
     const toggleUpdateName = () => { setUpdateNameState(prevState => !prevState) }
 
     return (
-        <div className='w-full h-full flex flex-row px-2 shadow-xl bg-white mt-5 rounded-xl overflow-hidden'>
+        <div className='w-full h-full flex flex-row px-2 shadow-xl bg-white rounded-xl overflow-hidden'>
             <div className='w-full flex flex-col gap-2 mt-5 border-b pb-3'>
                 <div className={`w-full h-fit relative`}>
                     <CustomLazyLoadedImage
+                        onClick={() => imageRef.current.click()}
                         className={`aspect-square profile_image object-cover w-full object-center card_profile_image rounded-full mb-3 border-8 border-gray-300 shadow-sm`}
                         src={`${previewImage ?? profileImage}`}
                     />
@@ -125,17 +161,17 @@ const ProfileCard = () => {
                     {
                         previewImage ?
                             <div className='w-full flex flex-row gap-3'>
-                                <span onClick={() => upLoadSelectedImage()} className='text-center w-full border text-white p-2 bg-emerald-600'>
+                                <span onClick={() => upLoadSelectedImage()} className='cursor-pointer text-center w-full border text-white p-2 bg-emerald-600'>
                                     Update
                                 </span>
-                                <span onClick={() => setPreviewImage(null)} className='text-center w-full border text-white p-2 bg-orange-400'>
+                                <span onClick={() => setPreviewImage(null)} className='cursor-pointer text-center w-full border text-white p-2 bg-orange-400'>
                                     Cancel
                                 </span>
                             </div>
                             :
-                            <div onClick={() => imageRef.current.click()} className={`cursor-pointer lg:hover:bg-slate-100 transition-all text-sm w-full text-center p-2 border mb-5`}>
-                                {changeImageLabel}
-                            </div>
+                            <p className={`transition-all text-sm w-full m-auto text-center font-bold mb-5 absolute bottom-5`}>
+                                <span className='cursor-pointer px-2 pt-1 pb-2  align-middle bg-opacity-60 rounded-sm text-white'>{changeImageLabel}</span>
+                            </p>
                     }
                 </div>
                 <h3 onClick={toggleUpdateName} className={`${isUpdateName ? "hidden" : "block"} text-2xl font-bold mb-3 w-full text-center`}>{user.f_name} {user.l_name}</h3>
@@ -169,7 +205,41 @@ const ProfileCard = () => {
                 <p className='text-sm text-gray-600'><strong>Email:</strong> {user.email}</p>
                 <p className='text-sm text-gray-600'><strong>Joined at:</strong> {getTheTime(user.joined_at)}</p>
                 <p className='text-sm text-gray-600'><strong>Last edited:</strong> {getTheTime(user.updated_at)}</p>
+                <p onClick={toggleUpdatePassword}
+                    className={`${isUpdatePassword ? "hidden" : "flex"} text-red-700 border px-2 py-1 font-bold cursor-pointer transition-all text-sm w-full justify-center mx-auto text-center `}>
+                    {changePasswordLabel}
+                </p>
+                <div className={`${isUpdatePassword ? "flex" : "hidden"} flex-col gap-3`}>
+                    <input
+                        type='password'
+                        className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
+                        placeholder='New password'
+                        id='new_pw'
+                        name='new_pw'
+                        autoFocus
+                        onChange={(e) => setNewPasword(e.target.value)}
+                        defaultValue={""}
+                    />
+                    <input
+                        type='password'
+                        className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
+                        placeholder='Confirm new password'
+                        id='confirm_new_pw'
+                        name='confirm_new_pw'
+                        onChange={(e) => setNewPwConfirm(e.target.value)}
+                        defaultValue={""}
+                    />
+                    <div className='w-full flex flex-row gap-3'>
+                        <span onClick={() => changePasswordHandle()} className='cursor-pointer text-center w-full border text-white p-2 bg-emerald-600'>
+                            Update
+                        </span>
+                        <span onClick={() => setUpdatePasswordState(false)} className='cursor-pointer text-center w-full border text-white p-2 bg-orange-400'>
+                            Cancel
+                        </span>
+                    </div>
+                </div>
             </div>
+
         </div>
     )
 }

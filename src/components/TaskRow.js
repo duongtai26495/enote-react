@@ -93,30 +93,30 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                 </div>
             </div>
 
-                {
-                    task.type === CHECK_TYPE ?
-                        <textarea
-                            id='content_task'
-                            name='content_task'
-                            disabled={isUpdating}
-                            className='w-full my-1 px-2 py-3 bg-transparent'
-                            value={newContent}
-                            rows={1}
-                            onChange={e => { updateContent(e) }}
-                            onBlur={updateTaskById}
-                        ></textarea>
-                        :
-                        <input
-                            id='content_task'
-                            name='content_task'
-                            type='text'
-                            disabled={isUpdating}
-                            className='w-full my-1 px-2 py-3 bg-transparent'
-                            value={newContent}
-                            onChange={e => { updateContent(e) }}
-                            onBlur={updateTaskById}
-                        />
-                }
+            {
+                task.type === CHECK_TYPE ?
+                    <textarea
+                        id={`content_task_${task.id}`}
+                        name='content_task'
+                        disabled={isUpdating}
+                        className='w-full my-1 px-2 py-3 bg-transparent'
+                        value={newContent}
+                        rows={1}
+                        onChange={e => { updateContent(e) }}
+                        onBlur={updateTaskById}
+                    ></textarea>
+                    :
+                    <input
+                        id={`content_task_${task.id}`}
+                        name='content_task'
+                        type='text'
+                        disabled={isUpdating}
+                        className='w-full my-1 px-2 py-3 bg-transparent'
+                        value={newContent}
+                        onChange={e => { updateContent(e) }}
+                        onBlur={updateTaskById}
+                    />
+            }
         </div>
     )
 }
