@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const ProgressBar = ({ percentage, style }) => {
+const ProgressBar = ({ percentage, style, className }) => {
 
     const [colorProgress, setColorProgress] = useState("stroke-red-700")
 
@@ -30,7 +30,7 @@ const ProgressBar = ({ percentage, style }) => {
 
 
     return (
-        <div className={`w-fit h-fit transition-all my-auto`}>
+        <div className={`${className} w-fit h-fit transition-all my-auto`}>
             <div className="single-chart w-24 mx-auto">
                 <svg viewBox="0 0 36 36" className="circular-chart orange">
                     <path className="circle-bg stroke-slate-300"
