@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
+import Cookies from 'js-cookie'
+import { access_token } from '../utils/constants'
+import { checkToken, fetchApiData } from '../utils/functions'
 const ProfileAnalytics = () => {
 
   const [noteCount, setNoteCount] = useState(0)
@@ -8,7 +11,25 @@ const ProfileAnalytics = () => {
   const [workspaceCount, setWorkspaceCount] = useState(0)
   const [percentageFinishTask, setPercentageFinishTask] = useState(0)
   const [percentageFinishNote, setPercentageFinishNote] = useState(0)
-
+    const token = Cookies.get(access_token)
+    
+  useEffect(()=>{
+    const getAnalytics = async () => {
+        if(checkToken(token)){
+            const result = await fetchApiData("user/analytics", token)
+            if(result.status === "SUCCESS"){
+                const data = result.content
+                setWorkspaceCount(Number(data.workspaces))
+                setNoteCount(Number(data.notes))
+                setTaskCount(Number(data.tasks))
+                setFinishTaskCount(Number(data.tasksDone))
+                setPercentageFinishTask(Math.round(data.percentageTasks))
+                setPercentageFinishNote(Math.round(data.percentageNotes))
+            }
+        }
+    }
+    getAnalytics()
+  },[])
 
 
   return (
@@ -98,7 +119,7 @@ const ProfileAnalytics = () => {
         <div className='flex h-fit w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 px-2 mb-4'>
           <div className='flex h-full w-full flex-col p-2 justify-between gap-6 text-lg bg-white shadow-lg rounded-xl border'>
             <span className='p-4 rounded-md bg-slate-100 w-fit'>
-            <svg height="30" id="icon" className='fill-lime-600' viewBox="0 0 32 32" width="30" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M30,20A6,6,0,1,0,20,24.46V32l4-1.8936L28,32V24.46A5.98,5.98,0,0,0,30,20Zm-4,8.84-2-.9467L22,28.84V25.65a5.8877,5.8877,0,0,0,4,0ZM24,24a4,4,0,1,1,4-4A4.0045,4.0045,0,0,1,24,24Z"/><path d="M25,5H22V4a2.0058,2.0058,0,0,0-2-2H12a2.0058,2.0058,0,0,0-2,2V5H7A2.0058,2.0058,0,0,0,5,7V28a2.0058,2.0058,0,0,0,2,2h9V28H7V7h3v3H22V7h3v5h2V7A2.0058,2.0058,0,0,0,25,5ZM20,8H12V4h8Z"/><rect className="cls-1" dataName="&lt;Transparent Rectangle&gt;" height="30" id="_Transparent_Rectangle_" width="30"/></svg>
+            <svg height="30" id="icon" className='fill-lime-600' viewBox="0 0 32 32" width="30" xmlns="http://www.w3.org/2000/svg"><defs></defs><path d="M30,20A6,6,0,1,0,20,24.46V32l4-1.8936L28,32V24.46A5.98,5.98,0,0,0,30,20Zm-4,8.84-2-.9467L22,28.84V25.65a5.8877,5.8877,0,0,0,4,0ZM24,24a4,4,0,1,1,4-4A4.0045,4.0045,0,0,1,24,24Z"/><path d="M25,5H22V4a2.0058,2.0058,0,0,0-2-2H12a2.0058,2.0058,0,0,0-2,2V5H7A2.0058,2.0058,0,0,0,5,7V28a2.0058,2.0058,0,0,0,2,2h9V28H7V7h3v3H22V7h3v5h2V7A2.0058,2.0058,0,0,0,25,5ZM20,8H12V4h8Z"/><rect className="cls-1" height="30" id="_Transparent_Rectangle_" width="30"/></svg>
             </span>
             <p className='flex flex-col px-4 pl-1 text-lime-600'>
               <span className='text-base whitespace-nowrap'>
