@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { memo, useEffect, useMemo, useState } from 'react'
-import { SELECTED_SORT, SORT_ITEMS, access_token, currentWs } from '../utils/constants'
+import { SELECTED_SORT, SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
@@ -32,6 +32,27 @@ const NoteList = ({ id }) => {
         }
     }
 
+    useEffect(() => {
+        const getSortItems = async () => {
+            const token = Cookies.get(access_token)
+            if (token && checkToken(token)) {
+                const result = await fetchApiData("note/sort_value", token)
+                const result_task = await fetchApiData("note/task/sort_value", token)
+                if (result && result.status !== 403) {
+                    if (result.length > 0) {
+                        localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
+                        setSortValues(result)
+                    }
+                }
+                if (result_task && result_task.status !== 403) {
+                    if (result_task.length > 0) {
+                        localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
+                    }
+                }
+            }
+        }
+        getSortItems()
+    }, [])
 
 
     const removeNote = async (note) => {
@@ -47,7 +68,7 @@ const NoteList = ({ id }) => {
                 <Masonry>
                     {
                         noteList?.map((item, index) => (
-                            <NoteItem removeNote={removeNote} note={item} key={item.id} subclass={``}/>
+                            <NoteItem removeNote={removeNote} note={item} key={item.id} subclass={``} />
                         ))
                     }
                 </Masonry>
@@ -75,20 +96,22 @@ const NoteList = ({ id }) => {
     }
 
     const addNewNote = async () => {
-        const token = Cookies.get(access_token)
-        if (token !== null && checkToken(token) && id) {
-            const newNote = {}
-            newNote.workspace = { id }
-            newNote.name = "Unnamed note"
-            try {
-                const result = await fetchApiData(`note/add`, token, "POST", newNote)
+        if (id) {
+            const token = Cookies.get(access_token)
+            if (token !== null && checkToken(token)) {
+                const newNote = {}
+                newNote.workspace = { id }
+                newNote.name = "Unnamed note"
+                try {
+                    const result = await fetchApiData(`note/add`, token, "POST", newNote)
 
-                const data = result.content
-                const newList = [data, ...noteList]
-                setNoteList(newList)
-                await getAllNoteByWs()
-            } catch (error) {
-                console.log(error)
+                    const data = result.content
+                    const newList = [data, ...noteList]
+                    setNoteList(newList)
+                    await getAllNoteByWs()
+                } catch (error) {
+                    console.log(error)
+                }
             }
         }
     }
@@ -104,8 +127,8 @@ const NoteList = ({ id }) => {
 
     const RenderSort = () => {
         return (
-            <select className='w-1/3 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note' 
-            value={selectedSort} onChange={(e) => sortHandle(e)}>
+            <select className='w-1/3 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note'
+                value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
                     const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
                     const value = item[keys]; // Lấy giá trị
@@ -122,7 +145,7 @@ const NoteList = ({ id }) => {
 
     const Pagination = () => {
         return (
-            <div className='w-1/3 lg:w-full flex flex-row justify-end'>
+            <div className={`${maxPage > 0 ? "flex" : "hidden"} w-1/3 lg:w-full flex-row justify-end`}>
                 <p className='text-sm w-full lg:w-1/5 text-center flex flex-row items-center justify-between'>
                     <span className={`cursor-pointer pagingation-num transition-all ${currentPage === firstPage && 'fill-slate-300'}`} onClick={() => setPage("PREV")}>
                         <svg className='rotate-180' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>

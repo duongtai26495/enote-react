@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs } from '../utils/constants'
+import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs, localWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
 import WorkspaceItem from '../components/WorkspaceItem'
@@ -24,10 +24,13 @@ const Home = () => {
         if (data.length > 0) {
           setSelectedWs(localStorage.getItem(currentWs) ?? data[0].id)
           setWsList(data)
+        }else{
+          setWsList([])
         }
 
       }
     }
+    setLoading(false)
   }
   const setAddNote = (value) => {
     setAddNoteState(value)
@@ -39,28 +42,6 @@ const Home = () => {
   }
   useEffect(() => {
     document.title = "Ememo Application"
-  }, [])
-  useEffect(() => {
-    const getSortItems = async () => {
-      const token = Cookies.get(access_token)
-      if (token && checkToken(token)) {
-        const result = await fetchApiData("note/sort_value", token)
-        const result_task = await fetchApiData("note/task/sort_value", token)
-        if (result && result.status !== 403) {
-          if (result.length > 0) {
-            localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
-            setSortItem(result)
-          }
-        }
-        if (result_task && result_task.status !== 403) {
-          if (result_task.length > 0) {
-            localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
-          }
-        }
-      }
-      setLoading(false)
-    }
-    getSortItems()
   }, [])
 
 
@@ -100,7 +81,7 @@ const Home = () => {
       wsList.map(item => (
         <li
           onClick={() => setCurrentWs(item.id)}
-          className={`${Number(selectedWs) === item.id ? "selected_ws_true bg-slate-100" : ""} relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap pb-3 md:pb-5 pt-2 cursor-pointer transition-all w-fit`}
+          className={`${Number(selectedWs) === item.id ? "selected_ws_true bg-slate-100" : "border-t border-l border-teal-50"} relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap pb-3 md:pb-5 pt-2 cursor-pointer transition-all w-fit`}
           key={item.id}>
           <WorkspaceItem setAddNoteState={setAddNoteState} removeWs={removeWs} wsItem={item} />
 
@@ -116,8 +97,9 @@ const Home = () => {
   const addWorkspace = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
-      const addNoteResult = await fetchApiData(`workspace/add`, token, "POST")
-      if (addNoteResult.status === "SUCCESS")
+      const addWsResult = await fetchApiData(`workspace/add`, token, "POST")
+      if (addWsResult.status === "SUCCESS")
+        localStorage.setItem(currentWs, addWsResult.content.id)
         await getWsAll()
     }
   }
@@ -132,7 +114,7 @@ const Home = () => {
             <p className='font-bold text-xl'>Workspace</p>
             <ul className={"flex flex-row gap-5 w-fit"}>
               <li onClick={() => addWorkspace()}
-                className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-full whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
+                className='button_style-1 py-2 px-3 cursor-pointer transition-all rounded-xl whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
                 Add plan +
               </li>
             </ul>
