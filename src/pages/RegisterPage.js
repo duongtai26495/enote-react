@@ -3,6 +3,7 @@ import { baseURL } from '../utils/constants';
 import axios from 'axios';
 import { fetchApiData } from '../utils/functions';
 import { useNavigate } from 'react-router-dom';
+import AuthenLogo from '../components/AuthenLogo';
 
 const RegisterPage = () => {
     const [firstName, setFirstName] = useState('');
@@ -82,9 +83,14 @@ const RegisterPage = () => {
     }
 
     return (
-        <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }}
-            className="bg-page min-h-screen flex items-center justify-center bg-cover bg-center bg-indigo-600">
-            <div className="bg-white p-8 rounded-lg shadow-lg mx-2 md:w-96">
+        <div className="min-h-screen flex">
+      <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page hidden md:block md:w-2/3 bg-cover bg-center bg-indigo-600">
+
+      </div>
+      <div className="w-full md:w-1/3 bg-white flex items-center justify-center">
+        <div className="p-6 md:w-3/4">
+          <AuthenLogo />
+          <div className="bg-white mx-2">
                 <h2 className="text-2xl font-semibold mb-4">Đăng ký</h2>
                 <div className='flex gap-3'>
                     <input
@@ -170,16 +176,18 @@ const RegisterPage = () => {
                     <button onClick={handleRegister} className="bg-indigo-500 w-full text-white px-4 py-2 rounded-lg mr-2">
                         Đăng ký
                     </button>
-                    <a href="/login" className="text-gray-500 my-3 hover:text-indigo-800">Quay lại trang đăng nhập</a>
+                    <a href="/login" className="text-gray-500 mt-5 mb-3 hover:text-indigo-800">Quay lại trang đăng nhập</a>
                 </div>
-                <div className="mt-4 flex">
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-2">Đăng ký với Facebook</button>
-                    <button className="bg-red-600 text-white px-4 py-2 rounded-lg">Đăng ký với Google</button>
+                <div className="mt-4 flex justify-center">
+                    <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mr-2">Đăng ký với Facebook</button>
+                    <button className="w-full bg-red-600 text-white px-4 py-2 rounded-lg">Đăng ký với Google</button>
                 </div>
 
                 {err && <p className='text-red-600 text-center w-full my-5'>Something went wrong !</p>}
             </div>
-        </div>
+      </div>
+      </div>
+    </div>
     );
 }
 
