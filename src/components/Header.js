@@ -1,28 +1,27 @@
-import { checkToken, loadNavigationItem } from "../utils/functions"
+import { checkToken, loadNavigationItem, logoutAccount } from "../utils/functions"
 import { useEffect, useRef, useState } from "react"
 import { SELECTED_SORT, SELECTED_TASK_SORT, access_token, currentNavItem, currentWs, localUser, refresh_token } from "../utils/constants"
 import Cookies from "js-cookie"
 import { Link, useNavigate, useRoutes } from "react-router-dom"
+import LoadingComponent from "./LoadingComponent"
 
 
 
 const Header = () => {
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate()
+    const [isLogout, setLogout] = useState(false)
+
+
     const checkLogin = () => {
         const token = Cookies.get(access_token)
         !checkToken(token) && navigate("/login?unlogin")
-
+        setLogout(false)
     }
 
     const logout = () => {
-        Cookies.remove(access_token)
-        localStorage.removeItem(localUser)
-        localStorage.removeItem(currentWs)
-        localStorage.removeItem(SELECTED_TASK_SORT)
-        localStorage.removeItem(refresh_token)
-        localStorage.removeItem(SELECTED_SORT)
-        Cookies.remove(access_token)
+        setLogout(true)
+        logoutAccount()
         checkLogin()
     }
 
@@ -44,7 +43,7 @@ const Header = () => {
         if (e.key === 'Enter') {
             handleSubmit();
         }
-      };
+    };
     useEffect(() => {
         checkLogin()
     }, [])
@@ -52,13 +51,13 @@ const Header = () => {
     const handleSubmit = () => {
         if (searchText !== "") {
             navigate(`/search/${searchText}`)
-        }else{
+        } else {
             navigate(-1)
         }
     }
 
     const returnHomePage = () => {
-        setSearchText("") 
+        setSearchText("")
         navigate("/")
     }
 
@@ -67,7 +66,7 @@ const Header = () => {
             <div className="p-3 w-full lg:max-w-screen-xl mx-auto">
                 <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0">
                     <div className="lg:pr-16 pr-0">
-                        <button className="flex items-center justify-center space-x-2 flex-row " onClick={()=>{returnHomePage()}}>
+                        <button className="flex items-center justify-center space-x-2 flex-row " onClick={() => { returnHomePage() }}>
                             <svg className="cursor-pointer" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 17H0H1ZM7 17H6H7ZM17 27V28V27ZM27 17H28H27ZM17 0C12.4913 0 8.1673 1.79107 4.97918 4.97918L6.3934 6.3934C9.20644 3.58035 13.0218 2 17 2V0ZM4.97918 4.97918C1.79107 8.1673 0 12.4913 0 17H2C2 13.0218 3.58035 9.20644 6.3934 6.3934L4.97918 4.97918ZM0 17C0 21.5087 1.79107 25.8327 4.97918 29.0208L6.3934 27.6066C3.58035 24.7936 2 20.9782 2 17H0ZM4.97918 29.0208C8.1673 32.2089 12.4913 34 17 34V32C13.0218 32 9.20644 30.4196 6.3934 27.6066L4.97918 29.0208ZM17 34C21.5087 34 25.8327 32.2089 29.0208 29.0208L27.6066 27.6066C24.7936 30.4196 20.9782 32 17 32V34ZM29.0208 29.0208C32.2089 25.8327 34 21.5087 34 17H32C32 20.9782 30.4196 24.7936 27.6066 27.6066L29.0208 29.0208ZM34 17C34 12.4913 32.2089 8.1673 29.0208 4.97918L27.6066 6.3934C30.4196 9.20644 32 13.0218 32 17H34ZM29.0208 4.97918C25.8327 1.79107 21.5087 0 17 0V2C20.9782 2 24.7936 3.58035 27.6066 6.3934L29.0208 4.97918ZM17 6C14.0826 6 11.2847 7.15893 9.22183 9.22183L10.636 10.636C12.3239 8.94821 14.6131 8 17 8V6ZM9.22183 9.22183C7.15893 11.2847 6 14.0826 6 17H8C8 14.6131 8.94821 12.3239 10.636 10.636L9.22183 9.22183ZM6 17C6 19.9174 7.15893 22.7153 9.22183 24.7782L10.636 23.364C8.94821 21.6761 8 19.3869 8 17H6ZM9.22183 24.7782C11.2847 26.8411 14.0826 28 17 28V26C14.6131 26 12.3239 25.0518 10.636 23.364L9.22183 24.7782ZM17 28C19.9174 28 22.7153 26.8411 24.7782 24.7782L23.364 23.364C21.6761 25.0518 19.3869 26 17 26V28ZM24.7782 24.7782C26.8411 22.7153 28 19.9174 28 17H26C26 19.3869 25.0518 21.6761 23.364 23.364L24.7782 24.7782ZM28 17C28 14.0826 26.8411 11.2847 24.7782 9.22183L23.364 10.636C25.0518 12.3239 26 14.6131 26 17H28ZM24.7782 9.22183C22.7153 7.15893 19.9174 6 17 6V8C19.3869 8 21.6761 8.94821 23.364 10.636L24.7782 9.22183ZM10.3753 8.21913C6.86634 11.0263 4.86605 14.4281 4.50411 18.4095C4.14549 22.3543 5.40799 26.7295 8.13176 31.4961L9.86824 30.5039C7.25868 25.9371 6.18785 21.9791 6.49589 18.5905C6.80061 15.2386 8.46699 12.307 11.6247 9.78087L10.3753 8.21913ZM23.6247 25.7809C27.1294 22.9771 29.1332 19.6127 29.4958 15.6632C29.8549 11.7516 28.5904 7.41119 25.8682 2.64741L24.1318 3.63969C26.7429 8.20923 27.8117 12.1304 27.5042 15.4803C27.2001 18.7924 25.5372 21.6896 22.3753 24.2191L23.6247 25.7809Z" fill="#b70000" />
                             </svg>
@@ -121,15 +120,24 @@ const Header = () => {
                                     s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
                                     </svg>
                                 </p>}
-                            <div className={`w-fit absolute z-20 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
+                            <div className={`w-24 absolute z-20 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
                                 <p className="flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white border shadow transition-all p-2 " onClick={() => { profileDirect() }}>
-                                    <span>Profile</span>
+                                    <span className="text-sm">Profile</span>
                                     <svg width="21" height="21" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="info" /><g id="icons"><g id="user"><ellipse cx="12" cy="8" rx="5" ry="6" /><path d="M21.8,19.1c-0.9-1.8-2.6-3.3-4.8-4.2c-0.6-0.2-1.3-0.2-1.8,0.1c-1,0.6-2,0.9-3.2,0.9s-2.2-0.3-3.2-0.9    C8.3,14.8,7.6,14.7,7,15c-2.2,0.9-3.9,2.4-4.8,4.2C1.5,20.5,2.6,22,4.1,22h15.8C21.4,22,22.5,20.5,21.8,19.1z" /></g></g></svg>
                                 </p>
-                                <p className={`flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white border shadow transition-all p-2 `} onClick={() => logout()} >
-                                    <span>Log out</span>
-                                    <svg width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M918.857143 763.428571h-80.342857c-5.485714 0-10.628571 2.4-14.057143 6.628572-8 9.714286-16.571429 19.085714-25.6 28a404.388571 404.388571 0 0 1-128.8 86.742857A403.2 403.2 0 0 1 512.457143 916.571429c-54.742857 0-107.771429-10.742857-157.6-31.771429a404.388571 404.388571 0 0 1-128.8-86.742857 403.748571 403.748571 0 0 1-86.857143-128.571429C118.057143 619.657143 107.428571 566.742857 107.428571 512s10.742857-107.657143 31.771429-157.485714c20.342857-48.114286 49.6-91.428571 86.857143-128.571429s80.571429-66.4 128.8-86.742857c49.828571-21.028571 102.857143-31.771429 157.6-31.771429 54.742857 0 107.771429 10.628571 157.6 31.771429 48.228571 20.342857 91.542857 49.6 128.8 86.742857 9.028571 9.028571 17.485714 18.4 25.6 28 3.428571 4.228571 8.685714 6.628571 14.057143 6.628572H918.857143c7.2 0 11.657143-8 7.657143-14.057143C838.857143 110.285714 685.485714 20.114286 511.2 20.571429 237.371429 21.257143 17.828571 243.542857 20.571429 517.028571 23.314286 786.171429 242.514286 1003.428571 512.457143 1003.428571c173.828571 0 326.514286-90.057143 414.057143-225.942857 3.885714-6.057143-0.457143-14.057143-7.657143-14.057143z m101.6-258.628571L858.285714 376.8c-6.057143-4.8-14.857143-0.457143-14.857143 7.2v86.857143H484.571429c-5.028571 0-9.142857 4.114286-9.142858 9.142857v64c0 5.028571 4.114286 9.142857 9.142858 9.142857h358.857142v86.857143c0 7.657143 8.914286 12 14.857143 7.2l162.171429-128a9.142857 9.142857 0 0 0 0-14.4z" /></svg>
+                                <p className={`flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white border shadow transition-all p-2 `}
+                                    onClick={() => logout()} >
+                                    {
+                                        isLogout
+                                            ?
+                                            <LoadingComponent size={`w-5 h-5`} className={`flex w-full`} />
+                                            :
+                                            <>
+                                                <span className="text-sm">Log out</span>
+                                                <svg width="21" height="21" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M918.857143 763.428571h-80.342857c-5.485714 0-10.628571 2.4-14.057143 6.628572-8 9.714286-16.571429 19.085714-25.6 28a404.388571 404.388571 0 0 1-128.8 86.742857A403.2 403.2 0 0 1 512.457143 916.571429c-54.742857 0-107.771429-10.742857-157.6-31.771429a404.388571 404.388571 0 0 1-128.8-86.742857 403.748571 403.748571 0 0 1-86.857143-128.571429C118.057143 619.657143 107.428571 566.742857 107.428571 512s10.742857-107.657143 31.771429-157.485714c20.342857-48.114286 49.6-91.428571 86.857143-128.571429s80.571429-66.4 128.8-86.742857c49.828571-21.028571 102.857143-31.771429 157.6-31.771429 54.742857 0 107.771429 10.628571 157.6 31.771429 48.228571 20.342857 91.542857 49.6 128.8 86.742857 9.028571 9.028571 17.485714 18.4 25.6 28 3.428571 4.228571 8.685714 6.628571 14.057143 6.628572H918.857143c7.2 0 11.657143-8 7.657143-14.057143C838.857143 110.285714 685.485714 20.114286 511.2 20.571429 237.371429 21.257143 17.828571 243.542857 20.571429 517.028571 23.314286 786.171429 242.514286 1003.428571 512.457143 1003.428571c173.828571 0 326.514286-90.057143 414.057143-225.942857 3.885714-6.057143-0.457143-14.057143-7.657143-14.057143z m101.6-258.628571L858.285714 376.8c-6.057143-4.8-14.857143-0.457143-14.857143 7.2v86.857143H484.571429c-5.028571 0-9.142857 4.114286-9.142858 9.142857v64c0 5.028571 4.114286 9.142857 9.142858 9.142857h358.857142v86.857143c0 7.657143 8.914286 12 14.857143 7.2l162.171429-128a9.142857 9.142857 0 0 0 0-14.4z" /></svg>
+                                            </>
+                                    }
                                 </p>
                             </div>
                         </div>

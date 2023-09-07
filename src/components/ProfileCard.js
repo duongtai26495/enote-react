@@ -3,7 +3,7 @@ import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import { useNavigate } from 'react-router-dom'
 import { access_token, baseURL, localUser } from '../utils/constants'
 import Cookies from 'js-cookie'
-import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions'
+import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
 
 const ProfileCard = () => {
@@ -20,6 +20,7 @@ const ProfileCard = () => {
     const [changePasswordLabel, setChangePwLabel] = useState("Update password")
     const [isLoadingAvt, setLoadingAvt] = useState(false)
     const [isUpdatePassword, setUpdatePasswordState] = useState(false)
+    const [isLogout, setLogout] = useState(false)
     const [newPassword, setNewPasword] = useState("")
     const [newPasswordConfirm, setNewPwConfirm] = useState("")
     const imageRef = useRef(null)
@@ -40,6 +41,11 @@ const ProfileCard = () => {
         document.title = user.f_name + " " + user.l_name + " - eMemo Application"
     }, [])
 
+    const checkLogin = () => {
+        const token = Cookies.get(access_token)
+        setLogout(false)
+        !checkToken(token) && navigate("/login?unlogin")
+    }
 
     useEffect(() => {
         getUserProfile()
@@ -145,7 +151,11 @@ const ProfileCard = () => {
             }
         }
     }
-
+    const logout = () => {
+        setLogout(true)
+        logoutAccount()
+        checkLogin()
+    }
     const toggleUpdatePassword = () => { setUpdatePasswordState(prevState => !prevState) }
     const toggleUpdateName = () => { setUpdateNameState(prevState => !prevState) }
 
@@ -249,6 +259,14 @@ const ProfileCard = () => {
                         </span>
                     </div>
                 </div>
+                <button onClick={() => logout()} className={`w-full py-1 text-sm font-bold border`}>
+                    {
+                        isLogout ?
+                            <LoadingComponent size={`w-5 h-5`} className={`flex`} />
+                            :
+                            <span>Log out</span>
+                    }
+                </button>
             </div>
 
         </div>

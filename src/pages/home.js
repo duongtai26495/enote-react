@@ -16,6 +16,7 @@ const Home = () => {
   const [addNoteState, setAddNoteState] = useState(false)
   const [isLoadingAdd, setLoadingAdd] = useState(false)
   const [sortItem, setSortItem] = useState([])
+  
   const getWsAll = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
@@ -109,7 +110,7 @@ const Home = () => {
 
   return (
     <>
-      <LoadingAnimation className={`${isLoading ? "flex" : "hidden"}`} />
+      <LoadingComponent className={`${isLoading ? "block m-auto" : "hidden"}`} />
 
       <div className={`${isLoading ? "hidden" : "flex"} w-full h-full flex-row`}>
         <div className='w-full py-2 overflow-y-auto'>

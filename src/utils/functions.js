@@ -1,7 +1,9 @@
 import jwt_decode from "jwt-decode";
-import { access_token, baseURL } from "./constants";
+import { SELECTED_SORT, SELECTED_TASK_SORT, access_token, baseURL, currentNavItem, currentWs, localUser, refresh_token } from "../utils/constants"
+
 import axios from "axios";
 import { formatDistanceToNow, parse, getTime } from 'date-fns';
+import Cookies from "js-cookie";
 
 export const loadNavigationItem = (item) => {
   localStorage.setItem("current-nav-item", item)
@@ -86,4 +88,14 @@ export const getTheTime = (time) => {
   const milliseconds = getTime(parsedDate);
   const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true })
   return capitalize(timeAgo)
+}
+
+export const logoutAccount = () => {
+  Cookies.remove(access_token)
+  localStorage.removeItem(localUser)
+  localStorage.removeItem(currentWs)
+  localStorage.removeItem(SELECTED_TASK_SORT)
+  localStorage.removeItem(refresh_token)
+  localStorage.removeItem(SELECTED_SORT)
+  Cookies.remove(access_token)
 }
