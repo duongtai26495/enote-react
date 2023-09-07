@@ -1,7 +1,7 @@
 
 export const currentNavItem = "currentNavItem";
 
-export const baseURL = "http://192.168.1.19:8080/"
+export const baseURL = "http://18.138.250.76:8888/"
 
 export const access_token = "actk"
 export const refresh_token = "rftk"

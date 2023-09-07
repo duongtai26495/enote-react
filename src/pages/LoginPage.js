@@ -9,12 +9,14 @@ import { USERNAME_LOCAL, access_token, baseURL, localUser, refresh_token } from 
 import AuthenLogo from '../components/AuthenLogo';
 import LoadingAnimation from '../components/LoadingAnimation';
 import { IS_REMEMBER } from '../utils/constants';
+import LoadingComponent from '../components/LoadingComponent';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(Boolean(localStorage.getItem(IS_REMEMBER)) ?? false);
   const passwordRef = useRef(null)
+  const [isLoading, setLoading] = useState(false)
   const [err, setErr] = useState(false)
   const navigate = useNavigate()
   useEffect(() => {
@@ -35,6 +37,7 @@ const LoginPage = () => {
   };
 
   const handleLogin = async (e) => {
+    setLoading(true)
     if (rememberMe) {
       localStorage.setItem(IS_REMEMBER, rememberMe)
       localStorage.setItem(USERNAME_LOCAL, username)
@@ -88,6 +91,9 @@ const LoginPage = () => {
       } catch (error) {
         setErr(true)
       }
+      finally{
+        setLoading(false)
+      }
     } else {
       setErr(true)
     }
@@ -97,7 +103,11 @@ const LoginPage = () => {
       <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page hidden md:block md:w-2/3 bg-cover bg-center bg-indigo-600">
 
       </div>
-      <div className="w-full md:w-1/3 bg-white flex items-center justify-center">
+
+      <div className="w-full md:w-1/3 bg-white flex items-center justify-center relative">
+        <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
+          <LoadingComponent />
+        </div>
         <div className="p-6">
           <AuthenLogo />
           <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
