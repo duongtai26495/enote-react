@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { access_token, baseURL, localUser } from '../utils/constants'
 import Cookies from 'js-cookie'
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions'
+import LoadingComponent from './LoadingComponent'
 
 const ProfileCard = () => {
 
@@ -17,6 +18,7 @@ const ProfileCard = () => {
     const [previewImage, setPreviewImage] = useState(null)
     const [changeImageLabel, setChangeImageLabel] = useState("")
     const [changePasswordLabel, setChangePwLabel] = useState("Update password")
+    const [isLoadingAvt, setLoadingAvt] = useState(false)
     const [isUpdatePassword, setUpdatePasswordState] = useState(false)
     const [newPassword, setNewPasword] = useState("")
     const [newPasswordConfirm, setNewPwConfirm] = useState("")
@@ -71,11 +73,13 @@ const ProfileCard = () => {
 
 
     const selectImageHandle = (event) => {
+        setLoadingAvt(true)
         const file = event.target.files[0]; // Lấy tệp đầu tiên từ danh sách tệp đã chọn
 
         if (file) {
             if (file.size > 5 * 1024 * 1024) {
                 setPreviewImage(null)
+                setLoadingAvt(false)
                 setChangeImageLabel("File too large (<5mb)")
                 let clear = setTimeout(() => {
                     setChangeImageLabel("")
@@ -95,9 +99,11 @@ const ProfileCard = () => {
                 setSelectedImage(file)
             }
         }
+        setLoadingAvt(false)
     }
 
     const upLoadSelectedImage = async () => {
+        setLoadingAvt(true)
         if (checkToken(token)) {
             const data = new FormData()
             data.append('user_profile_image', selectedImage)
@@ -106,6 +112,7 @@ const ProfileCard = () => {
                 setProfileImage(baseURL + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
+                setLoadingAvt(false)
                 setChangeImageLabel("Image changed success")
                 let clear = setTimeout(() => {
                     setChangeImageLabel("")
@@ -114,6 +121,7 @@ const ProfileCard = () => {
                 return () => clearTimeout(clear);
             }
         }
+        setLoadingAvt(false)
     }
 
     const changePasswordHandle = async () => {
@@ -145,11 +153,14 @@ const ProfileCard = () => {
         <div className='w-full h-full flex flex-row px-2 shadow-xl bg-white rounded-xl overflow-hidden'>
             <div className='w-full flex flex-col gap-2 mt-5 border-b pb-3'>
                 <div className={`w-full h-fit relative`}>
-                    <CustomLazyLoadedImage
-                        onClick={() => imageRef.current.click()}
-                        className={`aspect-square profile_image object-cover w-full object-center card_profile_image rounded-full mb-3 border-8 border-gray-300 shadow-sm`}
-                        src={`${previewImage ?? profileImage}`}
-                    />
+                    <div className='card_profile_image relative'>
+                        <LoadingComponent className={`${isLoadingAvt ? "flex" : "hidden"} bg-white bg-opacity-60 transition-all w-full h-full border-4 rounded-full absolute top-0 left-0`} />
+                        <CustomLazyLoadedImage
+                            onClick={() => imageRef.current.click()}
+                            className={`aspect-square profile_image object-cover w-full object-center h-full rounded-full mb-3 border-8 border-gray-300 shadow-sm`}
+                            src={`${previewImage ?? profileImage}`}
+                        />
+                    </div>
                     <input
                         type='file'
                         id='profile_image'
@@ -161,12 +172,12 @@ const ProfileCard = () => {
                     {
                         previewImage ?
                             <div className='w-full flex flex-row gap-3'>
-                                <span onClick={() => upLoadSelectedImage()} className='cursor-pointer text-center w-full border text-white p-2 bg-emerald-600'>
+                                <button disabled={isLoadingAvt} onClick={() => upLoadSelectedImage()} className={`${isLoadingAvt ? "cursor-wait" : "cursor-pointer"} text-center w-full border text-white p-2 bg-emerald-600`}>
                                     Update
-                                </span>
-                                <span onClick={() => setPreviewImage(null)} className='cursor-pointer text-center w-full border text-white p-2 bg-orange-400'>
+                                </button>
+                                <button disabled={isLoadingAvt} onClick={() => setPreviewImage(null)} className={`${isLoadingAvt ? "cursor-wait" : "cursor-pointer"}ter text-center w-full border text-white p-2 bg-orange-400`}>
                                     Cancel
-                                </span>
+                                </button>
                             </div>
                             :
                             <p className={`transition-all text-sm w-full m-auto text-center font-bold mb-5 absolute bottom-5`}>

@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { CHECK_TYPE, NOTE_TYPE, SELECTED_SORT, SELECTED_TASK_SORT, SORT_TASK_ITEMS, access_token } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskRow from './TaskRow'
+import LoadingAnimation from './LoadingAnimation'
+import LoadingComponent from './LoadingComponent'
 
 const TaskList = ({ note, updateProgressState }) => {
 
@@ -11,7 +13,7 @@ const TaskList = ({ note, updateProgressState }) => {
     const [deleteId, setDeleteId] = useState(null)
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)) ?? "updated_at_desc")
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
-
+    const [isLoaded, setLoaded] = useState(false)
 
     const addNewTask = async (type) => {
         const token = Cookies.get(access_token)
@@ -56,6 +58,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
 
     const getAllTaskByNoteId = async () => {
+        setLoaded(true)
         const token = Cookies.get(access_token)
         if (checkToken(token) && note.id > 0) {
             const result = await fetchApiData(`note/tasks/${note.id}?sort=${selectedSort}`, token)
@@ -63,6 +66,7 @@ const TaskList = ({ note, updateProgressState }) => {
             setTaskList(data)
             setUpdateList(false)
         }
+        setLoaded(false)
     }
 
     const deleteTask = async () => {
@@ -80,11 +84,7 @@ const TaskList = ({ note, updateProgressState }) => {
     }, [deleteId])
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
             getAllTaskByNoteId()
-        }, 500);
-
-        return () => clearTimeout(timeout);
     }, [note.id, isUpdateList, selectedSort])
 
     const PleaceholderTask = () => {
@@ -133,7 +133,12 @@ const TaskList = ({ note, updateProgressState }) => {
                 <PleaceholderTask />
                 <RenderSort />
             </div>
-            <RenderTaskList />
+            {
+                isLoaded ? 
+                <LoadingComponent className={`flex mt-5`} size='w-10 h-10' />
+                :
+                <RenderTaskList />
+            }
         </>
     )
 }
