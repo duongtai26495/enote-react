@@ -6,9 +6,9 @@ import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 
 const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId }) => {
 
-
-    const [newContent, setNewContent] = useState(task.content)
-    const [newState, setNewState] = useState(task.done)
+    const [taskItem, setTaskItem ] = useState(task)
+    const [newContent, setNewContent] = useState(taskItem.content)
+    const [newState, setNewState] = useState(taskItem.done)
     const [isOpenSetting, setOpenSetting] = useState(false)
     const [isUpdating, setUpdating] = useState(false)
     const isMounted = useRef(false);
@@ -23,13 +23,14 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                 const data = result.content
                 setNewContent(data.content)
                 setNewState(data.done)
+                setTaskItem(data)
             }
         }
         setUpdating(false)
     }
 
     const removeTask = () => {
-        deleteTaskId(task.id)
+        deleteTaskId(taskItem.id)
         setOpenSetting(false)
     }
 
@@ -71,7 +72,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                     <button onClick={toggleSubSetting} className=' p-1 rounded-md bg-slate-600 text-white text-sm'>Cancel</button>
                 </div>
             </div>
-            <div className={`${isUpdateList && deleteTaskId === task.id ? "visible" : "invisible"} absolute top-0 left-0 w-full h-full bg-white rounded-md flex flex-row items-center justify-center`}>
+            <div className={`${isUpdateList && deleteTaskId === taskItem.id ? "visible" : "invisible"} absolute top-0 left-0 w-full h-full bg-white rounded-md flex flex-row items-center justify-center`}>
                 <img src={loading_gif} className='w-8 h-8' />
             </div>
             <div className='flex flex-col items-center gap-2 w-fit border-r pr-3 pb-1 pt-2'>
@@ -81,7 +82,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                         <svg height="20px" width="20px" id="Layer_1" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" ><path d="M341,128V99c0-19.1-14.5-35-34.5-35H205.4C185.5,64,171,79.9,171,99v29H80v32h9.2c0,0,5.4,0.6,8.2,3.4c2.8,2.8,3.9,9,3.9,9  l19,241.7c1.5,29.4,1.5,33.9,36,33.9h199.4c34.5,0,34.5-4.4,36-33.8l19-241.6c0,0,1.1-6.3,3.9-9.1c2.8-2.8,8.2-3.4,8.2-3.4h9.2v-32  h-91V128z M192,99c0-9.6,7.8-15,17.7-15h91.7c9.9,0,18.6,5.5,18.6,15v29H192V99z M183.5,384l-10.3-192h20.3L204,384H183.5z   M267.1,384h-22V192h22V384z M328.7,384h-20.4l10.5-192h20.3L328.7,384z" /></svg>
                     </p>
 
-                    <div onClick={toggleNewState} className={`${task.type === "CHECK" ? "block" : "hidden"} cursor-pointer h-4 w-4 text-start border relative`}>
+                    <div onClick={toggleNewState} className={`${taskItem.type === "CHECK" ? "block" : "hidden"} cursor-pointer h-4 w-4 text-start border relative`}>
 
                         <svg height="16px" style={{ marginTop: "-1px" }} version="1.1" viewBox="0 0 18 18" width="16px" xmlns="http://www.w3.org/2000/svg" ><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g fill="#000000" id="Core" transform="translate(-3.000000, -87.000000)"><g id="check-box-outline-blank" transform="translate(3.000000, 87.000000)"><path d="M16,2 L16,16 L2,16 L2,2 L16,2 L16,2 Z M16,0 L2,0 C0.9,0 0,0.9 0,2 L0,16 C0,17.1 0.9,18 2,18 L16,18 C17.1,18 18,17.1 18,16 L18,2 C18,0.9 17.1,0 16,0 L16,0 L16,0 Z" id="Shape" /></g></g></g></svg>
 
@@ -96,7 +97,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
             {
                 task.type === CHECK_TYPE ?
                     <textarea
-                        id={`content_task_${task.id}`}
+                        id={`content_task_${taskItem.id}`}
                         name='content_task'
                         disabled={isUpdating}
                         className='w-full my-1 px-2 py-3 bg-transparent'
@@ -107,7 +108,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                     ></textarea>
                     :
                     <input
-                        id={`content_task_${task.id}`}
+                        id={`content_task_${taskItem.id}`}
                         name='content_task'
                         type='text'
                         disabled={isUpdating}

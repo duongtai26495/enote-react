@@ -15,14 +15,24 @@ const TaskList = ({ note, updateProgressState }) => {
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
     const [isLoaded, setLoaded] = useState(false)
 
-    const addNewTask = async (type) => {
-        const token = Cookies.get(access_token)
-        const newTask = ({ content: "New task", type, note: { id: note.id } })
-        const result = await fetchApiData(`note/task/add`, token, "POST", newTask)
-        const data = result.content
-        updateProgressState(true)
-        taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
+    const token = Cookies.get(access_token)
 
+    const addNewTask = async (type) => {
+        if(checkToken(token)){
+
+            const newTask = ({ content: "New task", type, note: { id: note.id } })
+            const result = await fetchApiData(`note/task/add`, token, "POST", JSON.stringify(newTask))
+            const data = result.content
+            updateProgressState(true)
+            const letWait = setTimeout(()=>{
+                taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
+            },1000)
+            
+            return ()=> clearTimeout(letWait)
+            
+        }else{
+            console.log("Token end")
+        }
     }
     const sortHandle = (value) => {
         setSelectedSort(value.target.value)

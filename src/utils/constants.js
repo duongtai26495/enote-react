@@ -1,7 +1,7 @@
 
 export const currentNavItem = "currentNavItem";
 
-export const baseURL = "http://175.41.140.114:8080/"
+export const baseURL = "http://localhost:8080/"
 
 export const access_token = "actk"
 export const refresh_token = "rftk"
