@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import { CHECK_TYPE, NOTE_TYPE, SELECTED_SORT, SELECTED_TASK_SORT, SORT_TASK_ITEMS, access_token } from '../utils/constants'
+import { CHECK_TYPE, NOTE_TYPE, SELECTED_SORT, SELECTED_TASK_SORT, SORT_TASK_ITEMS, ACCESS_TOKEN } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskRow from './TaskRow'
 import LoadingAnimation from './LoadingAnimation'
@@ -15,7 +15,7 @@ const TaskList = ({ note, updateProgressState }) => {
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
     const [isLoaded, setLoaded] = useState(false)
 
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
 
     const addNewTask = async (type) => {
         if(checkToken(token)){
@@ -69,7 +69,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     const getAllTaskByNoteId = async () => {
         setLoaded(true)
-        const token = Cookies.get(access_token)
+        const token = Cookies.get(ACCESS_TOKEN)
         if (checkToken(token) && note.id > 0) {
             const result = await fetchApiData(`note/tasks/${note.id}?sort=${selectedSort}`, token)
             const data = result.content
@@ -81,7 +81,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     const deleteTask = async () => {
         if (deleteId !== null) {
-            const token = Cookies.get(access_token)
+            const token = Cookies.get(ACCESS_TOKEN)
             await fetchApiData(`note/task/remove/${deleteId}`, token, "DELETE")
 
         }

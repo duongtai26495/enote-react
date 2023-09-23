@@ -1,9 +1,10 @@
 import { checkToken, loadNavigationItem, logoutAccount } from "../utils/functions"
 import { useEffect, useRef, useState } from "react"
-import { SELECTED_SORT, SELECTED_TASK_SORT, access_token, currentNavItem, currentWs, localUser, refresh_token } from "../utils/constants"
 import Cookies from "js-cookie"
+
 import { Link, useNavigate, useRoutes } from "react-router-dom"
 import LoadingComponent from "./LoadingComponent"
+import { ACCESS_TOKEN, LOCAL_USER } from "../utils/constants"
 
 
 
@@ -14,7 +15,7 @@ const Header = () => {
 
 
     const checkLogin = () => {
-        const token = Cookies.get(access_token)
+        const token = Cookies.get(ACCESS_TOKEN)
         !checkToken(token) && navigate("/login?unlogin")
         setLogout(false)
     }
@@ -30,7 +31,7 @@ const Header = () => {
         toggleLogoutBadge()
     }
 
-    const userInfo = JSON.parse(localStorage.getItem(localUser))
+    const userInfo = JSON.parse(localStorage.getItem(LOCAL_USER))
 
     const [isLogoutBadge, setLogoutBadge] = useState(false)
 

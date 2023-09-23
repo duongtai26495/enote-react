@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { baseURL } from '../utils/constants';
+import { URL_PREFIX } from '../utils/constants';
 import axios from 'axios';
 import { fetchApiData } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
@@ -89,18 +89,18 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="min-h-screen flex">
-            <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page hidden md:block md:w-2/3 bg-cover bg-center bg-indigo-600">
+        <div className="min-h-screen flex relative justify-center items-center">
+            <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-indigo-600">
 
             </div>
-            <div className="w-full md:w-1/3 bg-white flex items-center justify-center">
+            <div className="authen-form register-form h-fit lg:w-96 max-w-lg bg-white flex items-center justify-center absolute rounded-lg">
                 
-                <div className="p-6 md:w-3/4 relative">
+                <div className="p-6">
                 <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
                     <LoadingComponent />
                 </div>
                     <AuthenLogo />
-                    <div className="bg-white mx-2">
+                    <div className=" mx-2">
                         <h2 className="text-2xl font-semibold mb-4">Đăng ký</h2>
                         <div className='flex gap-3'>
                             <input
@@ -108,14 +108,14 @@ const RegisterPage = () => {
                                 placeholder="Họ"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                className="mb-2 p-2 border rounded-lg w-full"
+                                className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                             />
                             <input
                                 type="text"
                                 placeholder="Tên"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                                className="mb-2 p-2 border rounded-lg w-full"
+                                className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                             />
                         </div>
                         <div className={`gap-1 items-center flex`}>
@@ -135,7 +135,7 @@ const RegisterPage = () => {
                             value={username}
                             onBlur={checkUsernameAvailable}
                             onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                            className="mb-2 p-2 border rounded-lg w-full"
+                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                         />
                         <div className={`gap-1 items-center flex`}>
 
@@ -154,28 +154,28 @@ const RegisterPage = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={checkEmailAvailable}
-                            className="mb-2 p-2 border rounded-lg w-full"
+                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                         />
                         <input
                             type="password"
                             placeholder="Mật khẩu"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mb-2 p-2 border rounded-lg w-full"
+                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                         />
                         <input
                             type="password"
                             placeholder="Xác nhận mật khẩu"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="mb-2 p-2 border rounded-lg w-full"
+                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                         />
                         <div className="mb-2 w-full flex items-center">
                             <label className='w-full'>Giới tính:</label>
                             <select
                                 value={gender}
                                 onChange={(e) => setGender(e.target.value)}
-                                className="p-2 border rounded-lg"
+                                className="p-2 border rounded-lg bg-white bg-opacity-60"
                             >
                                 <option value="MALE">Nam</option>
                                 <option value="FEMALE">Nữ</option>
@@ -183,16 +183,12 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="mt-4 flex flex-col w-full">
-                            <button onClick={handleRegister} className="bg-indigo-500 w-full text-white px-4 py-2 rounded-lg mr-2">
+                            <button onClick={handleRegister} className="bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
                                 Đăng ký
                             </button>
-                            <Link to="/login" className="text-gray-500 mt-5 mb-3 hover:text-indigo-800">Quay lại trang đăng nhập</Link>
+                            <Link to="/login" className="text-gray-500 mt-5 mb-3 text-sm hover:text-slate-800 font-bold">Quay lại trang đăng nhập</Link>
                         </div>
-                        <div className="mt-4 flex justify-center">
-                            <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mr-2">Đăng ký với Facebook</button>
-                            <button className="w-full bg-red-600 text-white px-4 py-2 rounded-lg">Đăng ký với Google</button>
-                        </div>
-
+                      
                         {err && <p className='text-red-600 text-center w-full my-5'>Something went wrong !</p>}
                     </div>
                 </div>

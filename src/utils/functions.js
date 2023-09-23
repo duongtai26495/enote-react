@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { SELECTED_SORT, SELECTED_TASK_SORT, access_token, baseURL, currentNavItem, currentWs, localUser, refresh_token } from "../utils/constants"
+import { SELECTED_SORT, SELECTED_TASK_SORT, ACCESS_TOKEN, URL_PREFIX, currentNavItem, CURRENT_WS, LOCAL_USER, REFRESH_TOKEN } from "../utils/constants"
 
 import axios from "axios";
 import { formatDistanceToNow, parse, getTime } from 'date-fns';
@@ -30,14 +30,14 @@ export const checkToken = (accessToken) => {
   }
   return false
 }
-export const fetchApiData = async (endpoint, access_token = null, method = 'GET', data = null) => {
-  const url = `${baseURL}${endpoint}`;
+export const fetchApiData = async (endpoint, ACCESS_TOKEN = null, method = 'GET', data = null) => {
+  const url = `${URL_PREFIX}${endpoint}`;
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  if (access_token) {
-    headers['Authorization'] = `Bearer ${access_token}`;
+  if (ACCESS_TOKEN) {
+    headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`;
   }
 
   const config = {
@@ -55,14 +55,14 @@ export const fetchApiData = async (endpoint, access_token = null, method = 'GET'
   }
 };
 
-export const uploadDataFileApi = async (endpoint, access_token, method = 'POST', data = null) => {
-  const url = `${baseURL}${endpoint}`
+export const uploadDataFileApi = async (endpoint, ACCESS_TOKEN, method = 'POST', data = null) => {
+  const url = `${URL_PREFIX}${endpoint}`
   const config = {
     method,
     url,
     maxBodyLength: Infinity,
     headers: {
-      'Authorization': `Bearer ${access_token}`,
+      'Authorization': `Bearer ${ACCESS_TOKEN}`,
       'Content-Type': 'multipart/form-data',
     },
     data,
@@ -91,11 +91,11 @@ export const getTheTime = (time) => {
 }
 
 export const logoutAccount = () => {
-  Cookies.remove(access_token)
-  localStorage.removeItem(localUser)
-  localStorage.removeItem(currentWs)
+  Cookies.remove(ACCESS_TOKEN)
+  localStorage.removeItem(LOCAL_USER)
+  localStorage.removeItem(CURRENT_WS)
   localStorage.removeItem(SELECTED_TASK_SORT)
-  localStorage.removeItem(refresh_token)
+  localStorage.removeItem(REFRESH_TOKEN)
   localStorage.removeItem(SELECTED_SORT)
-  Cookies.remove(access_token)
+  Cookies.remove(ACCESS_TOKEN)
 }

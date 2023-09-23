@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useRef, useState } from 'react'
-import { CHECK_TYPE, access_token } from '../utils/constants'
+import { CHECK_TYPE, ACCESS_TOKEN } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 
@@ -16,7 +16,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
     const toggleSubSetting = () => setOpenSetting(preState => !preState)
     const updateTask = async (item) => {
         setUpdating(true)
-        const token = Cookies.get(access_token)
+        const token = Cookies.get(ACCESS_TOKEN)
         if (checkToken(token)) {
             const result = await fetchApiData(`note/task/update`, token, "PUT", item)
             if (result.status === "SUCCESS") {

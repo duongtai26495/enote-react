@@ -1,10 +1,7 @@
 import Cookies from 'js-cookie'
-import React, { useEffect, useRef, useState, memo } from 'react'
-import { access_token, baseURL } from '../utils/constants'
-import loading_gif from '../assets/images/loading_gif.gif'
+import React, { useEffect, useRef, useState } from 'react'
+import { ACCESS_TOKEN } from '../utils/constants'
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions'
-import TaskList from './TaskList'
-import loading_icon from '../assets/images/loading_icon.png'
 import { Link } from 'react-router-dom'
 import ProgressBar from './ProgressBar'
 
@@ -19,7 +16,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
     const isMounted = useRef(false);
     const [isChanging, setChanging] = useState(false)
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
 
     const updateNoteById = () => {
         let newNote = item

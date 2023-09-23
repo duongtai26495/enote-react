@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
 import Cookies from 'js-cookie'
-import { access_token } from '../utils/constants'
+import { ACCESS_TOKEN } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 const ProfileAnalytics = () => {
 
@@ -11,7 +11,7 @@ const ProfileAnalytics = () => {
   const [workspaceCount, setWorkspaceCount] = useState(0)
   const [percentageFinishTask, setPercentageFinishTask] = useState(0)
   const [percentageFinishNote, setPercentageFinishNote] = useState(0)
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
     
   useEffect(()=>{
     const getAnalytics = async () => {

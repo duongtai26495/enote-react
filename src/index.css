@@ -94,14 +94,14 @@ code {
 .selected_ws {
   background-color: #ffffff60;
 }
-@media (min-width:767px){
-.selected_ws:hover{
-  background-color: #fafafa;
-}
-}
-.selected_ws_true {
 
+@media (min-width:767px) {
+  .selected_ws:hover {
+    background-color: #fafafa;
+  }
 }
+
+.selected_ws_true {}
 
 .button_style-1 {
   background: #fafafa;
@@ -146,12 +146,12 @@ footer {
 }
 
 .expand_item {
-  transition-timing-function: cubic-bezier(1,1,0.35,0) !important;
-} 
+  transition-timing-function: cubic-bezier(1, 1, 0.35, 0) !important;
+}
 
 .single-chart {
   width: 33%;
-  justify-content: space-around ;
+  justify-content: space-around;
 }
 
 .circular-chart {
@@ -178,38 +178,106 @@ footer {
   }
 }
 
-.percentage { 
+.percentage {
   font-family: sans-serif;
   font-size: 0.5em;
   text-anchor: middle;
 }
 
-.masonry-wrapper > div {
+.masonry-wrapper>div {
   column-gap: 20px !important;
 }
 
-.card_profile_image{
+.card_profile_image {
   max-height: 300px;
   max-width: 300px;
   margin: auto;
 }
+
 .cls-1 {
   fill: none;
 }
 
-.bg-page{
+.bg-page {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
 
-.st0{opacity:0.2;fill:none;stroke:#000000;stroke-width:5.000000e-02;stroke-miterlimit:10;}
+.st0 {
+  opacity: 0.2;
+  fill: none;
+  stroke: #000000;
+  stroke-width: 5.000000e-02;
+  stroke-miterlimit: 10;
+}
 
 
-.analy-text{
+.analy-text {
   letter-spacing: 1px;
 }
 
-.ws-time{
+.ws-time {
   font-size: 10px;
+}
+
+.remember_switch {
+  width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .5s ease-in-out;
+}
+
+.remember_button {
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all .3s ease-in-out;
+}
+
+.remember_false {
+  transform: translateX(-12px);
+}
+
+.remember_true {
+  transform: translateX(12px);
+}
+
+.authen-form {
+  width: calc(100% - 20px);
+}
+
+@keyframes slideToRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes slideToLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.login-form{
+  animation: slideToRight 1s ease-in-out;
+}
+.register-form{
+  animation: slideToLeft 1s ease-in-out;
 }

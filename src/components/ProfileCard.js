@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
 import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import { useNavigate } from 'react-router-dom'
-import { access_token, baseURL, localUser } from '../utils/constants'
+import { ACCESS_TOKEN, URL_PREFIX, LOCAL_USER } from '../utils/constants'
 import Cookies from 'js-cookie'
 import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
 
 const ProfileCard = () => {
 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem(localUser)) ?? {})
-    const token = Cookies.get(access_token)
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem(LOCAL_USER)) ?? {})
+    const token = Cookies.get(ACCESS_TOKEN)
     const [isUpdateName, setUpdateNameState] = useState(false)
     const [newFname, setNewFname] = useState(user.f_name)
     const [newLname, setNewLname] = useState(user.l_name)
     const [selectedImage, setSelectedImage] = useState(null)
-    const [profileImage, setProfileImage] = useState(user.profile_image ? baseURL + "public/image/" + user.profile_image : "https://source.unsplash.com/random")
+    const [profileImage, setProfileImage] = useState(user.profile_image ? URL_PREFIX + "public/image/" + user.profile_image : "https://source.unsplash.com/random")
     const [previewImage, setPreviewImage] = useState(null)
     const [changeImageLabel, setChangeImageLabel] = useState("")
     const [changePasswordLabel, setChangePwLabel] = useState("Update password")
@@ -31,7 +31,7 @@ const ProfileCard = () => {
             const result = await fetchApiData(`user/info/${user.username}`, token)
             if (result.status === "SUCCESS") {
                 setUser(result.content)
-                localStorage.setItem(localUser, JSON.stringify(result.content))
+                localStorage.setItem(LOCAL_USER, JSON.stringify(result.content))
             } else {
                 navigate("/login?unlogin=true")
             }
@@ -42,7 +42,7 @@ const ProfileCard = () => {
     }, [])
 
     const checkLogin = () => {
-        const token = Cookies.get(access_token)
+        const token = Cookies.get(ACCESS_TOKEN)
         setLogout(false)
         !checkToken(token) && navigate("/login?unlogin")
     }
@@ -57,8 +57,8 @@ const ProfileCard = () => {
             if (result.status === "SUCCESS") {
                 let updatedUser = result.content
                 setUser(updatedUser)
-                localStorage.removeItem(localUser)
-                localStorage.setItem(localUser, JSON.stringify(updatedUser))
+                localStorage.removeItem(LOCAL_USER)
+                localStorage.setItem(LOCAL_USER, JSON.stringify(updatedUser))
                 setUpdateNameState(false)
             }
         }
@@ -115,7 +115,7 @@ const ProfileCard = () => {
             data.append('user_profile_image', selectedImage)
             const result = await uploadDataFileApi(`user/upload/image/${user.username}`, token, "POST", data)
             if (result.status === "SUCCESS") {
-                setProfileImage(baseURL + "public/image/" + result.content)
+                setProfileImage(URL_PREFIX + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
                 setLoadingAvt(false)

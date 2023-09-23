@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { access_token, baseURL } from '../utils/constants';
+import { ACCESS_TOKEN, URL_PREFIX } from '../utils/constants';
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions';
 import Cookies from 'js-cookie';
 import TaskList from '../components/TaskList';
@@ -11,14 +11,14 @@ import ProgressBar from '../components/ProgressBar';
 const NoteDetail = () => {
     const navigate = useNavigate();
     let { id } = useParams();
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
     const [isUpdateProgress, setUpdateProgress] = useState(false)
     const [item, setItem] = useState({})
     const [newName, setNewName] = useState(item.name)
     const [newDone, setNewDone] = useState(item.done)
     const [selectedImage, setSelectedImage] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
-    const [featuredImage, setFeaturedImage] = useState(item.featured_image ? baseURL + "public/image/" + item.featured_image : "https://source.unsplash.com/random")
+    const [featuredImage, setFeaturedImage] = useState(item.featured_image ? URL_PREFIX + "public/image/" + item.featured_image : "https://source.unsplash.com/random")
     const isMounted = useRef(false);
     const imageRef = useRef(null)
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
@@ -29,7 +29,7 @@ const NoteDetail = () => {
                 const result = await fetchApiData(`note/get/` + id, token)
                 if (result.status === "SUCCESS") {
                     const data = result.content
-                    setFeaturedImage(baseURL + "public/image/" + result.content.featured_image)
+                    setFeaturedImage(URL_PREFIX + "public/image/" + result.content.featured_image)
                     setItem(data)
                     setUpdateProgress(false)
                 }
@@ -94,7 +94,7 @@ const NoteDetail = () => {
             data.append('f_image', selectedImage)
             const result = await uploadDataFileApi(`note/upload/${item.id}`, token, "POST", data)
             if (result.status === "SUCCESS") {
-                setFeaturedImage(baseURL + "public/image/" + result.content)
+                setFeaturedImage(URL_PREFIX + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
                 setChangeImageLabel("Image changed success")

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { access_token } from '../utils/constants';
+import { ACCESS_TOKEN } from '../utils/constants';
 import { checkToken, fetchApiData } from '../utils/functions';
 import Cookies from 'js-cookie';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -11,7 +11,7 @@ const SearchResult = () => {
 
     const navigate = useNavigate();
     let { name } = useParams();
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
     const [resultList, setResultList] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)

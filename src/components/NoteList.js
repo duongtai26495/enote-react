@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { memo, useEffect, useMemo, useState } from 'react'
-import { SELECTED_SORT, SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs } from '../utils/constants'
+import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
@@ -12,7 +12,7 @@ const NoteList = ({ id }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
     const firstPage = 1
-    const token = Cookies.get(access_token)
+    const token = Cookies.get(ACCESS_TOKEN)
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
     const getAllNoteByWs = async () => {
@@ -32,28 +32,7 @@ const NoteList = ({ id }) => {
         }
     }
 
-    useEffect(() => {
-        const getSortItems = async () => {
-            const token = Cookies.get(access_token)
-            if (token && checkToken(token)) {
-                const result = await fetchApiData("public/sort_value")
-                const result_task = await fetchApiData("public/task/sort_value")
-                if (result && result.status !== 403) {
-                    if (result.length > 0) {
-                        localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
-                        setSortValues(result)
-                    }
-                }
-                if (result_task && result_task.status !== 403) {
-                    if (result_task.length > 0) {
-                        localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
-                    }
-                }
-            }
-        }
-        getSortItems()
-    }, [])
-
+   
 
     const removeNote = async (note) => {
         if (note.tasks == null || note.tasks?.length < 1) {
@@ -97,7 +76,7 @@ const NoteList = ({ id }) => {
 
     const addNewNote = async () => {
         if (id) {
-            const token = Cookies.get(access_token)
+            const token = Cookies.get(ACCESS_TOKEN)
             if (token !== null && checkToken(token)) {
                 const newNote = {}
                 newNote.workspace = { id }
