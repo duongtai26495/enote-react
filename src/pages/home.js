@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs, localWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteList from '../components/NoteList'
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import WorkspaceItem from '../components/WorkspaceItem'
 import LoadingAnimation from '../components/LoadingAnimation'
 import LoadingComponent from '../components/LoadingComponent'
+import WorkspaceCard from '../components/WorkspaceCard'
 const Home = () => {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -15,8 +17,7 @@ const Home = () => {
   const [selectedWs, setSelectedWs] = useState(localStorage.getItem(currentWs))
   const [addNoteState, setAddNoteState] = useState(false)
   const [isLoadingAdd, setLoadingAdd] = useState(false)
-  const [sortItem, setSortItem] = useState([])
-  
+
   const getWsAll = async () => {
     const token = Cookies.get(access_token)
     if (token && checkToken(token)) {
@@ -26,7 +27,7 @@ const Home = () => {
         if (data.length > 0) {
           setSelectedWs(localStorage.getItem(currentWs) ?? data[0].id)
           setWsList(data)
-        }else{
+        } else {
           setWsList([])
         }
 
@@ -39,11 +40,14 @@ const Home = () => {
   }
 
   const setCurrentWs = (id) => {
-    setSelectedWs(id)
-    localStorage.setItem(currentWs, id)
+    if (selectedWs !== currentWs) {
+      localStorage.removeItem(currentWs)
+      setSelectedWs(id)
+      localStorage.setItem(currentWs, id)
+    }
   }
   useEffect(() => {
-    document.title = "Ememo Application"
+    document.title = "Space Application"
   }, [])
 
 
@@ -77,18 +81,26 @@ const Home = () => {
     getWsAll()
   }, [noteCount])
 
+  // const RenderWsList = () => {
+  //   return (
+  //     wsList &&
+  //     wsList.map(item => (
+  //       <li
+  //         onClick={() => setCurrentWs(item.id)}
+  //         className={`${Number(selectedWs) === item.id ? "selected_ws_true bg-white" : ""} shadow-sm relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap cursor-pointer rounded-md transition-all w-fit`}
+  //         key={item.id}>
+  //         <WorkspaceItem setAddNoteState={setAddNoteState} removeWs={removeWs} wsItem={item} />
+
+  //       </li>
+  //     ))
+  //   )
+  // }
+
   const RenderWsList = () => {
     return (
-      wsList &&
-      wsList.map(item => (
-        <li
-          onClick={() => setCurrentWs(item.id)}
-          className={`${Number(selectedWs) === item.id ? "selected_ws_true bg-slate-100" : "border-t border-l border-teal-50"} relative selected_ws flex flex-row gap-1 items-center ws-item whitespace-nowrap pb-3 md:pb-5 pt-2 cursor-pointer transition-all w-fit`}
-          key={item.id}>
-          <WorkspaceItem setAddNoteState={setAddNoteState} removeWs={removeWs} wsItem={item} />
-
-        </li>
-      ))
+            wsList?.map((item, index) => (
+              <WorkspaceCard key={index} setAddNoteState={setAddNoteState} removeWs={removeWs} wsItem={item} />
+            ))
     )
   }
 
@@ -103,7 +115,7 @@ const Home = () => {
       const addWsResult = await fetchApiData(`workspace/add`, token, "POST")
       if (addWsResult.status === "SUCCESS")
         localStorage.setItem(currentWs, addWsResult.content.id)
-        await getWsAll()
+      await getWsAll()
     }
     setLoadingAdd(false)
   }
@@ -118,23 +130,25 @@ const Home = () => {
             <p className='font-bold text-xl'>Workspace</p>
             <div className={"flex flex-row gap-5 w-32"}>
               <button onClick={() => addWorkspace()}
-              disabled={isLoadingAdd}
+                disabled={isLoadingAdd}
                 className='button_style-1 py-2 px-3 w-full cursor-pointer transition-all rounded-xl whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
-                { isLoadingAdd ? <LoadingComponent className={`w-full`} size={`w-5 h-5 mx-auto`}/> : <span className='text-center block'>Add plan +</span> }
+                {isLoadingAdd ? <LoadingComponent className={`w-full`} size={`w-5 h-5 mx-auto`} /> : <span className='text-center block'>Add plan +</span>}
               </button>
             </div>
           </div>
-          <div className='flex flex-row justify-between items-center'>
-            <ul className={`flex flex-row w-full overflow-x-auto relative`}>
+          <div className='w-full h-fit mt-2'>
+          <div className='w-full justify-between hidden lg:flex rounded-sm my-2 p-2 italic text-sm'>
+          <p>Name</p>
+          <p>Actions</p>
+          <p>Time</p>
+          </div>
               {/* List of Workspace */}
               <RenderWsList />
-            </ul>
-
           </div>
-          <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}>
+          {/* <div className={`w-full slide-up  ${isVisible ? 'visible' : ''}`}> */}
             {/* List of Note list */}
-            <NoteList addNoteState={addNoteState} setAddNote={setAddNote} getNoteCount={getNoteCount} id={selectedWs} />
-          </div>
+            {/* <NoteList addNoteState={addNoteState} setAddNote={setAddNote} getNoteCount={getNoteCount} id={selectedWs} /> */}
+          {/* </div> */}
         </div>
       </div>
     </>

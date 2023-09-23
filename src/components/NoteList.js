@@ -36,8 +36,8 @@ const NoteList = ({ id }) => {
         const getSortItems = async () => {
             const token = Cookies.get(access_token)
             if (token && checkToken(token)) {
-                const result = await fetchApiData("note/sort_value", token)
-                const result_task = await fetchApiData("note/task/sort_value", token)
+                const result = await fetchApiData("public/sort_value")
+                const result_task = await fetchApiData("public/task/sort_value")
                 if (result && result.status !== 403) {
                     if (result.length > 0) {
                         localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
@@ -145,7 +145,7 @@ const NoteList = ({ id }) => {
 
     const Pagination = () => {
         return (
-            <div className={`${maxPage > 0 ? "flex" : "hidden"} w-1/3 lg:w-full flex-row justify-end`}>
+            <div className={`${maxPage > 0 ? "opacity-100" : "opacity-0"} flex w-1/3 lg:w-full flex-row justify-end`}>
                 <p className='text-sm w-full lg:w-1/5 text-center flex flex-row items-center justify-between'>
                     <span className={`cursor-pointer pagingation-num transition-all ${currentPage === firstPage && 'fill-slate-300'}`} onClick={() => setPage("PREV")}>
                         <svg className='rotate-180' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>

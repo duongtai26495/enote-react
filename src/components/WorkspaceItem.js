@@ -35,7 +35,7 @@ const WorkspaceItem = ({ wsItem, removeWs }) => {
 
     return (
 
-        <div className={`flex flex-row md:flex-row items-center pr-2`}>
+        <div className={`flex flex-row md:flex-row items-center rounded-md p-1 px-3`}>
             {
                 (isEdit && selectedWs === currentWssItem.id)
                     ?
@@ -53,7 +53,7 @@ const WorkspaceItem = ({ wsItem, removeWs }) => {
                         {currentWssItem.name}
                         {
                             currentWssItem.created_at &&
-                            <span className={`text-xs text-slate-400 italic`}>{getTheTime(currentWssItem.created_at)}</span>
+                            <span className={`ws-time text-slate-400 italic`}>{getTheTime(currentWssItem.created_at)}</span>
                         }
                     </span>
             }

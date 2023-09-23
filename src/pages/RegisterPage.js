@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { baseURL } from '../utils/constants';
 import axios from 'axios';
 import { fetchApiData } from '../utils/functions';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
 import LoadingComponent from '../components/LoadingComponent';
 
@@ -186,7 +186,7 @@ const RegisterPage = () => {
                             <button onClick={handleRegister} className="bg-indigo-500 w-full text-white px-4 py-2 rounded-lg mr-2">
                                 Đăng ký
                             </button>
-                            <a href="/login" className="text-gray-500 mt-5 mb-3 hover:text-indigo-800">Quay lại trang đăng nhập</a>
+                            <Link to="/login" className="text-gray-500 mt-5 mb-3 hover:text-indigo-800">Quay lại trang đăng nhập</Link>
                         </div>
                         <div className="mt-4 flex justify-center">
                             <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mr-2">Đăng ký với Facebook</button>

@@ -22,3 +22,5 @@ export const HOMEPAGE_ANALYTICS = "homepage_analytics"
 export const DETAILPAGE_ANALYTICS = "detailpage_analytics"
 export const IS_REMEMBER = "isRememberMe"
 export const USERNAME_LOCAL = "uname_local"
+
+export const SUCCESS_RESULT = "SUCCESS"

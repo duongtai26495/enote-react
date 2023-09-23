@@ -19,7 +19,7 @@ const UserProfile = () => {
           <ProfileAnalytics />
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 

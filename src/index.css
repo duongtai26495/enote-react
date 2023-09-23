@@ -91,25 +91,16 @@ code {
   gap: 1rem;
 }
 
-.selected_ws::after {
-  width: 0;
-  content: "";
-  height: 5px;
-  color: black;
-  background-color: black;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  transition: width .3s;
-  
+.selected_ws {
+  background-color: #ffffff60;
 }
 @media (min-width:767px){
-.selected_ws:hover::after{
-  width: 100%;
+.selected_ws:hover{
+  background-color: #fafafa;
 }
 }
-.selected_ws_true::after {
-  width: 100%;
+.selected_ws_true {
+
 }
 
 .button_style-1 {
@@ -217,4 +208,8 @@ footer {
 
 .analy-text{
   letter-spacing: 1px;
+}
+
+.ws-time{
+  font-size: 10px;
 }
