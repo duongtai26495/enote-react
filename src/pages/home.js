@@ -1,11 +1,8 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { SORT_ITEMS, SORT_TASK_ITEMS, access_token, currentWs, localWs } from '../utils/constants'
+import { access_token, currentWs } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
-import NoteList from '../components/NoteList'
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import WorkspaceItem from '../components/WorkspaceItem'
-import LoadingAnimation from '../components/LoadingAnimation'
+
 import LoadingComponent from '../components/LoadingComponent'
 import WorkspaceCard from '../components/WorkspaceCard'
 const Home = () => {

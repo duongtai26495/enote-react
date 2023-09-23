@@ -4,7 +4,7 @@ const EmptyList = () => {
   return (
     <div className='h-fit flex flex-col' style={{backgroundColor:"#ffffff"}}>
     <h2 className='mx-auto my-5 text-xl font-bold'>Nothing to show</h2>
-      <img src={empty_page} className='m-auto' />
+      <img alt='Empty image' src={empty_page} className='m-auto' />
     </div>
   )
 }
