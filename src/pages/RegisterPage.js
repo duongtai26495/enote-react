@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { URL_PREFIX } from '../utils/constants';
+import { ACTIVATE_EMAIL, URL_PREFIX } from '../utils/constants';
 import axios from 'axios';
 import { fetchApiData } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,7 +42,8 @@ const RegisterPage = () => {
             }
             try {
                 const result = await fetchApiData("public/sign-up", null, "POST", user)
-                result.status === "SUCCESS" ? navigate("/login?success") : setErr(true)
+                localStorage.setItem(ACTIVATE_EMAIL, email)
+                result.status === "SUCCESS" ? navigate("/activate-account") : setErr(true)
             } catch (error) {
                 setErr(true)
             }
@@ -107,12 +108,16 @@ const RegisterPage = () => {
                                 type="text"
                                 placeholder="Họ"
                                 value={firstName}
+                                name='f_name'
+                                id='f_name'
                                 onChange={(e) => setFirstName(e.target.value)}
                                 className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                             />
                             <input
                                 type="text"
                                 placeholder="Tên"
+                                name='f_name'
+                                id='f_name'
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
@@ -133,6 +138,8 @@ const RegisterPage = () => {
                             type="text"
                             placeholder="Tên người dùng"
                             value={username}
+                            name='username'
+                            id='username'
                             onBlur={checkUsernameAvailable}
                             onChange={(e) => setUsername(e.target.value.toLowerCase())}
                             className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
@@ -152,6 +159,8 @@ const RegisterPage = () => {
                             type="email"
                             placeholder="Email"
                             value={email}
+                            name='email'
+                            id='email'
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={checkEmailAvailable}
                             className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
@@ -159,12 +168,16 @@ const RegisterPage = () => {
                         <input
                             type="password"
                             placeholder="Mật khẩu"
+                            name='password'
+                            id='password'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                         />
                         <input
                             type="password"
+                            id='password'
+                            name='password'
                             placeholder="Xác nhận mật khẩu"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}

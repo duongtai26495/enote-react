@@ -15,11 +15,12 @@ const NoteList = ({ id }) => {
     const token = Cookies.get(ACCESS_TOKEN)
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
+    
     const getAllNoteByWs = async () => {
         if (checkToken(token) && id > 0) {
             try {
                 let page = Number(currentPage) - 1
-                let url = `workspace/get/${id}?page=${page + ""}&size=18&sort=${selectedSort}`
+                let url = `workspace/get/${id}?page=${page + ""}&size=12&sort=${selectedSort}`
                 const result = await fetchApiData(url, token)
                 if (result && result.status !== 403) {
                     setMaxPage(result.totalPages)
@@ -43,7 +44,7 @@ const NoteList = ({ id }) => {
     }
     const RenderNote = React.memo(() => {
         return (
-            <ResponsiveMasonry className='min-h-screen masonry-wrapper' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
+            <ResponsiveMasonry className='h-fit mb-48 masonry-wrapper' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
                 <Masonry>
                     {
                         noteList?.map((item, index) => (
@@ -154,7 +155,7 @@ const NoteList = ({ id }) => {
         <>
             <div className={`w-full p-2 gap-2 flex flex-row items-center justify-between bg-slate-100 h-fit`}>
                 <span onClick={() => { addNewNote() }}
-                    className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-lg p-1  bg-white text-black transition-all text-sm`}>
+                    className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-md p-1  bg-white text-black transition-all text-sm`}>
                     Add note
                 </span>
                 <RenderSort />

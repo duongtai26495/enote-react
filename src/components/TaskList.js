@@ -26,7 +26,7 @@ const TaskList = ({ note, updateProgressState }) => {
             updateProgressState(true)
             const letWait = setTimeout(()=>{
                 taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
-            },1000)
+            },200)
             
             return ()=> clearTimeout(letWait)
             

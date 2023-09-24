@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ACCESS_TOKEN, URL_PREFIX } from '../utils/constants';
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions';
 import Cookies from 'js-cookie';
@@ -14,6 +14,7 @@ const NoteDetail = () => {
     const token = Cookies.get(ACCESS_TOKEN)
     const [isUpdateProgress, setUpdateProgress] = useState(false)
     const [item, setItem] = useState({})
+    const [workspace, setWorkspace] = useState({})
     const [newName, setNewName] = useState(item.name)
     const [newDone, setNewDone] = useState(item.done)
     const [selectedImage, setSelectedImage] = useState(null)
@@ -21,6 +22,7 @@ const NoteDetail = () => {
     const [featuredImage, setFeaturedImage] = useState(item.featured_image ? URL_PREFIX + "public/image/" + item.featured_image : "https://source.unsplash.com/random")
     const isMounted = useRef(false);
     const imageRef = useRef(null)
+    const newNameRef = useRef(null)
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
 
     useEffect(() => {
@@ -31,6 +33,7 @@ const NoteDetail = () => {
                     const data = result.content
                     setFeaturedImage(URL_PREFIX + "public/image/" + result.content.featured_image)
                     setItem(data)
+                    setWorkspace(data.workspace)
                     setUpdateProgress(false)
                 }
             }
@@ -51,6 +54,13 @@ const NoteDetail = () => {
         }
     }
 
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            updateNoteById();
+            newNameRef.current.blur();
+        }
+    };
 
     const updateNoteById = () => {
         let newNote = item
@@ -171,10 +181,12 @@ const NoteDetail = () => {
                                 <input
                                     name='name_task'
                                     id='name_task'
+                                    onKeyDown={handleKeyPress}
                                     className={`text-2xl font-bold text-white w-full bg-transparent`}
                                     onChange={(e) => { setNewName(e.target.value) }}
                                     onBlur={updateNoteById}
                                     defaultValue={item.name}
+                                    ref={newNameRef}
                                     placeholder={'Note title'} />
                                 <span className={`h-fit lg:h-5 text-sm text-slate-200 italic`}>{item.created_at}</span>
                                 <span className={`h-fit lg:h-5 text-sm text-slate-200 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
@@ -184,7 +196,10 @@ const NoteDetail = () => {
 
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
-                    <Breadcrumbs text={"Back to home"} className={`border-b`} />
+                    <div className='flex justify-start items-center gap-3 w-full bg-slate-300 border-b'>
+                    <Breadcrumbs text={"Back to home"} className={``} />
+                    <Link className='bg-white rounded-md p-1' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
+                    </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>
 
@@ -193,4 +208,4 @@ const NoteDetail = () => {
     )
 }
 
-export default NoteDetail
+export default React.memo(NoteDetail)
