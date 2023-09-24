@@ -13,6 +13,7 @@ const Navigation = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/recovery" element={<Recovery />} />
                 <Route path="/confirm-recovery" element={<ConfirmRecovery />} />
+                <Route path="/activate-account" element={<ActivateAccount />} />
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path='/about' element={<About />} />
@@ -20,7 +21,6 @@ const Navigation = () => {
                     <Route path='/search/:name' element={<SearchResult />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/workspace/:id" element={<WorkspaceDetail />} />
-                    <Route path="/activate-account" element={<ActivateAccount />} />
                 </Route>
             </Routes>
         </Router>

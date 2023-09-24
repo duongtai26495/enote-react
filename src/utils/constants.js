@@ -18,6 +18,7 @@ export const SELECTED_SORT = "selected_sort"
 export const SELECTED_TASK_SORT = "selected_task_sort"
 export const WS_SELECTED_SORT = "ws_selected_sort"
 export const ACTIVATE_EMAIL = "activate_email"
+export const AUTO_SEND = "auto_send"
 
 export const EXPAND_SIDEBAR = "expand_sidebar"
 export const HOMEPAGE_ANALYTICS = "homepage_analytics"

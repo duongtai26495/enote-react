@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { ACTIVATE_EMAIL, URL_PREFIX } from '../utils/constants';
-import axios from 'axios';
 import { fetchApiData } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
@@ -108,16 +107,16 @@ const RegisterPage = () => {
                                 type="text"
                                 placeholder="Họ"
                                 value={firstName}
-                                name='f_name'
-                                id='f_name'
+                                name='register_f_name'
+                                id='register_f_name'
                                 onChange={(e) => setFirstName(e.target.value)}
                                 className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
                             />
                             <input
                                 type="text"
                                 placeholder="Tên"
-                                name='f_name'
-                                id='f_name'
+                                name='register_l_name'
+                                id='register_l_name'
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
@@ -176,8 +175,8 @@ const RegisterPage = () => {
                         />
                         <input
                             type="password"
-                            id='password'
-                            name='password'
+                            id='confirm_password'
+                            name='confirm_password'
                             placeholder="Xác nhận mật khẩu"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}

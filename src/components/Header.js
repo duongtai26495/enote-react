@@ -16,8 +16,11 @@ const Header = () => {
 
     const checkLogin = () => {
         const token = Cookies.get(ACCESS_TOKEN)
-        !checkToken(token) && navigate("/login?unlogin")
-        setLogout(false)
+        if(!checkToken(token))
+        {
+            navigate("/login?unlogin")
+            setLogout(false)
+        }
     }
 
     const logout = () => {
