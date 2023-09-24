@@ -83,7 +83,7 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
                 </p>
                 <div className='flex w-full justify-end items-center gap-2'>
 
-                    <span className={`text-xs ${workspaceItem.note_count > 0 ? "p-2" : ""} text-white rounded-full bg-slate-500`}>{workspaceItem.note_count > 0 ? "+" + workspaceItem.note_count : ""}</span>
+                    <span className={`w-8 h-8 text-xs ${workspaceItem.note_count > 0 ? "p-2" : "hidden"} text-white rounded-full bg-slate-500`}>{workspaceItem.note_count > 0 ? "+" + workspaceItem.note_count : ""}</span>
                     {
                         isUpdateName ?
                             <button className='w-9 h-9 p-2 scale-90 rounded-sm bg-green-100'

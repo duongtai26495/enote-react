@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ACTIVATE_EMAIL, URL_PREFIX } from '../utils/constants';
+import { ACTIVATE_EMAIL, AUTO_SEND, URL_PREFIX } from '../utils/constants';
 import { fetchApiData } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
@@ -42,6 +42,7 @@ const RegisterPage = () => {
             try {
                 const result = await fetchApiData("public/sign-up", null, "POST", user)
                 localStorage.setItem(ACTIVATE_EMAIL, email)
+                localStorage.setItem(AUTO_SEND, false)
                 result.status === "SUCCESS" ? navigate("/activate-account") : setErr(true)
             } catch (error) {
                 setErr(true)

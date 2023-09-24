@@ -70,7 +70,7 @@ const WorkspaceDetail = () => {
                 <p className='text-white whitespace-nowrap text-xs'>{workspace.updated_at ? getTheTime(workspace.updated_at) : ""}</p>
             </div>
 
-                <p className='text-white whitespace-nowrap'>{workspace.created_at}</p>
+                <p className='text-white text-sm whitespace-nowrap'>{workspace.created_at}</p>
             </div>
             <Breadcrumbs text={"Back to home"} className={`w-full`} />
 

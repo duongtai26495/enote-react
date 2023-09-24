@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import UserLogin from '../utils/UserLogin';
 import { SUCCESS_RESULT, USERNAME_LOCAL, ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, REFRESH_TOKEN } from '../utils/constants';
 import AuthenLogo from '../components/AuthenLogo';
-import LoadingAnimation from '../components/LoadingAnimation';
 import { IS_REMEMBER } from '../utils/constants';
 import LoadingComponent from '../components/LoadingComponent';
 

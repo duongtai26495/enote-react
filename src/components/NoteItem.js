@@ -10,11 +10,13 @@ const NoteItem = ({ note, removeNote, subclass }) => {
     const [newName, setNewName] = useState(note.name)
     const [newDone, setNewDone] = useState(note.done)
     const [isOpenSetting, setOpenSetting] = useState(false)
+    const [isUpdate, setUpdate] = useState(false)
     const [featured_image, setFeatured_Image] = useState(note.featured_image)
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewImage, setPreviewImage] = useState("")
     const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
     const isMounted = useRef(false);
+    const noteNameRef = useRef(null)
     const [isChanging, setChanging] = useState(false)
     const token = Cookies.get(ACCESS_TOKEN)
 
@@ -36,6 +38,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
                 if (result.status === "SUCCESS") {
                     const data = result.content
                     setItem(data)
+                    setUpdate(false)
                 }
             }
 
@@ -102,16 +105,25 @@ const NoteItem = ({ note, removeNote, subclass }) => {
         }
     }
 
+    const handleKeyPress = async (e) => {
+        if (e.key === "Enter") {
+            updateNoteById()
+        }
+    }
 
     const toggleOpenCardSub = () => setOpenSetting(preState => !preState)
-    const toggleSetNewDone = () => setNewDone(preState => !preState)
+    const toggleUpdate = () => {
+        setUpdate(preState => !preState)
+        toggleOpenCardSub()
+        noteNameRef.current.focus()
+    }
     return (
         <div className={`w-full block break-inside-avoid py-3 relative ${subclass}`}>
 
             <div className='relative  shadow-lg border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all lg:hover:-translate-y-1'>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
-                        <li className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Done</li>
+                        <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>{isUpdate ? "Done" : "Update"}</li>
                         <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Delete</li>
                     </ul>
 
@@ -128,15 +140,25 @@ const NoteItem = ({ note, removeNote, subclass }) => {
                     </span>
                 </div>
 
-                <Link to={"/note/" + note.id} className='w-full flex flex-col justify-between items-center relative'>
+                <div className='min-h-fit my-5 whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
 
-                    <p className='min-h-fit my-5 whitespace-pre-line w-full h-fit m-auto font-bold text-md lg:text-xl text-center bg-transparent'>
-                        {note.name}
-                    </p>
+                    <input
+                        type='text'
+                        defaultValue={newName}
+                        ref={noteNameRef}
+                        onChange={e => setNewName(e.target.value)}
+                        onBlur={updateNoteById}
+                        onKeyDown={handleKeyPress}
+                        className={`w-full mx-auto text-sm bg-transparent border p-1 rounded block text-center`}
+                    />
+
+                </div>
+
+                <Link to={"/note/" + note.id} className='w-full flex flex-col justify-between items-center relative'>
 
                     <ProgressBar percentage={note.progress} />
 
-                
+
 
                     <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
                 </Link>

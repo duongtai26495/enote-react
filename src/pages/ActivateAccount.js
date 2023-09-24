@@ -19,7 +19,7 @@ const ActivateAccount = () => {
       if(email)
       {
         setActivateEmail(email)
-        let isSend = Boolean(localStorage.getItem(AUTO_SEND))
+        let isSend = JSON.parse(localStorage.getItem(AUTO_SEND))
         if(!isSend){
           await sendActivateMail(email)
         }
@@ -54,6 +54,8 @@ const ActivateAccount = () => {
       const result = await fetchApiData("public/activate-account", null, "POST", data)
       if (result.status === SUCCESS_RESULT) {
         setSuccess(true)
+        localStorage.removeItem(AUTO_SEND)
+        localStorage.removeItem(ACTIVATE_EMAIL)
       } else {
         setErrMsg(result.data.msg)
         setSuccess(false)

@@ -196,9 +196,9 @@ const NoteDetail = () => {
 
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
-                    <div className='flex justify-start items-center gap-3 w-full bg-slate-300 border-b'>
-                    <Breadcrumbs text={"Back to home"} className={``} />
-                    <Link className='bg-white rounded-md p-1' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
+                    <div className='flex flex-col lg:flex-row justify-start py-2 px-2 lg:items-center gap-3 w-full bg-slate-300 border-b'>
+                        <Breadcrumbs text={"Back to home"} className={``} />
+                        <Link className='bg-white rounded-md p-1' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
                     </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>
