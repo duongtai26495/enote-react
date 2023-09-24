@@ -4,11 +4,12 @@ import Cookies from "js-cookie"
 
 import { Link, useNavigate, useRoutes } from "react-router-dom"
 import LoadingComponent from "./LoadingComponent"
-import { ACCESS_TOKEN, LOCAL_USER } from "../utils/constants"
+import { ACCESS_TOKEN, LOCAL_USER, URL_PREFIX } from "../utils/constants"
+import CustomLazyLoadedImage from "./CustomLazyLoadedImage"
 
 
 
-const Header = () => {
+const Header = ({className}) => {
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate()
     const [isLogout, setLogout] = useState(false)
@@ -16,8 +17,7 @@ const Header = () => {
 
     const checkLogin = () => {
         const token = Cookies.get(ACCESS_TOKEN)
-        if(!checkToken(token))
-        {
+        if (!checkToken(token)) {
             navigate("/login?unlogin")
             setLogout(false)
         }
@@ -35,7 +35,7 @@ const Header = () => {
     }
 
     const userInfo = JSON.parse(localStorage.getItem(LOCAL_USER))
-
+    const profileImage = userInfo.profile_image ? `${URL_PREFIX}public/image/${userInfo.profile_image}` : "https://source.unsplash.com/random"
     const [isLogoutBadge, setLogoutBadge] = useState(false)
 
     const toggleLogoutBadge = () => setLogoutBadge(preState => !preState)
@@ -66,7 +66,7 @@ const Header = () => {
     }
 
     return (
-        <div className={`mx-auto w-full bg-white border-b`}>
+        <div className={`mx-auto w-full bg-white border-b ${className}`}>
             <div className="p-3 w-full lg:max-w-screen-xl mx-auto">
                 <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0">
                     <div className="lg:pr-16 pr-0 mx-auto lg:mx-0">
@@ -116,8 +116,13 @@ const Header = () => {
                         <div className={`w-1/3 lg:w-fit lg:border-l-2  border-l-neutral-500 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
                             {
                                 userInfo &&
-                                <p onClick={toggleLogoutBadge} className="text-center w-full whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700"><strong>{userInfo.f_name} {userInfo.l_name}</strong>
-                                    <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} transition-all fill-slate-700`} height="12" width="12" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                <p onClick={toggleLogoutBadge} className="text-center w-full whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
+                                    <CustomLazyLoadedImage
+                                        className={`aspect-square object-cover rounded-full w-6 h-6`}
+                                        src={`${profileImage}`}
+                                    />
+                                    <strong>{userInfo.f_name} {userInfo.l_name}</strong>
+                                    <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} transition-all fill-slate-700 w-10 h-10 sm:h-3 sm:w-3`} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 330 330">
                                         <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
                                     c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393

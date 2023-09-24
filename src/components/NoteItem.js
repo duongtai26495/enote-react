@@ -113,30 +113,29 @@ const NoteItem = ({ note, removeNote, subclass }) => {
 
     const toggleOpenCardSub = () => setOpenSetting(preState => !preState)
     const toggleUpdate = () => {
-        setUpdate(preState => !preState)
+        setNewDone(prevState => !prevState)
         toggleOpenCardSub()
-        noteNameRef.current.focus()
     }
     return (
         <div className={`w-full block break-inside-avoid py-3 relative ${subclass}`}>
 
-            <div className='relative  shadow-lg border p-2 flex flex-col rounded-lg bg-white bg-opacity-75 transition-all lg:hover:-translate-y-1'>
+            <div className={`relative  shadow-lg border p-2 flex flex-col rounded-lg ${item.done ? "bg-teal-500 " :"bg-white"} bg-opacity-75 transition-all lg:hover:-translate-y-1`}>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
-                        <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>{isUpdate ? "Done" : "Update"}</li>
+                        <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Finish</li>
                         <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Delete</li>
                     </ul>
 
                 </div>
                 <div className='w-full gap-2 p-1 flex flex-row justify-between items-center border-b'>
-                    <span className={`h-4 text-xs text-slate-400 italic whitespace-nowrap`}>{item.created_at && getTheTime(item.created_at)}</span>
-                    <span className='h-4 text-xs w-full text-end font-bold'>
+                    <span className={` ${item.done ? "text-white" :"text-slate-500 "} flex items-center justify-end text-xs italic whitespace-nowrap`}>{item.created_at && getTheTime(item.created_at)}</span>
+                    <span className={`text-sm w-full text-end font-bold ${item.done ? "text-white " :"text-slate-500 "}`}>
                         {item.tasks?.length > 0 &&
                             "(" + (item.tasks.length > 5 ? "5+" : item.tasks.length) + ")"
                         }
                     </span>
                     <span className='cursor-pointer' onClick={toggleOpenCardSub}>
-                        <svg height={16} width={16} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"  ><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
+                        <svg className={`${item.done ? "fill-white" :"fill-slate-500 "} `} height={16} width={16} enableBackground="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"  ><path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_" /><path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_" /><path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_" /></svg>
                     </span>
                 </div>
 
@@ -149,18 +148,15 @@ const NoteItem = ({ note, removeNote, subclass }) => {
                         onChange={e => setNewName(e.target.value)}
                         onBlur={updateNoteById}
                         onKeyDown={handleKeyPress}
-                        className={`w-full mx-auto text-sm bg-transparent border p-1 rounded block text-center`}
+                        className={`${item.done ? "text-white " :"text-slate-500 "} outline-none w-full mx-auto text-sm bg-transparent border p-1 rounded block text-center`}
                     />
 
                 </div>
 
                 <Link to={"/note/" + note.id} className='w-full flex flex-col justify-between items-center relative'>
 
-                    <ProgressBar percentage={note.progress} />
-
-
-
-                    <span className={`h-5 text-xs text-slate-400 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
+                    <ProgressBar percentage={note.progress} style={`${item.done ? "fill-white" :"fill-slate-400 "} `} />
+                    <span className={`${item.done ? "text-white" :"text-slate-500"} h-5 text-xs italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
                 </Link>
 
             </div>

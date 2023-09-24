@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import React, { memo, useEffect, useMemo, useState, useRef } from 'react'
 import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
@@ -13,6 +13,7 @@ const NoteList = ({ id }) => {
     const [maxPage, setMaxPage] = useState(1)
     const firstPage = 1
     const token = Cookies.get(ACCESS_TOKEN)
+    const isMounted = useRef(false);
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
     
@@ -20,7 +21,7 @@ const NoteList = ({ id }) => {
         if (checkToken(token) && id > 0) {
             try {
                 let page = Number(currentPage) - 1
-                let url = `workspace/get/${id}?page=${page + ""}&size=12&sort=${selectedSort}`
+                let url = `workspace/get/${id}?page=${page}&size=12&sort=${selectedSort}`
                 const result = await fetchApiData(url, token)
                 if (result && result.status !== 403) {
                     setMaxPage(result.totalPages)
@@ -95,6 +96,7 @@ const NoteList = ({ id }) => {
             }
         }
     }
+
 
     useEffect(() => {
         getAllNoteByWs()

@@ -13,24 +13,18 @@ const TaskList = ({ note, updateProgressState }) => {
     const [deleteId, setDeleteId] = useState(null)
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)) ?? "updated_at_desc")
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
+    const isMounted = useRef(false);
     const [isLoaded, setLoaded] = useState(false)
 
     const token = Cookies.get(ACCESS_TOKEN)
 
     const addNewTask = async (type) => {
-        if(checkToken(token)){
-
+        if (checkToken(token)) {
             const newTask = ({ content: "New task", type, note: { id: note.id } })
             const result = await fetchApiData(`note/task/add`, token, "POST", JSON.stringify(newTask))
             const data = result.content
-            updateProgressState(true)
-            const letWait = setTimeout(()=>{
-                taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
-            },200)
-            
-            return ()=> clearTimeout(letWait)
-            
-        }else{
+            taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
+        } else {
             console.log("Token end")
         }
     }
@@ -42,8 +36,18 @@ const TaskList = ({ note, updateProgressState }) => {
         updateProgressState(newPercentage);
     }
 
-    const updateTaskList = (update) => {
+    const updateTaskList = async (update) => {
         setUpdateList(update)
+        await updateListTask()
+    }
+
+    const updateListTask = async () => {
+        let newTaskList = taskList.filter(item => item.id !== deleteId);
+        setTaskList(newTaskList)
+        setUpdateList(false)
+        setLoaded(false)
+        updateProgressState(false)
+        await deleteTask()
     }
 
     const deleteTaskId = (value) => {
@@ -83,18 +87,20 @@ const TaskList = ({ note, updateProgressState }) => {
         if (deleteId !== null) {
             const token = Cookies.get(ACCESS_TOKEN)
             await fetchApiData(`note/task/remove/${deleteId}`, token, "DELETE")
-
         }
-        setUpdateList(true)
         updateProgressState(true)
     }
 
     useEffect(() => {
-        deleteTask()
+        if (isMounted.current) {
+            updateListTask()
+        } else {
+            isMounted.current = true;
+        }
     }, [deleteId])
 
     useEffect(() => {
-            getAllTaskByNoteId()
+        getAllTaskByNoteId()
     }, [note.id, isUpdateList, selectedSort])
 
     const PleaceholderTask = () => {
@@ -144,10 +150,10 @@ const TaskList = ({ note, updateProgressState }) => {
                 <RenderSort />
             </div>
             {
-                isLoaded ? 
-                <LoadingComponent className={`flex mt-5`} size='w-10 h-10' />
-                :
-                <RenderTaskList />
+                isLoaded ?
+                    <LoadingComponent className={`flex mt-5`} size='w-10 h-10' />
+                    :
+                    <RenderTaskList />
             }
         </>
     )

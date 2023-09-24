@@ -45,7 +45,15 @@ const NoteDetail = () => {
     useEffect(() => {
         document.title = item.name
     }, [item.name])
-
+    
+    useEffect(() => {
+        if (isMounted.current) {
+            updateNoteById()
+        } else {
+            isMounted.current = true;
+        }
+    }, [newDone])
+    
     const removeNote = async () => {
 
         if (item.tasks === null || item.tasks.length < 1) {
@@ -70,13 +78,7 @@ const NoteDetail = () => {
         updateNote()
     }
 
-    useEffect(() => {
-        if (isMounted.current) {
-            updateNoteById()
-        } else {
-            isMounted.current = true;
-        }
-    }, [newDone])
+ 
 
     const updateProgressState = (value) => {
         setUpdateProgress(value)
@@ -198,7 +200,7 @@ const NoteDetail = () => {
                     </div>
                     <div className='flex flex-col lg:flex-row justify-start py-2 px-2 lg:items-center gap-3 w-full bg-slate-300 border-b'>
                         <Breadcrumbs text={"Back to home"} className={``} />
-                        <Link className='bg-white rounded-md p-1' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
+                        <Link className='bg-white text-xs rounded-sm p-2' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
                     </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>

@@ -49,7 +49,7 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
 
 
     return (
-        <div className={`border-l-4 border-l-blue-500 w-full flex p-2 mb-2 relative bg-white overflow-hidden justify-between items-center rounded-md lg:hover:shadow-lg transition-all`}>
+        <div className={`border-l-4 border-l-blue-500 w-full flex p-2 relative bg-white overflow-hidden justify-between items-center lg:hover:bg-slate-300 transition-all`}>
             <div className={`${isConfirm ? "flex" : "hidden"} justify-center items-center transition-all absolute top-0 left-0 bg-black bg-opacity-50 w-full h-full z-10 gap-2`}>
                 <button onClick={() => remove_workspace()} className='p-2 h-fit my-1 rounded-md bg-green-600 text-white font-bold text-sm'>
                     Delete
