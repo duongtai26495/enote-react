@@ -9,10 +9,10 @@ const ActivateAccount = () => {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const [activateEmail, setActivateEmail] = useState("")
-  const [code, setCode] = useState("")
+  const [activateCode, setActivateCode] = useState("")
   const [errorMsg, setErrMsg] = useState("")
   const [isSuccess, setSuccess] = useState(false)
-
+  const [isResend, setResend] = useState(false)
   useEffect(() => {
     const checkEmail = async () => {
       const email = localStorage.getItem(ACTIVATE_EMAIL)
@@ -21,8 +21,7 @@ const ActivateAccount = () => {
         setActivateEmail(email)
         let isSend = Boolean(localStorage.getItem(AUTO_SEND))
         if(!isSend){
-          await sendActivateMail()
-          localStorage.setItem(AUTO_SEND, true)
+          await sendActivateMail(email)
         }
       }
       else{
@@ -33,8 +32,11 @@ const ActivateAccount = () => {
     checkEmail()
   }, [])
 
-  const sendActivateMail = async () => {
-    await fetchApiData(`public/send-activate-mail?email=${activateEmail}`)
+  const sendActivateMail = async (email) => {
+    await fetchApiData(`public/send-activate-mail?email=${email}`)
+    localStorage.setItem(AUTO_SEND, true)
+    setResend(false)
+    setSuccess(false)
   }
 
   const checkKeyPress = async (e) => {
@@ -44,17 +46,18 @@ const ActivateAccount = () => {
   }
 
   const submitCode = async () => {
-    if (code.length === 10) {
-      let data = {
+    if (activateCode.length === 10) {
+      let data = JSON.stringify({
         email: activateEmail,
-        code
-      }
+        code : activateCode
+      })
       const result = await fetchApiData("public/activate-account", null, "POST", data)
-      console.log(result)
       if (result.status === SUCCESS_RESULT) {
         setSuccess(true)
       } else {
-        setErrMsg(result.msg)
+        setErrMsg(result.data.msg)
+        setSuccess(false)
+        setResend(true)
       }
     } else {
       setErrMsg("Format of code is incorrect")
@@ -74,18 +77,15 @@ const ActivateAccount = () => {
           </div>
 
           <div className=" mx-2">
-          {
-            isSuccess ?
-          <p className='text-md font-bold text-green-600 block text-center'>Your account is activated</p>
-          :
-          <>
+          <p className={`${isSuccess ? "block" : "hidden"} text-md font-bold text-green-600 text-center`}>Your account is activated</p>
+          <div className={`${isSuccess || isResend ? "hidden" : "block" }`}>
             <h1 className='font-bold text-center block text-xl'>Activate your account</h1>
             <p className='text-md'>Check your email to get the code</p>
 
             <input
               type='text'
               maxLength={10}
-              onChange={e => setCode(e.target.value)}
+              onChange={e => setActivateCode(e.target.value)}
               onKeyDown={checkKeyPress}
               className='text-2xl p-2 w-full rounded-md border bg-white mt-2 text-center block'
               placeholder='X XXX XXX XXX'
@@ -94,10 +94,12 @@ const ActivateAccount = () => {
               onClick={() => submitCode()}
               className='w-full p-2 rounded-md bg-slate-100 border mt-3 lg:hover:shadow-lg transition-shadow'>Send</button>
             <p className='h-5 block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
-          </>
-          }
           </div>
-          <Link to={"/login"} className='text-center block'>Back to login</Link>
+          <button
+              onClick={() => sendActivateMail(activateEmail)}
+              className={`${isResend ? "block" : "hidden"} w-full p-2 rounded-md bg-slate-100 border mt-3 lg:hover:shadow-lg transition-shadow`}>Re-Send email</button>
+          </div>
+          <Link to={"/login"} className='text-center block mt-3'>Back to login</Link>
         </div>
         
       </div>
