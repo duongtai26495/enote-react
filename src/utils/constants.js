@@ -1,7 +1,7 @@
 
 export const CURRENT_NAV_ITEM = "currentNavItem";
 
-export const URL_PREFIX = "http://192.168.1.21:8080/"
+export const URL_PREFIX = "http://192.168.1.20:8080/"
 
 export const ACCESS_TOKEN = "actk"
 export const REFRESH_TOKEN = "rftk"

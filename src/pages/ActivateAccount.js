@@ -67,12 +67,7 @@ const ActivateAccount = () => {
   }
 
   return (
-    <div className="min-h-screen flex relative justify-center items-center">
-      <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-indigo-600">
-
-      </div>
-      <div className="register-form register-form h-fit lg:w-96 max-w-lg bg-white flex items-center justify-center absolute rounded-lg">
-
+      <div className="register-form authen-box h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
         <div className="p-6">
           <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
             <LoadingComponent />
@@ -89,23 +84,21 @@ const ActivateAccount = () => {
               maxLength={10}
               onChange={e => setActivateCode(e.target.value)}
               onKeyDown={checkKeyPress}
-              className='text-2xl p-2 w-full rounded-md border bg-white mt-2 text-center block'
+              className='text-2xl outline-none p-2 w-full rounded-md border bg-white mt-2 text-center block'
               placeholder='X XXX XXX XXX'
             />
             <button
               onClick={() => submitCode()}
-              className='w-full p-2 rounded-md bg-slate-100 border mt-3 lg:hover:shadow-lg transition-shadow'>Send</button>
+              className='bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2 mt-2'>Send</button>
             <p className='h-5 block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
           </div>
           <button
               onClick={() => sendActivateMail(activateEmail)}
-              className={`${isResend ? "block" : "hidden"} w-full p-2 rounded-md bg-slate-100 border mt-3 lg:hover:shadow-lg transition-shadow`}>Re-Send email</button>
+              className={`${isResend ? "block" : "hidden"} bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2`}>Re-Send email</button>
           </div>
           <Link to={"/login"} className='text-center block mt-3'>Back to login</Link>
         </div>
-        
       </div>
-    </div>
   )
 }
 

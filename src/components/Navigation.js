@@ -1,19 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { Home, Login, Register, Layout, About, NoteDetail, UserProfile, Recovery, ConfirmRecovery, LoginPage, RegisterPage, WorkspaceDetail, ActivateAccount } from '../pages';
+import { Home, Login, Register, Layout, About, NoteDetail, UserProfile, Recovery, ConfirmRecovery, LoginPage, RegisterPage, WorkspaceDetail, ActivateAccount, AuthenLayout } from '../pages';
 import SearchResult from '../pages/SearchResult';
 
 const Navigation = () => {
     return (
         <Router>
             <Routes>
-                {/* <Route path="/login" element={<Login />} /> */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/recovery" element={<Recovery />} />
-                <Route path="/confirm-recovery" element={<ConfirmRecovery />} />
-                <Route path="/activate-account" element={<ActivateAccount />} />
+                <Route path="/" element={<AuthenLayout />} >
+                    <Route index path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/recovery" element={<Recovery />} />
+                    <Route path="/confirm-recovery" element={<ConfirmRecovery />} />
+                    <Route path="/activate-account" element={<ActivateAccount />} />
+                </Route>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path='/about' element={<About />} />

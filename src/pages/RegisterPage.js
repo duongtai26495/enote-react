@@ -121,10 +121,6 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="min-h-screen flex relative justify-center items-center">
-            <div className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-gray-100">
-
-            </div>
             <div className="authen-box authen-form h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
 
                 <div className="p-6">
@@ -233,7 +229,6 @@ const RegisterPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 }
 

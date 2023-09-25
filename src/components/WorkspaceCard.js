@@ -47,6 +47,10 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
         }
     };
 
+    const handleInputWsName = (e) => {
+        let value = e.target.value
+        setNewWsName(value)
+    }
 
     return (
         <div className={`border-l-4 border-l-blue-500 w-full flex p-2 relative bg-white overflow-hidden justify-between items-center lg:hover:bg-slate-300 transition-all`}>
@@ -63,11 +67,11 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
                     isUpdateName ?
                         <input
                             autoFocus
-                            className={`whitespace-nowrap text-slate-600 px-2 w-full `}
+                            className={`whitespace-nowrap bg-transparent outline-none border px-1 rounded-md text-slate-600 w-full `}
                             type='text'
                             onKeyDown={handleKeyPress}
                             defaultValue={newWsName}
-                            onChange={(e) => setNewWsName(e.target.value)}
+                            onChange={handleInputWsName}
                         />
                         :
                         <Link to={`/workspace/${workspaceItem.id}`} className='w-full flex flex-col justify-start '>

@@ -9,7 +9,7 @@ import CustomLazyLoadedImage from "./CustomLazyLoadedImage"
 
 
 
-const Header = ({className}) => {
+const Header = ({ className }) => {
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate()
     const [isLogout, setLogout] = useState(false)
@@ -35,7 +35,14 @@ const Header = ({className}) => {
     }
 
     const userInfo = JSON.parse(localStorage.getItem(LOCAL_USER))
-    const profileImage = userInfo.profile_image ? `${URL_PREFIX}public/image/${userInfo.profile_image}` : "https://source.unsplash.com/random"
+    let profileImage = ""
+
+    if (userInfo && userInfo.profile_image) {
+        profileImage = `${URL_PREFIX}public/image/${userInfo.profile_image}`
+    } else {
+        profileImage =  "https://source.unsplash.com/random"
+    }
+
     const [isLogoutBadge, setLogoutBadge] = useState(false)
 
     const toggleLogoutBadge = () => setLogoutBadge(preState => !preState)
@@ -68,7 +75,7 @@ const Header = ({className}) => {
     return (
         <div className={`mx-auto w-full bg-white border-b ${className}`}>
             <div className="p-3 w-full lg:max-w-screen-xl mx-auto">
-                <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0">
+                <nav className="flex flex-col lg:flex-row justify-between gap-5 lg:gap-0 relative">
                     <div className="lg:pr-16 pr-0 mx-auto lg:mx-0">
                         <button className="flex items-center justify-center space-x-2 flex-row " onClick={() => { returnHomePage() }}>
                             <svg className="cursor-pointer" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,10 +84,6 @@ const Header = ({className}) => {
                             <h2 className="text-lg lg:text-2xl font-bold leading-6 text-gray-800" style={{ color: "#b70000" }}>Space</h2>
                         </button>
                     </div>
-
-                    {/* <ul className="hidden md:flex flex-auto space-x-2">
-                        <RenderNavItems />
-                    </ul> */}
                     <div className="flex space-x-5 justify-between lg:justify-center items-center pl-2">
 
                         <div className="w-2/3 lg:w-fit gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">

@@ -98,10 +98,6 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex relative justify-center items-center">
-      <div className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-gray-100">
-
-      </div>
       <div className="authen-box authen-form h-fit login-form lg:w-96 max-w-sm flex items-center justify-center absolute">
         <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
           <LoadingComponent />
@@ -110,7 +106,6 @@ const LoginPage = () => {
           <AuthenLogo />
           <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
           <div className="mb-4">
-            {/* <label className="block text-gray-600 text-sm font-semibold">Tên đăng nhập</label> */}
             <input
               type="text"
               className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
@@ -123,7 +118,6 @@ const LoginPage = () => {
           <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{usernameErrorMsg}</p>
           </div>
           <div className="mb-4">
-            {/* <label className="block text-gray-600 text-sm font-semibold">Mật khẩu</label> */}
             <input
               type="password"
               className={`${passwordErrorMsg ? "border-red-500" :"" } mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
@@ -136,13 +130,7 @@ const LoginPage = () => {
           <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{passwordErrorMsg}</p>
           </div>
           <div className="mb-4 flex gap-2 items-center">
-            {/* <input
-              id='rememberme'
-              type="checkbox"
-              className="mr-2"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            /> */}
+         
             <div onClick={() => setRememberMe(prevState => !prevState)} className={`remember_switch ${rememberMe ? "bg-green-700" : "bg-gray-100 border-gray-300 border"}`}>
               <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
 
@@ -165,7 +153,6 @@ const LoginPage = () => {
           <p className={`text-red-600 text-sm font-bold text-center w-full my-5 h-3`}>{commonErrorMsg}</p>
         </div>
       </div>
-    </div>
   );
 }
 
