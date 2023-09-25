@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ACTIVATE_EMAIL, AUTO_SEND, URL_PREFIX } from '../utils/constants';
-import { fetchApiData } from '../utils/functions';
+import { fetchApiData, validateEmail } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
 import LoadingComponent from '../components/LoadingComponent';
@@ -11,9 +11,7 @@ const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [gender, setGender] = useState('UNKNOWN'); // Mặc định là UNKNOWN
-    const [err, setErr] = useState(false)
+    const [gender, setGender] = useState('MALE'); // Mặc định là UNKNOWN
     const [isLoading, setLoading] = useState(false)
 
     const [checkUsernameIsExist, setCheckUsernameIsExist] = useState(false)
@@ -24,13 +22,48 @@ const RegisterPage = () => {
     const [isEmailExist, setEmailExist] = useState(false)
     const [checkedEmailDone, setCheckedEmailDone] = useState(false)
 
+    const [errNameMsg, setErrNameMsg] = useState("")
+    const [errUnameMsg, setErrUnameMsg] = useState("")
+    const [errEmailMsg, setErrEmailMsg] = useState("")
+    const [errPasswordMsg, setErrPasswordMsg] = useState("")
+    const [errCommonMsg, setErrCommonMsg] = useState("")
+
 
     const navigate = useNavigate()
+    const checkInputRegister = async () => {
+        setErrEmailMsg("")
+        setErrNameMsg("")
+        setErrUnameMsg("")
+        setErrPasswordMsg("")
+        setErrCommonMsg("")
+
+        let err = false
+        if (firstName.length < 3 || lastName.length < 3) {
+            setErrNameMsg("Name must have more than 3 characters")
+            err = true
+        }
+        if (username.length < 5) {
+            setErrUnameMsg("Username must have more than 5 characters")
+            err = true
+        }
+        if (!validateEmail(email)) {
+            setErrEmailMsg("Format of email is incorrect")
+            err = true
+        }
+        if (password.length < 6) {
+            setErrPasswordMsg("Password must have more than 6 character")
+            err = true
+        }
+        if (err) {
+            setErrCommonMsg("Something went wrong !")
+        }else{
+            await handleRegister()
+        }
+    }
+
     const handleRegister = async () => {
 
-        setLoading(true)
-        // Xử lý đăng ký ở đây
-        if (password === confirmPassword) {
+            setLoading(true)
             const user = {
                 f_name: firstName,
                 l_name: lastName,
@@ -43,15 +76,13 @@ const RegisterPage = () => {
                 const result = await fetchApiData("public/sign-up", null, "POST", user)
                 localStorage.setItem(ACTIVATE_EMAIL, email)
                 localStorage.setItem(AUTO_SEND, false)
-                result.status === "SUCCESS" ? navigate("/activate-account") : setErr(true)
+                result.status === "SUCCESS" ? navigate("/activate-account") : setErrCommonMsg(result.content.msg)
             } catch (error) {
-                setErr(true)
+                setErrCommonMsg(error.content.msg)
             }
             finally {
                 setLoading(false)
             }
-
-        }
     };
 
 
@@ -91,15 +122,15 @@ const RegisterPage = () => {
 
     return (
         <div className="min-h-screen flex relative justify-center items-center">
-            <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-indigo-600">
+            <div className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-gray-100">
 
             </div>
-            <div className="authen-form register-form h-fit lg:w-96 max-w-lg bg-white flex items-center justify-center absolute rounded-lg">
-                
+            <div className="authen-box authen-form h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
+
                 <div className="p-6">
-                <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
-                    <LoadingComponent />
-                </div>
+                    <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
+                        <LoadingComponent />
+                    </div>
                     <AuthenLogo />
                     <div className=" mx-2">
                         <h2 className="text-2xl font-semibold mb-4">Đăng ký</h2>
@@ -111,7 +142,7 @@ const RegisterPage = () => {
                                 name='register_f_name'
                                 id='register_f_name'
                                 onChange={(e) => setFirstName(e.target.value)}
-                                className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
+                                className={`p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none ${errNameMsg ? "border-red-600" : ""}`}
                             />
                             <input
                                 type="text"
@@ -120,9 +151,10 @@ const RegisterPage = () => {
                                 id='register_l_name'
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                                className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
+                                className={`p-2 border rounded-lg w-full bg-white bg-opacity-60 ${errNameMsg ? "border-red-600" : ""}`}
                             />
                         </div>
+                        <p className={`text-red-600 whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errNameMsg}</p>
                         <div className={`gap-1 items-center flex`}>
 
                             <svg className={`${checkUsernameIsExist ? "flex" : "hidden"} w-5 h-5 animate-spin`} version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="grid_system" /><g id="_icons"><g><path d="M12,2c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1s1-0.4,1-1V3C13,2.4,12.6,2,12,2z" /><path d="M14.5,7.7c0.2,0.1,0.3,0.1,0.5,0.1c0.3,0,0.7-0.2,0.9-0.5l1.5-2.6c0.3-0.5,0.1-1.1-0.4-1.4c-0.5-0.3-1.1-0.1-1.4,0.4    l-1.5,2.6C13.9,6.8,14,7.4,14.5,7.7z" /><path d="M16.3,9.5c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1l2.6-1.5c0.5-0.3,0.6-0.9,0.4-1.4c-0.3-0.5-0.9-0.6-1.4-0.4    l-2.6,1.5C16.2,8.4,16.1,9,16.3,9.5z" /><path d="M21,11l-3,0c0,0,0,0,0,0c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1l3,0c0,0,0,0,0,0c0.6,0,1-0.4,1-1C22,11.5,21.6,11,21,11z" /><path d="M20.3,15.7l-2.6-1.5c-0.5-0.3-1.1-0.1-1.4,0.4c-0.3,0.5-0.1,1.1,0.4,1.4l2.6,1.5c0.2,0.1,0.3,0.1,0.5,0.1    c0.3,0,0.7-0.2,0.9-0.5C20.9,16.5,20.8,15.9,20.3,15.7z" /><path d="M15.8,16.7c-0.3-0.5-0.9-0.6-1.4-0.4c-0.5,0.3-0.6,0.9-0.4,1.4l1.5,2.6c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1    c0.5-0.3,0.6-0.9,0.4-1.4L15.8,16.7z" /><path d="M12,17c-0.5,0-1,0.4-1,1l0,3c0,0.6,0.4,1,1,1c0,0,0,0,0,0c0.5,0,1-0.4,1-1l0-3C13,17.5,12.5,17,12,17z" /><path d="M9.5,16.3C9,16,8.4,16.2,8.1,16.7l-1.5,2.6c-0.3,0.5-0.1,1.1,0.4,1.4c0.2,0.1,0.3,0.1,0.5,0.1c0.3,0,0.7-0.2,0.9-0.5    l1.5-2.6C10.1,17.2,10,16.6,9.5,16.3z" /><path d="M7.7,14.5c-0.3-0.5-0.9-0.6-1.4-0.4l-2.6,1.5c-0.5,0.3-0.6,0.9-0.4,1.4c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1    l2.6-1.5C7.8,15.6,7.9,15,7.7,14.5z" /><path d="M6,13c0.5,0,1-0.4,1-1c0-0.6-0.4-1-1-1l-3,0c0,0,0,0,0,0c-0.5,0-1,0.4-1,1c0,0.6,0.4,1,1,1L6,13C6,13,6,13,6,13z" /><path d="M3.7,8.3l2.6,1.5C6.5,9.9,6.7,10,6.8,10c0.3,0,0.7-0.2,0.9-0.5C8,9,7.8,8.4,7.3,8.1L4.7,6.6C4.3,6.3,3.7,6.5,3.4,6.9 C3.1,7.4,3.3,8,3.7,8.3z" /></g></g></svg>
@@ -142,8 +174,9 @@ const RegisterPage = () => {
                             id='username'
                             onBlur={checkUsernameAvailable}
                             onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
+                            className={`p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none ${errUnameMsg ? "border-red-600" : ""}`}
                         />
+                        <p className={`text-red-600 whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errUnameMsg}</p>
                         <div className={`gap-1 items-center flex`}>
 
                             <svg className={`${checkEmailIsExist ? "flex" : "hidden"} w-5 h-5 animate-spin`} version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="grid_system" /><g id="_icons"><g><path d="M12,2c-0.6,0-1,0.4-1,1v3c0,0.6,0.4,1,1,1s1-0.4,1-1V3C13,2.4,12.6,2,12,2z" /><path d="M14.5,7.7c0.2,0.1,0.3,0.1,0.5,0.1c0.3,0,0.7-0.2,0.9-0.5l1.5-2.6c0.3-0.5,0.1-1.1-0.4-1.4c-0.5-0.3-1.1-0.1-1.4,0.4    l-1.5,2.6C13.9,6.8,14,7.4,14.5,7.7z" /><path d="M16.3,9.5c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1l2.6-1.5c0.5-0.3,0.6-0.9,0.4-1.4c-0.3-0.5-0.9-0.6-1.4-0.4    l-2.6,1.5C16.2,8.4,16.1,9,16.3,9.5z" /><path d="M21,11l-3,0c0,0,0,0,0,0c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1l3,0c0,0,0,0,0,0c0.6,0,1-0.4,1-1C22,11.5,21.6,11,21,11z" /><path d="M20.3,15.7l-2.6-1.5c-0.5-0.3-1.1-0.1-1.4,0.4c-0.3,0.5-0.1,1.1,0.4,1.4l2.6,1.5c0.2,0.1,0.3,0.1,0.5,0.1    c0.3,0,0.7-0.2,0.9-0.5C20.9,16.5,20.8,15.9,20.3,15.7z" /><path d="M15.8,16.7c-0.3-0.5-0.9-0.6-1.4-0.4c-0.5,0.3-0.6,0.9-0.4,1.4l1.5,2.6c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1    c0.5-0.3,0.6-0.9,0.4-1.4L15.8,16.7z" /><path d="M12,17c-0.5,0-1,0.4-1,1l0,3c0,0.6,0.4,1,1,1c0,0,0,0,0,0c0.5,0,1-0.4,1-1l0-3C13,17.5,12.5,17,12,17z" /><path d="M9.5,16.3C9,16,8.4,16.2,8.1,16.7l-1.5,2.6c-0.3,0.5-0.1,1.1,0.4,1.4c0.2,0.1,0.3,0.1,0.5,0.1c0.3,0,0.7-0.2,0.9-0.5    l1.5-2.6C10.1,17.2,10,16.6,9.5,16.3z" /><path d="M7.7,14.5c-0.3-0.5-0.9-0.6-1.4-0.4l-2.6,1.5c-0.5,0.3-0.6,0.9-0.4,1.4c0.2,0.3,0.5,0.5,0.9,0.5c0.2,0,0.3,0,0.5-0.1    l2.6-1.5C7.8,15.6,7.9,15,7.7,14.5z" /><path d="M6,13c0.5,0,1-0.4,1-1c0-0.6-0.4-1-1-1l-3,0c0,0,0,0,0,0c-0.5,0-1,0.4-1,1c0,0.6,0.4,1,1,1L6,13C6,13,6,13,6,13z" /><path d="M3.7,8.3l2.6,1.5C6.5,9.9,6.7,10,6.8,10c0.3,0,0.7-0.2,0.9-0.5C8,9,7.8,8.4,7.3,8.1L4.7,6.6C4.3,6.3,3.7,6.5,3.4,6.9 C3.1,7.4,3.3,8,3.7,8.3z" /></g></g></svg>
@@ -163,8 +196,9 @@ const RegisterPage = () => {
                             id='email'
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={checkEmailAvailable}
-                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
+                            className={`${errEmailMsg ? "border-red-600" : ""} p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
                         />
+                        <p className={`text-red-600  whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errEmailMsg}</p>
                         <input
                             type="password"
                             placeholder="Mật khẩu"
@@ -172,17 +206,10 @@ const RegisterPage = () => {
                             id='password'
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
+                            className={`${errPasswordMsg ? "border-red-600" : ""} p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
                         />
-                        <input
-                            type="password"
-                            id='confirm_password'
-                            name='confirm_password'
-                            placeholder="Xác nhận mật khẩu"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60"
-                        />
+                        <p className={`text-red-600 whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errPasswordMsg}</p>
+
                         <div className="mb-2 w-full flex items-center">
                             <label className='w-full'>Giới tính:</label>
                             <select
@@ -196,13 +223,13 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="mt-4 flex flex-col w-full">
-                            <button onClick={handleRegister} className="bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
+                            <button onClick={()=>checkInputRegister()} className="bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
                                 Đăng ký
                             </button>
                             <Link to="/login" className="text-gray-500 mt-5 mb-3 text-sm hover:text-slate-800 font-bold">Quay lại trang đăng nhập</Link>
                         </div>
-                      
-                        {err && <p className='text-red-600 text-center w-full my-5'>Something went wrong !</p>}
+
+                        <p className='text-red-600 text-center w-full my-5 h-3'>{errCommonMsg}</p>
                     </div>
                 </div>
             </div>

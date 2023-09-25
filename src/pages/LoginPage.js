@@ -99,10 +99,10 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex relative justify-center items-center">
-      <div style={{ backgroundImage: `url(https://source.unsplash.com/random)` }} className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-indigo-600">
+      <div className="bg-page w-full h-full absolute top-0 left-0 z-0 bg-cover bg-center bg-gray-100">
 
       </div>
-      <div className="authen-form h-fit login-form lg:w-96 max-w-lg bg-white flex items-center justify-center absolute rounded-lg">
+      <div className="authen-box authen-form h-fit login-form lg:w-96 max-w-sm flex items-center justify-center absolute">
         <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
           <LoadingComponent />
         </div>
@@ -110,10 +110,10 @@ const LoginPage = () => {
           <AuthenLogo />
           <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
           <div className="mb-4">
-            <label className="block text-gray-600 font-semibold">Tên đăng nhập</label>
+            {/* <label className="block text-gray-600 text-sm font-semibold">Tên đăng nhập</label> */}
             <input
               type="text"
-              className={`${usernameErrorMsg ? "border-red-500" : ""} w-full border p-2 rounded bg-white bg-opacity-60`}
+              className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
               placeholder="Nhập tên đăng nhập"
               value={username}
               onKeyDown={(e) => e.key === 'Enter' ? passwordRef.current.focus() : null}
@@ -123,10 +123,10 @@ const LoginPage = () => {
           <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{usernameErrorMsg}</p>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-600 font-semibold">Mật khẩu</label>
+            {/* <label className="block text-gray-600 text-sm font-semibold">Mật khẩu</label> */}
             <input
               type="password"
-              className={`${passwordErrorMsg ? "border-red-500" :"" } w-full border p-2 rounded bg-white bg-opacity-60`}
+              className={`${passwordErrorMsg ? "border-red-500" :"" } mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
               placeholder="Nhập mật khẩu"
               value={password}
               ref={passwordRef}
@@ -143,13 +143,13 @@ const LoginPage = () => {
               checked={rememberMe}
               onChange={() => setRememberMe(!rememberMe)}
             /> */}
-            <div onClick={() => setRememberMe(prevState => !prevState)} className={`remember_switch ${rememberMe ? "bg-green-700" : "bg-slate-400"}`}>
-              <span className={`remember_button ${rememberMe ? "remember_true" : "remember_false"}`}></span>
+            <div onClick={() => setRememberMe(prevState => !prevState)} className={`remember_switch ${rememberMe ? "bg-green-700" : "bg-gray-100 border-gray-300 border"}`}>
+              <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
 
             </div>
-            <label htmlFor='rememberme' className="cursor-pointer text-gray-600">Ghi nhớ tên đăng nhập</label>
+            <label htmlFor='rememberme' className="cursor-pointer font-bold text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
           </div>
-          <button className=" bg-white w-full border text-slate-600 font-bold py-2 rounded hover:shadow-md transition-all"
+          <button className="bg-white border w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
             onClick={checkInputLogin}>
             Đăng nhập
           </button>
@@ -162,7 +162,7 @@ const LoginPage = () => {
             </p>
           </div>
 
-          <p className={`text-red-600 text-sm font-bold text-center w-full my-5 ${commonErrorMsg ? "block" : "hidden"} `}>{commonErrorMsg}</p>
+          <p className={`text-red-600 text-sm font-bold text-center w-full my-5 h-3`}>{commonErrorMsg}</p>
         </div>
       </div>
     </div>

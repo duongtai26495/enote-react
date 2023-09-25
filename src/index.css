@@ -135,7 +135,7 @@ body {
   min-height: 100vh;
 }
 
-.content-wrapper{
+.content-wrapper {
   min-height: 100vh;
   margin-bottom: 100px;
 }
@@ -236,7 +236,7 @@ footer {
 .remember_button {
   width: 15px;
   height: 15px;
-  background-color: white;
+  background-color: rgb(131, 131, 131);
   border-radius: 50%;
   transition: all .3s ease-in-out;
 }
@@ -246,6 +246,7 @@ footer {
 }
 
 .remember_true {
+  background-color: white;
   transform: translateX(12px);
 }
 
@@ -277,9 +278,29 @@ footer {
   }
 }
 
-.login-form{
+.login-form {
   animation: slideToRight 1s ease-in-out;
 }
-.register-form{
+
+.register-form {
   animation: slideToLeft 1s ease-in-out;
+}
+
+.authen-box {
+  border-radius: 20px;
+  background: white;
+  box-shadow: 8px 8px 16px #e9e7e7,
+    -5px -5px 15px rgba(255,255,255,1);
+}
+
+.authen-input {
+  border-radius: 5px;
+  background: white;
+  box-shadow: inset 2px 2px 5px #ebebeb,
+    inset -3px -3px 3px white;
+}
+
+.authen-button {
+  border-radius: 5px;
+  background: #fafafa;
 }
