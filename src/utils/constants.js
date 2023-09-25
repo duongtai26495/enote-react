@@ -27,3 +27,8 @@ export const IS_REMEMBER = "isRememberMe"
 export const USERNAME_LOCAL = "uname_local"
 
 export const SUCCESS_RESULT = "SUCCESS"
+
+
+export const CURRENT_NOTE_PAGE = "current_note_page"
+export const CURRENT_TASK_PAGE = "current_task_page"
+export const CURRENT_WS_PAGE = "current_ws_page"

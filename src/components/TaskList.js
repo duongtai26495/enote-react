@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import { CHECK_TYPE, NOTE_TYPE, SELECTED_SORT, SELECTED_TASK_SORT, SORT_TASK_ITEMS, ACCESS_TOKEN } from '../utils/constants'
+import { CHECK_TYPE, NOTE_TYPE, SELECTED_SORT, SELECTED_TASK_SORT, SORT_TASK_ITEMS, ACCESS_TOKEN, CURRENT_TASK_PAGE } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import TaskRow from './TaskRow'
 import LoadingAnimation from './LoadingAnimation'
 import LoadingComponent from './LoadingComponent'
+import Pagination from './Pagination'
 
 const TaskList = ({ note, updateProgressState }) => {
 
@@ -15,6 +16,9 @@ const TaskList = ({ note, updateProgressState }) => {
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
     const isMounted = useRef(false);
     const [isLoaded, setLoaded] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [maxPage, setMaxPage] = useState(1)
+    const firstPage = 1
 
     const token = Cookies.get(ACCESS_TOKEN)
 
@@ -28,6 +32,25 @@ const TaskList = ({ note, updateProgressState }) => {
             console.log("Token end")
         }
     }
+    const setPage = (TYPE) => {
+        switch (TYPE) {
+            case "PREV":
+                if (currentPage > 1) {
+                    let current = Number(currentPage) - 1
+                    setCurrentPage(current)
+                    localStorage.setItem(CURRENT_TASK_PAGE, current)
+                }
+                break;
+            case "NEXT":
+                if (currentPage < maxPage) {
+                    let current = Number(currentPage) + 1
+                    setCurrentPage(current)
+                    localStorage.setItem(CURRENT_TASK_PAGE, current)
+                }
+                break;
+        }
+    }
+
     const sortHandle = (value) => {
         setSelectedSort(value.target.value)
         localStorage.setItem(SELECTED_TASK_SORT, JSON.stringify(value.target.value))
@@ -75,8 +98,10 @@ const TaskList = ({ note, updateProgressState }) => {
         setLoaded(true)
         const token = Cookies.get(ACCESS_TOKEN)
         if (checkToken(token) && note.id > 0) {
-            const result = await fetchApiData(`note/tasks/${note.id}?sort=${selectedSort}`, token)
+            let page = Number(currentPage) - 1
+            const result = await fetchApiData(`note/tasks/${note.id}?page=${page}&size=10&sort=${selectedSort}`, token)
             const data = result.content
+            setMaxPage(result.totalPages)
             setTaskList(data)
             setUpdateList(false)
         }
@@ -101,7 +126,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     useEffect(() => {
         getAllTaskByNoteId()
-    }, [note.id, isUpdateList, selectedSort])
+    }, [note.id, isUpdateList, selectedSort, currentPage])
 
     const PleaceholderTask = () => {
         return (
@@ -153,8 +178,19 @@ const TaskList = ({ note, updateProgressState }) => {
                 isLoaded ?
                     <LoadingComponent className={`flex mt-5`} size='w-10 h-10' />
                     :
-                    <RenderTaskList />
+                    <>
+                        <RenderTaskList />
+                        <Pagination
+                            className={'justify-center my-3'}
+                            currentPage={currentPage}
+                            maxPage={maxPage}
+                            firstPage={firstPage}
+                            setCurrentPage={setCurrentPage}
+                            setPage={setPage}
+                        />
+                    </>
             }
+
         </>
     )
 }

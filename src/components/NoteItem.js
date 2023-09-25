@@ -117,7 +117,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
         toggleOpenCardSub()
     }
     return (
-        <div className={`w-full block break-inside-avoid py-3 relative ${subclass}`}>
+        <div className={`w-full block break-inside-avoid py-3 relative ${subclass} `}>
 
             <div className={`relative  shadow-lg border p-2 flex flex-col rounded-lg ${item.done ? "bg-teal-500 " :"bg-white"} bg-opacity-75 transition-all lg:hover:-translate-y-1`}>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>

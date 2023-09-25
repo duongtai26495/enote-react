@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <>
       <footer
-        className="p-0 flex flex-col items-center bg-neutral-200 text-center text-white dark:bg-black  w-full">
+        className="p-0 flex flex-col items-center bg-neutral-200 text-center text-white dark:bg-teal-600 w-full h-36">
         <div className="container pt-9">
           <div className="mb-9 w-full lg:w-1/5 mx-auto flex justify-center">
             <a href="#!" className="m-auto text-neutral-800 dark:text-neutral-200">
@@ -43,7 +42,7 @@ const Footer = () => {
         </div>
 
         <div
-          className="w-full bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
+          className="w-full bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-teal-700 dark:text-neutral-200">
           © 2023 Copyright:
           <Link
             target='__blank'
@@ -53,7 +52,6 @@ const Footer = () => {
           </Link>
         </div>
       </footer>
-    </>
   )
 }
 

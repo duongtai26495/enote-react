@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie'
 import React, { memo, useEffect, useMemo, useState, useRef } from 'react'
-import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS } from '../utils/constants'
+import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS, CURRENT_NOTE_PAGE } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import EmptyList from './EmptyList'
+import Pagination from './Pagination'
 
 const NoteList = ({ id }) => {
 
@@ -45,7 +46,7 @@ const NoteList = ({ id }) => {
     }
     const RenderNote = React.memo(() => {
         return (
-            <ResponsiveMasonry className='h-fit mb-48 masonry-wrapper' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
+            <ResponsiveMasonry className='h-fit masonry-wrapper' columnsCountBreakPoints={{ 350: 2, 767: 3, 960: 3 }}>
                 <Masonry>
                     {
                         noteList?.map((item, index) => (
@@ -63,14 +64,14 @@ const NoteList = ({ id }) => {
                 if (currentPage > 1) {
                     let current = Number(currentPage) - 1
                     setCurrentPage(current)
-                    localStorage.setItem("currentPage", current)
+                    localStorage.setItem(CURRENT_NOTE_PAGE, current)
                 }
                 break;
             case "NEXT":
                 if (currentPage < maxPage) {
                     let current = Number(currentPage) + 1
                     setCurrentPage(current)
-                    localStorage.setItem("currentPage", current)
+                    localStorage.setItem(CURRENT_NOTE_PAGE, current)
                 }
                 break;
         }
@@ -124,35 +125,6 @@ const NoteList = ({ id }) => {
         )
     }
 
-
-    const Pagination = () => {
-        return (
-            <div className={`${maxPage > 0 ? "opacity-100" : "opacity-0"} flex w-1/3 lg:w-full flex-row justify-end`}>
-                <p className='text-sm w-full lg:w-1/5 text-center flex flex-row items-center justify-between'>
-                    <span className={`cursor-pointer pagingation-num transition-all ${currentPage === firstPage && 'fill-slate-300'}`} onClick={() => setPage("PREV")}>
-                        <svg className='rotate-180' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>
-                    </span>
-
-                    <span className={`w-5 h-5 pagingation-num text-center cursor-pointer transition-all ${currentPage === 1 ? "page-active" : 'pagingation-num '}`} onClick={() => setCurrentPage(1)}>1</span>
-
-                    <span className={`${maxPage > 2 ? "flex" : "hidden"} transition-all w-5 h-5 pagingation-num text-center cursor-pointer ${currentPage === firstPage + 1 && "page-active"}`}
-                        onClick={() => setPage("NEXT")}>{firstPage + 1}</span>
-
-                    <span className={`${maxPage > 5 ? "flex" : "hidden"} `}>...</span>
-
-                    <span className={`${maxPage > 3 ? "flex" : "hidden"} transition-all w-5 h-5 pagingation-num text-center cursor-pointer ${currentPage === maxPage - 1 && "page-active"}`}
-                        onClick={() => setCurrentPage(maxPage - 1)}>{maxPage - 1}</span>
-
-                    <span className={`w-5 h-5 pagingation-num text-center cursor-pointer transition-all ${firstPage === maxPage && "hidden"} ${currentPage === maxPage && "page-active"}`} onClick={() => setCurrentPage(maxPage)}>{maxPage}</span>
-
-                    <span className={`cursor-pointer transition-all  ${currentPage === maxPage ? 'fill-slate-300' : 'pagingation-num '}`} onClick={() => setPage("NEXT")}>
-                        <svg className='' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>
-                    </span>
-                </p>
-            </div>
-        )
-    }
-
     return (
         <>
             <div className={`w-full p-2 gap-2 flex flex-row items-center justify-between bg-slate-100 h-fit`}>
@@ -161,7 +133,14 @@ const NoteList = ({ id }) => {
                     Add note
                 </span>
                 <RenderSort />
-                <Pagination />
+                <Pagination
+                    className={'justify-end'}
+                    currentPage={currentPage}
+                    maxPage={maxPage}
+                    firstPage={firstPage}
+                    setCurrentPage={setCurrentPage}
+                    setPage={setPage}
+                />
             </div>
             {
                 noteList.length > 0 ?

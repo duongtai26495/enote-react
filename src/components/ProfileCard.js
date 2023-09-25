@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
 
-const ProfileCard = () => {
+const ProfileCard = ({profileImageUrl}) => {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem(LOCAL_USER)) ?? {})
     const token = Cookies.get(ACCESS_TOKEN)
@@ -16,7 +16,7 @@ const ProfileCard = () => {
     const [selectedImage, setSelectedImage] = useState(null)
     const [profileImage, setProfileImage] = useState(user.profile_image ? URL_PREFIX + "public/image/" + user.profile_image : "https://source.unsplash.com/random")
     const [previewImage, setPreviewImage] = useState(null)
-    const [changeImageLabel, setChangeImageLabel] = useState("")
+    const [changeImageLabel, setChangeImageLabel] = useState("Update image")
     const [changePasswordLabel, setChangePwLabel] = useState("Update password")
     const [isLoadingAvt, setLoadingAvt] = useState(false)
     const [isUpdatePassword, setUpdatePasswordState] = useState(false)
@@ -88,7 +88,7 @@ const ProfileCard = () => {
                 setLoadingAvt(false)
                 setChangeImageLabel("File too large (<5mb)")
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("")
+                    setChangeImageLabel("Update image")
                 }, 2000);
 
                 return () => clearTimeout(clear);
@@ -121,7 +121,7 @@ const ProfileCard = () => {
                 setLoadingAvt(false)
                 setChangeImageLabel("Image changed success")
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("")
+                    setChangeImageLabel("Update image")
                 }, 5000);
 
                 return () => clearTimeout(clear);
@@ -163,13 +163,18 @@ const ProfileCard = () => {
         <div className='w-full h-full flex flex-row px-2 shadow-xl bg-white rounded-xl overflow-hidden'>
             <div className='w-full flex flex-col gap-2 mt-5 border-b pb-3'>
                 <div className={`w-full h-fit relative`}>
-                    <div className='card_profile_image relative'>
+                    <div className='card_profile_image cursor-pointer relative'>
                         <LoadingComponent className={`${isLoadingAvt ? "flex" : "hidden"} bg-white bg-opacity-60 transition-all w-full h-full border-4 rounded-full absolute top-0 left-0`} />
                         <CustomLazyLoadedImage
-                            onClick={() => imageRef.current.click()}
+                            onClick={()=>profileImageUrl(profileImage)}
                             className={`aspect-square profile_image object-cover w-full object-center h-full rounded-full mb-3 border-8 border-gray-300 shadow-sm`}
                             src={`${previewImage ?? profileImage}`}
                         />
+                        <div className='absolute bottom-10 w-full'>
+                            <button onClick={() => imageRef.current.click()} className='p-2 bg-white bg-opacity-70 block mx-auto rounded-md lg:hover:bg-opacity-100 transition-all'>
+                            {changeImageLabel}
+                            </button>
+                        </div>
                     </div>
                     <input
                         type='file'
@@ -190,9 +195,7 @@ const ProfileCard = () => {
                                 </button>
                             </div>
                             :
-                            <p className={`transition-all text-sm w-full m-auto text-center font-bold mb-5 absolute bottom-5`}>
-                                <span className='cursor-pointer px-2 pt-1 pb-2  align-middle bg-opacity-60 rounded-sm text-white'>{changeImageLabel}</span>
-                            </p>
+                            ""
                     }
                 </div>
                 <h3 onClick={toggleUpdateName} className={`${isUpdateName ? "hidden" : "block"} text-2xl font-bold mb-3 w-full text-center`}>{user.f_name} {user.l_name}</h3>
