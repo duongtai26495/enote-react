@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
 import { fetchApiData } from '../utils/functions';
 
-const Recovery = () => {
+const RecoveryPassword = () => {
     useEffect(()=>{
         document.title = "Recovery email"
     },[])
     const [email, setEmail] = useState("");
     const navigate = useNavigate()
+    
     const handleEmailChange = (event) => {
       setEmail(event.target.value);
     };
@@ -26,7 +27,7 @@ const Recovery = () => {
   
 
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <div className="bg-white shadow-xl border rounded px-8 pt-6 pb-8 mb-4">
             <AuthenLogo />
             <p className='text-base my-5'>Please enter your registered email to recovery your account.</p>
@@ -64,4 +65,4 @@ const Recovery = () => {
     );
 }
 
-export default Recovery
+export default RecoveryPassword

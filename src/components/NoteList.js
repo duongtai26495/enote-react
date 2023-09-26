@@ -17,7 +17,7 @@ const NoteList = ({ id }) => {
     const isMounted = useRef(false);
     const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
-    
+
     const getAllNoteByWs = async () => {
         if (checkToken(token) && id > 0) {
             try {
@@ -35,7 +35,7 @@ const NoteList = ({ id }) => {
         }
     }
 
-   
+
 
     const removeNote = async (note) => {
         if (note.tasks == null || note.tasks?.length < 1) {
@@ -110,7 +110,7 @@ const NoteList = ({ id }) => {
 
     const RenderSort = () => {
         return (
-            <select className='w-1/3 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note'
+            <select className='w-1/2 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note'
                 value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
                     const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
@@ -133,18 +133,21 @@ const NoteList = ({ id }) => {
                     Add note
                 </span>
                 <RenderSort />
-                <Pagination
-                    className={'justify-end'}
-                    currentPage={currentPage}
-                    maxPage={maxPage}
-                    firstPage={firstPage}
-                    setCurrentPage={setCurrentPage}
-                    setPage={setPage}
-                />
+
             </div>
             {
                 noteList.length > 0 ?
-                    <RenderNote />
+                    <>
+                        <RenderNote />
+                        <Pagination
+                            className={'justify-center my-5 '}
+                            currentPage={currentPage}
+                            maxPage={maxPage}
+                            firstPage={firstPage}
+                            setCurrentPage={setCurrentPage}
+                            setPage={setPage}
+                        />
+                    </>
                     :
                     <EmptyList />
             }
