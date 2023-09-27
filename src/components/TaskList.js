@@ -181,7 +181,7 @@ const TaskList = ({ note, updateProgressState }) => {
                     <>
                         <RenderTaskList />
                         <Pagination
-                            className={'justify-center my-3'}
+                            className={`${taskList?.length > 0 ? "flex" : "hidden"} overflow-hidden justify-center my-3`}
                             currentPage={currentPage}
                             maxPage={maxPage}
                             firstPage={firstPage}

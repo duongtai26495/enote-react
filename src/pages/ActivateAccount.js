@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import LoadingComponent from '../components/LoadingComponent'
 import { ACTIVATE_EMAIL, AUTO_SEND, SUCCESS_RESULT } from '../utils/constants'
 import { Link, useNavigate } from 'react-router-dom'
-import { fetchApiData } from '../utils/functions'
+import { fetchApiData, logoutAccount } from '../utils/functions'
 
 const ActivateAccount = () => {
 
@@ -66,6 +66,11 @@ const ActivateAccount = () => {
     }
   }
 
+  const backToLogin = () => {
+    logoutAccount()
+    navigate("/login")
+  }
+
   return (
       <div className="register-form authen-box h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
         <div className="p-6">
@@ -96,7 +101,7 @@ const ActivateAccount = () => {
               onClick={() => sendActivateMail(activateEmail)}
               className={`${isResend ? "block" : "hidden"} bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2`}>Re-Send email</button>
           </div>
-          <Link to={"/login"} className='text-center block mt-3'>Back to login</Link>
+          <button onClick={()=>backToLogin()} className='text-center block mx-auto font-bold mt-3'>Back to login</button>
         </div>
       </div>
   )

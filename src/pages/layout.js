@@ -1,10 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { ACCESS_TOKEN } from '../utils/constants';
+import Cookies from 'js-cookie';
+import { checkActivateUser, checkToken } from '../utils/functions';
 
 
 function Layout() {
+
+  const navigate = useNavigate()  
+  const checkLogin = async () => {
+    const token = Cookies.get(ACCESS_TOKEN)
+    if (checkToken(token)) {
+        let isActivated = await checkActivateUser(token)
+        if (!isActivated) {
+            navigate("/activate-account")
+        }
+    } else {
+        navigate("/login?unlogin")
+    }
+}
+
+useEffect(() => {
+    checkLogin()
+}, [])
+
+
   return (
     <div className='w-full m-auto relative bg-slate-200 min-h-screen'>
       <div className='absolute w-full top-0 left-0 bg-body'></div>

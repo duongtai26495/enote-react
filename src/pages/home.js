@@ -162,7 +162,7 @@ const Home = () => {
             </div>
           </div>
           <div className='w-full h-fit mt-2 '>
-            <div className='w-full justify-between hidden lg:flex rounded-sm my-2 p-2 italic text-sm'>
+            <div className={`${wsList?.length > 0 ? "border-none" : "border-b border-zinc-300"} w-full justify-between hidden lg:flex rounded-sm my-2 p-2 italic text-sm`}>
               <p>Name</p>
               <p>Time</p>
               <p>Actions</p>
@@ -170,7 +170,7 @@ const Home = () => {
             <RenderWsList />
           </div>
           <Pagination
-            className={'justify-center my-3'}
+            className={`${wsList.length > 0 ? "flex" : "hidden"} overflow-hidden justify-center my-3`}
             currentPage={currentPage}
             maxPage={maxPage}
             firstPage={firstPage}

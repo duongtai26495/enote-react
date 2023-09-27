@@ -1,4 +1,4 @@
-import { checkToken, loadNavigationItem, logoutAccount } from "../utils/functions"
+import { checkActivateUser, checkToken, loadNavigationItem, logoutAccount } from "../utils/functions"
 import { useEffect, useRef, useState } from "react"
 import Cookies from "js-cookie"
 
@@ -6,6 +6,7 @@ import { Link, useNavigate, useRoutes } from "react-router-dom"
 import LoadingComponent from "./LoadingComponent"
 import { ACCESS_TOKEN, LOCAL_USER, URL_PREFIX } from "../utils/constants"
 import CustomLazyLoadedImage from "./CustomLazyLoadedImage"
+import { el } from "date-fns/locale"
 
 
 
@@ -16,14 +17,23 @@ const Header = ({ className }) => {
     const accountMenuRef = useRef(null)
     const [isLogoutBadge, setLogoutBadge] = useState(false)
 
-    const checkLogin = () => {
+    const checkLogin = async () => {
         const token = Cookies.get(ACCESS_TOKEN)
-        if (!checkToken(token)) {
+        if (checkToken(token)) {
+            let isActivated = await checkActivateUser(token)
+            if (!isActivated) {
+                navigate("/activate-account")
+            }
+        } else {
             navigate("/login?unlogin")
             setLogout(false)
         }
     }
 
+    useEffect(() => {
+        checkLogin()
+    }, [])
+    
     const logout = () => {
         setLogout(true)
         logoutAccount()
@@ -34,24 +44,21 @@ const Header = ({ className }) => {
         navigate("/profile")
         toggleLogoutBadge()
     }
-    
-    useEffect(() => {
-        checkLogin()
-    }, [])
+
 
     useEffect(() => {
         function handleClickOutside(event) {
-          if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
-            setLogoutBadge(false)
-          }
+            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+                setLogoutBadge(false)
+            }
         }
-    
+
         document.addEventListener('mousedown', handleClickOutside);
-    
+
         return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
-      }, []);
+    }, []);
 
     const userInfo = JSON.parse(localStorage.getItem(LOCAL_USER))
     let profileImage = ""
@@ -59,7 +66,7 @@ const Header = ({ className }) => {
     if (userInfo && userInfo.profile_image) {
         profileImage = `${URL_PREFIX}public/image/${userInfo.profile_image}`
     } else {
-        profileImage =  "https://source.unsplash.com/random"
+        profileImage = "https://source.unsplash.com/random"
     }
 
 
@@ -99,9 +106,9 @@ const Header = ({ className }) => {
                             <h2 className="text-lg lg:text-2xl font-bold leading-6 text-gray-800" style={{ color: "#b70000" }}>Space</h2>
                         </button>
                     </div>
-                    <div className="flex space-x-5 justify-between lg:justify-center items-center pl-2">
+                    <div className="flex justify-between gap-2 lg:justify-center items-center pl-2">
 
-                        <div className="w-2/3 lg:w-fit gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">
+                        <div className="w-fit gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">
 
                             <div className="flex w-full items-center border border-gray-300 rounded-md" >
                                 <input
@@ -123,15 +130,15 @@ const Header = ({ className }) => {
                                     </svg>
                                 </button>
                             </div>
-                            <div className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
+                            <Link to={"/chat-ai"} className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >
                                     <path d="M8,11a1,1,0,1,0,1,1A1,1,0,0,0,8,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,12,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,16,11ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20Z"></path>
                                 </svg>
                                 <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
                                 <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
-                            </div>
+                            </Link>
                         </div>
-                        <div className={`w-1/3 lg:w-fit lg:border-l-2  border-l-neutral-500 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
+                        <div className={`w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
                             {
                                 userInfo &&
                                 <p onClick={toggleLogoutBadge} className="text-center w-full whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
@@ -139,17 +146,19 @@ const Header = ({ className }) => {
                                         className={`aspect-square object-cover rounded-full w-6 h-6`}
                                         src={`${profileImage}`}
                                     />
+                                    <span className="hidden lg:block">
                                     <strong>{userInfo.f_name} {userInfo.l_name}</strong>
-                                    <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} transition-all fill-slate-700 w-10 h-10 sm:h-3 sm:w-3`} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    </span>
+                                    <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} transition-all fill-slate-700 h-3 w-3`} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 330 330">
                                         <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
                                     c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
                                     s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
                                     </svg>
                                 </p>}
-                            <div 
-                            ref={accountMenuRef}
-                            className={`w-fit border gap-2 flex flex-col px-4 py-2 absolute z-20 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
+                            <div
+                                ref={accountMenuRef}
+                                className={`w-fit border gap-2 flex flex-col px-4 py-2 absolute z-20 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
                                 <p className="flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white rounded-sm lg:hover:shadow-lg shadow transition-all p-2 " onClick={() => { profileDirect() }}>
                                     <span className="text-sm">Profile</span>
                                     <svg width="21" height="21" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="info" /><g id="icons"><g id="user"><ellipse cx="12" cy="8" rx="5" ry="6" /><path d="M21.8,19.1c-0.9-1.8-2.6-3.3-4.8-4.2c-0.6-0.2-1.3-0.2-1.8,0.1c-1,0.6-2,0.9-3.2,0.9s-2.2-0.3-3.2-0.9    C8.3,14.8,7.6,14.7,7,15c-2.2,0.9-3.9,2.4-4.8,4.2C1.5,20.5,2.6,22,4.1,22h15.8C21.4,22,22.5,20.5,21.8,19.1z" /></g></g></svg>

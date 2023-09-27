@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { checkToken, fetchApiData } from '../utils/functions'
 import { Link, useNavigate } from 'react-router-dom';
 import UserLogin from '../utils/UserLogin';
-import { SUCCESS_RESULT, USERNAME_LOCAL, ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, REFRESH_TOKEN } from '../utils/constants';
+import { SUCCESS_RESULT, USERNAME_LOCAL, ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, REFRESH_TOKEN, ACTIVATE_EMAIL, AUTO_SEND } from '../utils/constants';
 import AuthenLogo from '../components/AuthenLogo';
 import { IS_REMEMBER } from '../utils/constants';
 import LoadingComponent from '../components/LoadingComponent';
@@ -85,10 +85,18 @@ const LoginPage = () => {
         localStorage.setItem(REFRESH_TOKEN, rf_token)
         const username = user.username
         const userInfo = await fetchApiData(`user/info/${username}`, ac_token)
-        if (userInfo.status === "SUCCESS") {
-          localStorage.setItem(LOCAL_USER, JSON.stringify(userInfo.content))
-          checkToken(ac_token) ? navigate("/?success") : navigate("login?fail")
-          setLoading(false)
+        if (userInfo.status === SUCCESS_RESULT) {
+          let userData = userInfo.content
+          localStorage.setItem(LOCAL_USER, JSON.stringify(userData))
+          if (userData.activate) {
+            checkToken(ac_token) ? navigate("/?success") : navigate("login?fail")
+            setLoading(false)
+          } else {
+            setLoading(false)
+            localStorage.setItem(ACTIVATE_EMAIL, userData.email)
+            localStorage.setItem(AUTO_SEND, true)
+            navigate("/activate-account")
+          }
         }
       }
     } else {
@@ -98,61 +106,61 @@ const LoginPage = () => {
   }
 
   return (
-      <div className="authen-box authen-form h-fit login-form lg:w-96 max-w-sm flex items-center justify-center absolute">
-        <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
-          <LoadingComponent />
-        </div>
-        <div className="p-6 w-full">
-          <AuthenLogo />
-          <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
-          <div className="mb-4">
-            <input
-              type="text"
-              className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-              placeholder="Nhập tên đăng nhập"
-              value={username}
-              onKeyDown={(e) => e.key === 'Enter' ? passwordRef.current.focus() : null}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            
-          <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{usernameErrorMsg}</p>
-          </div>
-          <div className="mb-4">
-            <input
-              type="password"
-              className={`${passwordErrorMsg ? "border-red-500" :"" } mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-              placeholder="Nhập mật khẩu"
-              value={password}
-              ref={passwordRef}
-              onKeyDown={handleKeyPress}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{passwordErrorMsg}</p>
-          </div>
-          <div className="mb-4 flex gap-2 items-center">
-         
-            <div onClick={() => setRememberMe(prevState => !prevState)} className={`remember_switch ${rememberMe ? "bg-green-700" : "bg-gray-100 border-gray-300 border"}`}>
-              <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
-
-            </div>
-            <label htmlFor='rememberme' className="cursor-pointer font-bold text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
-          </div>
-          <button className="bg-white border w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
-            onClick={checkInputLogin}>
-            Đăng nhập
-          </button>
-          <div className="mt-4">
-            <p className="text-sm text-blue-600 my-2">
-              <Link to={"/forgot-password"}>Quên mật khẩu?</Link>
-            </p>
-            <p className="text-sm text-gray-600">
-              Chưa có tài khoản? <Link className='font-bold' to="/register">Đăng ký ngay</Link>
-            </p>
-          </div>
-
-          <p className={`text-red-600 text-sm font-bold text-center w-full my-5 h-3`}>{commonErrorMsg}</p>
-        </div>
+    <div className="authen-box authen-form h-fit login-form lg:w-96 max-w-sm flex items-center justify-center absolute">
+      <div className={`${isLoading ? "flex" : "hidden"} transition-all absolute top-0 left-0 z-40 items-center justify-center  w-full h-full bg-white bg-opacity-70`}>
+        <LoadingComponent />
       </div>
+      <div className="p-6 w-full">
+        <AuthenLogo />
+        <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
+        <div className="mb-4">
+          <input
+            type="text"
+            className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
+            placeholder="Nhập tên đăng nhập"
+            value={username}
+            onKeyDown={(e) => e.key === 'Enter' ? passwordRef.current.focus() : null}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{usernameErrorMsg}</p>
+        </div>
+        <div className="mb-4">
+          <input
+            type="password"
+            className={`${passwordErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
+            placeholder="Nhập mật khẩu"
+            value={password}
+            ref={passwordRef}
+            onKeyDown={handleKeyPress}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <p className={`text-red-600 text-sm text-center w-full mb-2 h-5`}>{passwordErrorMsg}</p>
+        </div>
+        <div className="mb-4 flex gap-2 items-center">
+
+          <div onClick={() => setRememberMe(prevState => !prevState)} className={`remember_switch ${rememberMe ? "bg-green-700" : "bg-gray-100 border-gray-300 border"}`}>
+            <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
+
+          </div>
+          <label htmlFor='rememberme' className="cursor-pointer font-bold text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
+        </div>
+        <button className="bg-white border w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
+          onClick={checkInputLogin}>
+          Đăng nhập
+        </button>
+        <div className="mt-4">
+          <p className="text-sm text-blue-600 my-2">
+            <Link to={"/forgot-password"}>Quên mật khẩu?</Link>
+          </p>
+          <p className="text-sm text-gray-600">
+            Chưa có tài khoản? <Link className='font-bold' to="/register">Đăng ký ngay</Link>
+          </p>
+        </div>
+
+        <p className={`text-red-600 text-sm font-bold text-center w-full my-5 h-3`}>{commonErrorMsg}</p>
+      </div>
+    </div>
   );
 }
 

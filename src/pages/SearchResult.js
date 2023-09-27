@@ -76,7 +76,7 @@ const SearchResult = () => {
                 <Breadcrumbs text={"Back to previous"} localtion={-1} />
 
                 <Pagination
-                    className={'justify-end'}
+                    className={`${resultList?.length > 0 ? "flex" : "hidden"} overflow-hidden justify-end`}
                     currentPage={currentPage}
                     maxPage={maxPage}
                     firstPage={firstPage}

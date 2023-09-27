@@ -4,7 +4,7 @@ const Pagination = ({currentPage, firstPage, maxPage, setCurrentPage, setPage, c
 
 
   return (
-    <div className={`mx-auto w-1/3 lg:w-full flex flex-row ${className}`}>
+    <div className={`mx-auto w-1/3 lg:w-full flex-row ${className}`}>
                 <p className='text-sm w-full lg:w-1/5 text-center flex flex-row items-center justify-between'>
                     <span className={`cursor-pointer pagingation-num transition-all ${currentPage === firstPage && 'fill-slate-200'}`} onClick={() => setPage("PREV")}>
                         <svg className='rotate-180' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>

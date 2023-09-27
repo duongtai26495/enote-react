@@ -9,23 +9,24 @@ export const loadNavigationItem = (item) => {
   localStorage.setItem("current-nav-item", item)
 }
 
+export const checkActivateUser = async (token) => {
+  return await fetchApiData("public/check-activate-user",token)
+}
+
 export const checkToken = (accessToken) => {
 
   if (accessToken) {
     try {
       const decoded = jwt_decode(accessToken)
       const currentTime = Math.floor(Date.now() / 1000);
-
       if (decoded.exp > currentTime) {
-        // Xử lý khi token đã hết hạn, ví dụ như đăng xuất người dùng
         return true
       }
       else {
         console.log("Token hết hạn")
       }
     } catch (error) {
-      console.error('Lỗi xác minh token:', error);
-      // Xử lý khi có lỗi xác minh token
+      console.error('Lỗi xác minh token: ', error);
     }
   }
   return false

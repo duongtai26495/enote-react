@@ -140,7 +140,7 @@ const NoteList = ({ id }) => {
                     <>
                         <RenderNote />
                         <Pagination
-                            className={'justify-center my-5 '}
+                            className={`${noteList.length > 0 ? "flex" : "hidden"} overflow-hidden justify-center my-5 `}
                             currentPage={currentPage}
                             maxPage={maxPage}
                             firstPage={firstPage}
