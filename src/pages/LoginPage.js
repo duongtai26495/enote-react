@@ -29,7 +29,7 @@ const LoginPage = () => {
     }
 
     checkLogin()
-    document.title = "User login - Ememo Application"
+    document.title = "User login - Space Application"
     rememberMe ? setUsername(localStorage.getItem(USERNAME_LOCAL)) : setUsername("")
   }, [])
 
@@ -112,7 +112,7 @@ const LoginPage = () => {
       </div>
       <div className="p-6 w-full">
         <AuthenLogo />
-        <h2 className="text-2xl font-semibold my-4 text-center">Đăng nhập</h2>
+        <h2 className="text-2xl font-semibold my-4 text-left">Đăng nhập</h2>
         <div className="mb-4">
           <input
             type="text"

@@ -14,7 +14,7 @@ body {
   max-height: 90vh;
 }
 .min-height-screen-footer{
-  min-height: calc(100vh - 205px);
+  min-height: calc(100vh - 217px);
 }
 @font-face {
   font-family: 'QuickSand';
@@ -334,3 +334,5 @@ footer {
   border-radius: 5px;
   background: #fafafa;
 }
+
+.space-logo{fill:#0d9488;}

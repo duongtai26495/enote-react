@@ -38,7 +38,7 @@ const ProfileCard = ({profileImageUrl}) => {
         }
     }
     useEffect(() => {
-        document.title = user.f_name + " " + user.l_name + " - eMemo Application"
+        document.title = user.f_name + " " + user.l_name + " - Space Application"
     }, [])
 
     const checkLogin = () => {

@@ -4,7 +4,6 @@ import { ACCESS_TOKEN, URL_PREFIX } from '../utils/constants';
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions';
 import Cookies from 'js-cookie';
 import TaskList from '../components/TaskList';
-import CustomLazyLoadedImage from '../components/CustomLazyLoadedImage';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ProgressBar from '../components/ProgressBar';
 
@@ -19,7 +18,7 @@ const NoteDetail = () => {
     const [newDone, setNewDone] = useState(item.done)
     const [selectedImage, setSelectedImage] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
-    const [featuredImage, setFeaturedImage] = useState(item.featured_image ? URL_PREFIX + "public/image/" + item.featured_image : "https://source.unsplash.com/random")
+    const [featuredImage, setFeaturedImage] = useState("")
     const isMounted = useRef(false);
     const imageRef = useRef(null)
     const newNameRef = useRef(null)
@@ -31,8 +30,10 @@ const NoteDetail = () => {
                 const result = await fetchApiData(`note/get/` + id, token)
                 if (result.status === "SUCCESS") {
                     const data = result.content
-                    setFeaturedImage(URL_PREFIX + "public/image/" + result.content.featured_image)
+                    let image = data.featured_image
+                    let f_image = image ? URL_PREFIX + `public/image/${image}` : "https://source.unsplash.com/random"
                     setItem(data)
+                    setFeaturedImage(f_image)
                     setWorkspace(data.workspace)
                     setUpdateProgress(false)
                 }
