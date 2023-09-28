@@ -9,6 +9,7 @@ import { SUCCESS_RESULT, USERNAME_LOCAL, ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, R
 import AuthenLogo from '../components/AuthenLogo';
 import { IS_REMEMBER } from '../utils/constants';
 import LoadingComponent from '../components/LoadingComponent';
+import { el } from 'date-fns/locale';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -41,8 +42,8 @@ const LoginPage = () => {
 
   const checkInputLogin = async () => {
     setCommonErrMsg("")
-    setUsername("")
-    setPassword("")
+    setUsernameErrMsg("")
+    setPasswordErrMsg("")
     let error = false
     if (username.length < 5) {
       error = true
@@ -74,36 +75,37 @@ const LoginPage = () => {
 
     user.username = username
     user.password = password
-
-    const result = await fetchApiData("public/sign-in", null, "POST", user)
-    if (result.status === SUCCESS_RESULT) {
-      const data = result.content
-      const ac_token = data.access_token
-      const rf_token = data.refresh_token
-      if (ac_token) {
-        Cookies.set(ACCESS_TOKEN, ac_token, { expires: 1 })
-        localStorage.setItem(REFRESH_TOKEN, rf_token)
-        const username = user.username
-        const userInfo = await fetchApiData(`user/info/${username}`, ac_token)
-        if (userInfo.status === SUCCESS_RESULT) {
-          let userData = userInfo.content
-          localStorage.setItem(LOCAL_USER, JSON.stringify(userData))
-          if (userData.activate) {
-            checkToken(ac_token) ? navigate("/?success") : navigate("login?fail")
-            setLoading(false)
-          } else {
-            setLoading(false)
-            localStorage.setItem(ACTIVATE_EMAIL, userData.email)
-            localStorage.setItem(AUTO_SEND, true)
-            navigate("/activate-account")
+    
+      const result = await fetchApiData("public/sign-in", null, "POST", user)
+      if (result.status === SUCCESS_RESULT) {
+        const data = result.content
+        const ac_token = data.access_token
+        const rf_token = data.refresh_token
+        if (ac_token) {
+          Cookies.set(ACCESS_TOKEN, ac_token, { expires: 1 })
+          localStorage.setItem(REFRESH_TOKEN, rf_token)
+          const username = user.username
+          const userInfo = await fetchApiData(`user/info/${username}`, ac_token)
+          if (userInfo.status === SUCCESS_RESULT) {
+            let userData = userInfo.content
+            localStorage.setItem(LOCAL_USER, JSON.stringify(userData))
+            if (userData.activate) {
+              checkToken(ac_token) ? navigate("/?success") : navigate("login?fail")
+              setLoading(false)
+            } else {
+              setLoading(false)
+              localStorage.setItem(ACTIVATE_EMAIL, userData.email)
+              localStorage.setItem(AUTO_SEND, true)
+              navigate("/activate-account")
+            }
           }
         }
+      } else {
+        setCommonErrMsg(result.data.msg)
+        setLoading(false)
       }
-    } else {
-      setCommonErrMsg(result.data.msg)
-      setLoading(false)
-    }
   }
+
 
   return (
     <div className="authen-box authen-form h-fit login-form lg:w-96 max-w-sm flex items-center justify-center absolute">
@@ -143,9 +145,9 @@ const LoginPage = () => {
             <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
 
           </div>
-          <label htmlFor='rememberme' className="cursor-pointer font-bold text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
+          <label htmlFor='rememberme' className="cursor-pointer text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
         </div>
-        <button className="bg-white border w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
+        <button className="bg-white border-2 w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
           onClick={checkInputLogin}>
           Đăng nhập
         </button>

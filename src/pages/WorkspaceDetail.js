@@ -74,7 +74,7 @@ const WorkspaceDetail = () => {
             </div>
             <Breadcrumbs text={"Back to home"} className={`w-full`} />
 
-            <NoteList id={id} />
+            <NoteList/>
         </div>
     )
 }

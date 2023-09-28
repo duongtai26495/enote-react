@@ -13,7 +13,7 @@ const TaskList = ({ note, updateProgressState }) => {
     const [isUpdateList, setUpdateList] = useState(false)
     const [deleteId, setDeleteId] = useState(null)
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)) ?? "updated_at_desc")
-    const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_TASK_ITEMS)))
+    
     const isMounted = useRef(false);
     const [isLoaded, setLoaded] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
@@ -78,14 +78,12 @@ const TaskList = ({ note, updateProgressState }) => {
     }
 
     const RenderSort = () => {
+        const sortValues= JSON.parse(localStorage.getItem(SORT_TASK_ITEMS))
         return (
             <select className='w-full lg:w-fit bg-transparent border p-1 bg-white rounded-md text-sm mx-2' name='sort_task' id='sort_task' value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
-                    const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
-                    const value = item[keys]; // Lấy giá trị
-
                     return (
-                        <option key={index} value={value}>{keys}</option>
+                        <option key={index} value={item.value}>{item.name}</option>
                     );
                 })}
 
@@ -150,7 +148,8 @@ const TaskList = ({ note, updateProgressState }) => {
             <div className={`h-fit w-full duration-500 overflow-y-hidden transition-all`}>
                 {
                     taskList?.map((item, index) => (
-                        <li key={index}
+                        <li 
+                        key={index}
                             className={`flex flex-row gap-2 items-center justify-between transition-all `}>
                             <TaskRow
                                 deleteTaskId={deleteTaskId}

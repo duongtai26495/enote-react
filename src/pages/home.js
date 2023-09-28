@@ -8,12 +8,9 @@ import WorkspaceCard from '../components/WorkspaceCard'
 import Pagination from '../components/Pagination'
 const Home = () => {
 
-  const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setLoading] = useState(true)
-  const [noteCount, setNoteCount] = useState(0)
   const [wsList, setWsList] = useState([])
   const [isLoadingAdd, setLoadingAdd] = useState(false)
-  const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
   const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(WS_SELECTED_SORT)) ?? "updated_at_desc")
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
@@ -59,31 +56,20 @@ const Home = () => {
     }
   }
 
-
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsVisible(true);
-    }, 500); // Đợi 1 giây trước khi hiển thị phần tử
-
-    return () => clearTimeout(timeout);
-  }, [noteCount]);
-
   useEffect(() => {
     getWsAll()
-  }, [noteCount, currentPage, selectedSort])
+  }, [currentPage, selectedSort])
 
   const RenderWsList = () => {
     return (
       wsList?.map((item, index) => (
-        <WorkspaceCard key={index} removeWs={removeWs} wsItem={item} />
+        <div key={index} style={{ animation: `opacityUp ${index}00ms ease-in-out` }}>
+          <WorkspaceCard removeWs={removeWs} wsItem={item} />
+        </div>
       ))
     )
   }
 
-  const getNoteCount = (value) => {
-    setNoteCount(value)
-  }
 
   const addWorkspace = async () => {
     setLoadingAdd(true)
@@ -103,15 +89,14 @@ const Home = () => {
   }
 
   const RenderSort = () => {
+    const sortValues = JSON.parse(localStorage.getItem(SORT_ITEMS))
+    
     return (
       <select className='w-full lg:w-fit bg-white border p-2 font-bold cursor-pointer rounded-md text-sm' name='sort_note' id='sort_note'
         value={selectedSort} onChange={(e) => sortHandle(e)}>
         {sortValues?.map((item, index) => {
-          const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
-          const value = item[keys]; // Lấy giá trị
-
           return (
-            <option key={index} value={value}>{keys}</option>
+            <option key={index} value={item.value}>{item.name}</option>
           );
         })}
 
@@ -145,7 +130,7 @@ const Home = () => {
       <LoadingComponent className={`${isLoading ? "block m-auto" : "hidden"}`} />
 
       <div className={`${isLoading ? "hidden" : "flex"} w-full h-full flex-row`}>
-        <div className='w-full py-2 overflow-y-auto slideUpAni'>
+        <div className='w-full py-2 overflow-y-auto'>
           <div className='w-full flex gap-5 justify-between items-center pb-2'>
             <div className='flex items-center gap-2'>
               <p className='font-bold hidden lg:block text-xl'>Workspace</p>

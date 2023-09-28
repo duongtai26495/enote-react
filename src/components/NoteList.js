@@ -6,17 +6,24 @@ import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import EmptyList from './EmptyList'
 import Pagination from './Pagination'
+import { useParams } from 'react-router-dom'
 
-const NoteList = ({ id }) => {
+const NoteList = () => {
 
+    const {id} = useParams()
     const [noteList, setNoteList] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
+    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
     const firstPage = 1
     const token = Cookies.get(ACCESS_TOKEN)
-    const isMounted = useRef(false);
-    const [sortValues, setSortValues] = useState(JSON.parse(localStorage.getItem(SORT_ITEMS)))
-    const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_SORT)) ?? "updated_at_desc")
+    const sortValues = JSON.parse(localStorage.getItem(SORT_ITEMS))
+
+    
+    useEffect(() => {
+        getAllNoteByWs()
+    }, [currentPage, selectedSort])
+
 
     const getAllNoteByWs = async () => {
         if (checkToken(token) && id > 0) {
@@ -50,7 +57,9 @@ const NoteList = ({ id }) => {
                 <Masonry>
                     {
                         noteList?.map((item, index) => (
-                            <NoteItem removeNote={removeNote} note={item} key={item.id} subclass={``} />
+                            <div  key={item.id} style={{animation:`slideUp ${index}00ms ease`}}>
+                            <NoteItem removeNote={removeNote} note={item} subclass={``} />
+                            </div>
                         ))
                     }
                 </Masonry>
@@ -99,10 +108,6 @@ const NoteList = ({ id }) => {
     }
 
 
-    useEffect(() => {
-        getAllNoteByWs()
-    }, [id, currentPage, selectedSort])
-
     const sortHandle = (value) => {
         setSelectedSort(value.target.value)
         localStorage.setItem(SELECTED_SORT, JSON.stringify(value.target.value))
@@ -113,11 +118,8 @@ const NoteList = ({ id }) => {
             <select className='w-1/2 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note'
                 value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
-                    const keys = Object.keys(item)[0]; // Lấy key (chỉ có 1 key trong mỗi đối tượng)
-                    const value = item[keys]; // Lấy giá trị
-
                     return (
-                        <option key={index} value={value}>{keys}</option>
+                        <option key={index} value={item.value}>{item.name}</option>
                     );
                 })}
 

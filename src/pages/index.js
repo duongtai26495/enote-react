@@ -1,5 +1,5 @@
 export {default as Home} from './home'
-export {default as Layout} from './layout'
+export {default as Layout} from './Layout'
 export {default as AuthenLayout} from './AuthenLayout'
 export {default as About} from './about'
 export {default as NoteDetail} from './NoteDetail'

@@ -306,7 +306,7 @@ footer {
   animation: opacityUp .5s ease-in-out;
 }
 .slideUpAni {
-  animation: slideUp .5s ease-in-out;
+  animation: slideUp .3s ease-in-out;
 }
 .login-form {
   animation: slideToRight 1s ease-in-out;
@@ -336,3 +336,12 @@ footer {
 }
 
 .space-logo{fill:#0d9488;}
+
+.card-note-time{
+  font-size: 10px;
+}
+@media (min-width:767px){
+  .card-note-time{
+    font-size: 12px;
+  }
+}

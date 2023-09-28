@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Pagination = ({currentPage, firstPage, maxPage, setCurrentPage, setPage, className}) => {
+
+    useEffect(()=>{
+        
+    },[maxPage])
 
 
   return (

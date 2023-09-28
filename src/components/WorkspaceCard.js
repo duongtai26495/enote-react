@@ -14,7 +14,7 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
 
     const updateNewName = async () => {
         let newName = newWsName
-        if (newName === "") {
+        if (newName === "" || newName === workspaceItem.name) {
             setNewWsName(workspaceItem.name)
             setUpdateName(false)
         } else {

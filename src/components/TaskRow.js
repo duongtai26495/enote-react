@@ -95,7 +95,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
                         name='content_task'
                         type='text'
                         disabled={isUpdating}
-                        className='w-full my-1 px-2 py-3 bg-transparent'
+                        className={`w-full my-1 px-2 py-3 bg-transparent ${taskItem.done ? "line-through font-bold" : ""}`}
                         value={newContent}
                         onChange={e => { updateContent(e) }}
                         onBlur={updateTaskById}

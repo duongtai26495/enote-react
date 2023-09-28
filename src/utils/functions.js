@@ -10,7 +10,7 @@ export const loadNavigationItem = (item) => {
 }
 
 export const checkActivateUser = async (token) => {
-  return await fetchApiData("public/check-activate-user",token)
+  return await fetchApiData("public/check-activate-user", token)
 }
 
 export const checkToken = (accessToken) => {

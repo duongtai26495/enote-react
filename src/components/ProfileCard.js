@@ -3,6 +3,7 @@ import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import { useNavigate } from 'react-router-dom'
 import { ACCESS_TOKEN, URL_PREFIX, LOCAL_USER } from '../utils/constants'
 import Cookies from 'js-cookie'
+import profile_default from '../assets/images/default_profile.jpg'
 import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
 
@@ -14,7 +15,7 @@ const ProfileCard = ({profileImageUrl}) => {
     const [newFname, setNewFname] = useState(user.f_name)
     const [newLname, setNewLname] = useState(user.l_name)
     const [selectedImage, setSelectedImage] = useState(null)
-    const [profileImage, setProfileImage] = useState(user.profile_image ? URL_PREFIX + "public/image/" + user.profile_image : "https://source.unsplash.com/random")
+    const [profileImage, setProfileImage] = useState(user.profile_image ? URL_PREFIX + "public/image/" + user.profile_image : profile_default)
     const [previewImage, setPreviewImage] = useState(null)
     const [changeImageLabel, setChangeImageLabel] = useState("Update image")
     const [changePasswordLabel, setChangePwLabel] = useState("Update password")
