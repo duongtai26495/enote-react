@@ -38,7 +38,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
     }
 
     const removeHandle = () => {
-        removeNote(note)
+        removeNote(note.id)
         toggleOpenCardSub()
     }
 

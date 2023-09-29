@@ -82,8 +82,9 @@ const WorkspaceCard = ({ wsItem, removeWs }) => {
                 <span style={{ fontSize: "10px" }} className='text-start block'>({getTheTime(workspaceItem.updated_at)})</span>
             </div>
             <div className='flex w-1/3 lg:w-2/3 flex-col-reverse lg:flex-row item-center justify-center my-1 gap-2'>
-                <p className='hidden lg:flex justify-center items-center w-full'>
-                    <span className='text-xs text-center block font-bold'>{workspaceItem.created_at}</span>
+                <p className='flex flex-col justify-center items-end lg:items-center w-full'>
+                    <span className='text-xs lg:block hidden text-center font-bold'>{workspaceItem.created_at}</span>
+                    <span className='text-xs text-center block font-bold'>({getTheTime(workspaceItem.created_at)})</span>
                 </p>
                 <div className='flex w-full justify-end items-center gap-2'>
 

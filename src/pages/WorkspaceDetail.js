@@ -54,7 +54,7 @@ const WorkspaceDetail = () => {
     
 
     return (
-        <div className='w-full flex flex-col'>
+        <div className='w-full flex flex-col relative'>
             <div className={`flex bg-teal-500 p-4 items-center justify-between flex-nowrap gap-2`}>
             <div className='w-full lg:w-2/3'>
                 <input type='text' 

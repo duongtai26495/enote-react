@@ -13,11 +13,15 @@ const TaskList = ({ note, updateProgressState }) => {
     const [isUpdateList, setUpdateList] = useState(false)
     const [deleteId, setDeleteId] = useState(null)
     const [selectedSort, setSelectedSort] = useState(JSON.parse(localStorage.getItem(SELECTED_TASK_SORT)) ?? "updated_at_desc")
-    
+
     const isMounted = useRef(false);
     const [isLoaded, setLoaded] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
+    const [elementPerPage, setElPerPage] = useState(0)
+    const [maxElelentPerPage, setMaxElPerPage] = useState(0)
+    const [emptyList, setEmptyList] = useState(true)
+
     const firstPage = 1
 
     const token = Cookies.get(ACCESS_TOKEN)
@@ -27,7 +31,12 @@ const TaskList = ({ note, updateProgressState }) => {
             const newTask = ({ content: "New task", type, note: { id: note.id } })
             const result = await fetchApiData(`note/task/add`, token, "POST", JSON.stringify(newTask))
             const data = result.content
-            taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
+            if (taskList?.length >= maxElelentPerPage) {
+                await getTaskInBackground()
+            } else {
+                taskList ? setTaskList(oldData => [data, ...oldData]) : setTaskList(data)
+            }
+
         } else {
             console.log("Token end")
         }
@@ -65,20 +74,28 @@ const TaskList = ({ note, updateProgressState }) => {
     }
 
     const updateListTask = async () => {
-        let newTaskList = taskList.filter(item => item.id !== deleteId);
-        setTaskList(newTaskList)
+        let newTaskList = taskList;
+        if (deleteId) {
+            newTaskList = taskList.filter(item => item.id !== deleteId);
+            await deleteTask()
+        }
+        if (newTaskList?.length < maxElelentPerPage) {
+            await getTaskInBackground()
+        } else {
+            setTaskList(newTaskList)
+        }
         setUpdateList(false)
         setLoaded(false)
         updateProgressState(false)
-        await deleteTask()
     }
+
 
     const deleteTaskId = (value) => {
         setDeleteId(value)
     }
 
     const RenderSort = () => {
-        const sortValues= JSON.parse(localStorage.getItem(SORT_TASK_ITEMS))
+        const sortValues = JSON.parse(localStorage.getItem(SORT_TASK_ITEMS))
         return (
             <select className='w-full lg:w-fit bg-transparent border p-1 bg-white rounded-md text-sm mx-2' name='sort_task' id='sort_task' value={selectedSort} onChange={(e) => sortHandle(e)}>
                 {sortValues?.map((item, index) => {
@@ -91,16 +108,29 @@ const TaskList = ({ note, updateProgressState }) => {
         )
     }
 
+    const getTaskInBackground = async () => {
+        let page = Number(currentPage) - 1
+        const result = await fetchApiData(`note/tasks/${note.id}?page=${page}&size=10&sort=${selectedSort}`, token)
+        const maxPageResult = result.totalPages
+        const data = result.content
+        if (data && data?.length > 0) {
+            setTaskList(result.content);
+        } else {
+            setTaskList([])
+            setCurrentPage(1)
+        }
+        setEmptyList(result.empty)
+        setElPerPage(result.totalElements)
+        setMaxElPerPage(result.size)
+        setMaxPage(maxPageResult)
+        return result
+    }
 
     const getAllTaskByNoteId = async () => {
         setLoaded(true)
         const token = Cookies.get(ACCESS_TOKEN)
         if (checkToken(token) && note.id > 0) {
-            let page = Number(currentPage) - 1
-            const result = await fetchApiData(`note/tasks/${note.id}?page=${page}&size=10&sort=${selectedSort}`, token)
-            const data = result.content
-            setMaxPage(result.totalPages)
-            setTaskList(data)
+            await getTaskInBackground()
             setUpdateList(false)
         }
         setLoaded(false)
@@ -110,6 +140,8 @@ const TaskList = ({ note, updateProgressState }) => {
         if (deleteId !== null) {
             const token = Cookies.get(ACCESS_TOKEN)
             await fetchApiData(`note/task/remove/${deleteId}`, token, "DELETE")
+            setDeleteId(null)
+
         }
         updateProgressState(true)
     }
@@ -120,7 +152,7 @@ const TaskList = ({ note, updateProgressState }) => {
         } else {
             isMounted.current = true;
         }
-    }, [deleteId])
+    }, [deleteId, maxPage])
 
     useEffect(() => {
         getAllTaskByNoteId()
@@ -148,8 +180,8 @@ const TaskList = ({ note, updateProgressState }) => {
             <div className={`h-fit w-full duration-500 overflow-y-hidden transition-all`}>
                 {
                     taskList?.map((item, index) => (
-                        <li 
-                        key={index}
+                        <li
+                            key={index}
                             className={`flex flex-row gap-2 items-center justify-between transition-all `}>
                             <TaskRow
                                 deleteTaskId={deleteTaskId}
@@ -169,7 +201,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     return (
         <>
-            <div className='bg-slate-300 py-2 flex flex-row justify-between'>
+            <div className='bg-slate-300 py-2 flex flex-row justify-between sticky z-40 top-0'>
                 <PleaceholderTask />
                 <RenderSort />
             </div>

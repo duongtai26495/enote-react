@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import CustomLazyLoadedImage from './CustomLazyLoadedImage'
 import { useNavigate } from 'react-router-dom'
-import { ACCESS_TOKEN, URL_PREFIX, LOCAL_USER } from '../utils/constants'
+import { ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, SUCCESS_RESULT } from '../utils/constants'
 import Cookies from 'js-cookie'
 import profile_default from '../assets/images/default_profile.jpg'
 import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
 
-const ProfileCard = ({profileImageUrl}) => {
+const ProfileCard = ({ profileImageUrl }) => {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem(LOCAL_USER)) ?? {})
     const token = Cookies.get(ACCESS_TOKEN)
@@ -136,16 +136,16 @@ const ProfileCard = ({profileImageUrl}) => {
 
             if (newPassword === newPasswordConfirm) {
                 let newUser = {
-                    password: newPassword,
-                    username: user.username
+                    username: user.username,
+                    password: newPassword
                 }
                 const result = await fetchApiData("user/update-password", token, "PUT", JSON.stringify(newUser))
-                if (result.status === "SUCCESS") {
+                if (result.status === SUCCESS_RESULT) {
                     setUpdatePasswordState(false)
-                    setChangePwLabel("Password updated")
+                    setChangePwLabel("Password updated. Please login again.")
                     let clear = setTimeout(() => {
-                        setChangePwLabel("Update password")
-                    }, 5000);
+                        logout()
+                    }, 3000);
 
                     return () => clearTimeout(clear);
                 }
@@ -154,8 +154,12 @@ const ProfileCard = ({profileImageUrl}) => {
     }
     const logout = () => {
         setLogout(true)
-        logoutAccount()
-        checkLogin()
+        let logoutWait = setTimeout(() => {
+            logoutAccount()
+            checkLogin()
+        }, 2000)
+        
+        return () => clearTimeout(logoutWait);
     }
     const toggleUpdatePassword = () => { setUpdatePasswordState(prevState => !prevState) }
     const toggleUpdateName = () => { setUpdateNameState(prevState => !prevState) }
@@ -167,13 +171,13 @@ const ProfileCard = ({profileImageUrl}) => {
                     <div className='card_profile_image cursor-pointer relative'>
                         <LoadingComponent className={`${isLoadingAvt ? "flex" : "hidden"} bg-white bg-opacity-60 transition-all w-full h-full border-4 rounded-full absolute top-0 left-0`} />
                         <CustomLazyLoadedImage
-                            onClick={()=>profileImageUrl(profileImage)}
+                            onClick={() => profileImageUrl(profileImage)}
                             className={`aspect-square profile_image object-cover w-full object-center h-full rounded-full mb-3 border-8 border-gray-300 shadow-sm`}
                             src={`${previewImage ?? profileImage}`}
                         />
                         <div className='absolute bottom-10 w-full'>
                             <button onClick={() => imageRef.current.click()} className='p-2 bg-white bg-opacity-70 block mx-auto rounded-md lg:hover:bg-opacity-100 transition-all'>
-                            {changeImageLabel}
+                                {changeImageLabel}
                             </button>
                         </div>
                     </div>
@@ -231,7 +235,7 @@ const ProfileCard = ({profileImageUrl}) => {
                 <p className='text-sm text-gray-600'><strong>Joined at:</strong> {getTheTime(user.joined_at)}</p>
                 <p className='text-sm text-gray-600'><strong>Last edited:</strong> {getTheTime(user.updated_at)}</p>
                 <p onClick={toggleUpdatePassword}
-                    className={`${isUpdatePassword ? "hidden" : "flex"} text-red-700 border px-2 py-1 font-bold cursor-pointer transition-all text-sm w-full justify-center mx-auto text-center `}>
+                    className={`${isUpdatePassword ? "hidden" : "flex"} lg:hover:shadow-md text-slate-700 border p-2 font-bold cursor-pointer transition-all text-sm w-full justify-center mx-auto text-center `}>
                     {changePasswordLabel}
                 </p>
                 <div className={`${isUpdatePassword ? "flex" : "hidden"} flex-col gap-3`}>
@@ -263,12 +267,12 @@ const ProfileCard = ({profileImageUrl}) => {
                         </span>
                     </div>
                 </div>
-                <button onClick={() => logout()} className={`w-full py-1 text-sm font-bold border`}>
+                <button onClick={() => logout()} className={` lg:hover:shadow-md text-slate-700 p-2 w-full text-sm font-bold border`}>
                     {
                         isLogout ?
                             <LoadingComponent size={`w-5 h-5`} className={`flex`} />
                             :
-                            <span>Log out</span>
+                            <span className=''>Log out</span>
                     }
                 </button>
             </div>

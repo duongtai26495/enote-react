@@ -24,7 +24,7 @@ const Pagination = ({currentPage, firstPage, maxPage, setCurrentPage, setPage, c
                     <span className={`${maxPage > 3 ? "flex" : "hidden"} transition-all w-5 h-5 pagingation-num text-center cursor-pointer ${currentPage === maxPage - 1 && "page-active"}`}
                         onClick={() => setCurrentPage(maxPage - 1)}>{maxPage - 1}</span>
 
-                    <span className={`w-5 h-5 pagingation-num text-center cursor-pointer transition-all ${firstPage === maxPage && "hidden"} ${currentPage === maxPage && "page-active"}`} onClick={() => setCurrentPage(maxPage)}>{maxPage}</span>
+                    <span className={`w-5 h-5 pagingation-num text-center cursor-pointer transition-all ${firstPage < maxPage ? "block" : "hidden"} ${currentPage === maxPage && "page-active"}`} onClick={() => setCurrentPage(maxPage)}>{maxPage}</span>
 
                     <span className={`cursor-pointer transition-all  ${currentPage === maxPage ? 'fill-slate-200' : 'pagingation-num '}`} onClick={() => setPage("NEXT")}>
                         <svg className='' height="20" id="Layer_1" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg"><title /><path d="M132.72,78.75l-56.5-56.5a9.67,9.67,0,0,0-14,0,9.67,9.67,0,0,0,0,14l56.5,56.5a9.67,9.67,0,0,1,0,14l-57,57a9.9,9.9,0,0,0,14,14l56.5-56.5C144.22,109.25,144.22,90.25,132.72,78.75Z" /></svg>
@@ -34,4 +34,4 @@ const Pagination = ({currentPage, firstPage, maxPage, setCurrentPage, setPage, c
   )
 }
 
-export default Pagination
+export default React.memo(Pagination)

@@ -149,7 +149,7 @@ const NoteDetail = () => {
     return (
         <div className='w-full'>
             <div className='w-full flex flex-col lg:flex-row gap-2'>
-                <div className='w-full'>
+                <div className='w-full relative'>
 
                     <div style={{ backgroundImage: `url(${previewImage ?? featuredImage})` }}
                         className='w-full h-60 flex bg-center bg-no-repeat relative bg-cover flex-col lg:flex-row gap-2 justify-start lg:justify-between'>
