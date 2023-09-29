@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchApiData } from '../utils/functions';
 import { AUTO_SEND_RECOVERY, SUCCESS_RESULT } from '../utils/constants';
+import LoadingComponent from '../components/LoadingComponent';
 
 const ConfirmRecovery = () => {
     useEffect(() => {
@@ -16,10 +17,19 @@ const ConfirmRecovery = () => {
     const [isSuccess, setSuccess] = useState(false)
     const [isResend, setResend] = useState(false)
     const [newPassword, setNewPassword] = useState("")
+    const [isLoading, setLoading] = useState(false)
 
 
     useEffect(() => {
-        sendRecoveryMail(email)
+        let autoSend = JSON.parse(localStorage.getItem(AUTO_SEND_RECOVERY))
+        if (email) {
+
+            if (!autoSend) {
+                sendRecoveryMail(email)
+            }
+        } else {
+            navigate("/login")
+        }
     }, [])
 
     const setPassword = (e) => {
@@ -27,36 +37,49 @@ const ConfirmRecovery = () => {
     }
 
     const sendRecoveryMail = async (email) => {
-        let autoSend = JSON.parse(localStorage.getItem(AUTO_SEND_RECOVERY))
-        if (!autoSend) {
+        setLoading(true)
+        const result_check = await fetchApiData(`public/check-email/${email}`)
+        if (result_check) {
             const result = await fetchApiData(`public/recovery/${email}`)
             if (result.status === SUCCESS_RESULT) {
                 localStorage.setItem(AUTO_SEND_RECOVERY, true)
                 setResend(false)
                 setSuccess(false)
+                setLoading(false)
+                setErrMsg("")
+            }else{
+                setErrMsg(result.msg)
+                setLoading(false)
+                setSuccess(false)
             }
+        } else {
+            navigate("/login")
         }
     }
 
     const submitCode = async () => {
+        setLoading(true)
         if (code.length === 10) {
             let data = JSON.stringify({
                 email,
-                password:newPassword
+                password: newPassword
             })
             const result = await fetchApiData(`public/recovery-password/${code}`, null, "POST", data)
             if (result.status === SUCCESS_RESULT) {
                 setSuccess(true)
+                setLoading(false)
             } else {
                 setErrMsg(result.data.msg)
                 setResend(true)
                 setSuccess(false)
+                setLoading(false)
             }
         } else {
             setErrMsg("Format of code is incorrect")
+            setLoading(false)
         }
     }
-  
+
     return (
         <div className="authen-box authen-form h-fit pb-2 login-form lg:w-96 max-w-sm flex flex-col items-center justify-center absolute border rounded ">
             <div className={`${isSuccess ? "hidden" : "block"}`}>
@@ -94,24 +117,43 @@ const ConfirmRecovery = () => {
                         placeholder='New password'
                     />
                     <button
+                        disabled={isLoading}
                         onClick={() => submitCode()}
-                        className='bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2 mt-2 font-bold'>Update</button>
+                        className='bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2 mt-2 font-bold'>
+                        {
+                            isLoading ?
+                                <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
+                                :
+                                <span>
+                                    Update
+                                </span>
+                        }
+                    </button>
                     <p className='h-5 block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
                 </div>
-                <div className={`${isResend ? "block" : "hidden"} my-2`}>
-
+                <div className={`${isResend ? "block" : "hidden"} my-2 px-2`}>
+                    <p className='h-fit block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
                     <p className='text-md'>Resend the recovery code</p>
                     <button
+                        disabled={isLoading}
                         onClick={() => sendRecoveryMail(email)}
-                        className='bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2 mt-2 font-bold'>Send</button>
-                    <p className='h-5 block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
+                        className='bg-white border w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2 mt-2 font-bold'>
+                        {
+                            isLoading ?
+                                <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
+                                :
+                                <span>
+                                    Re-Send
+                                </span>
+                        }
+                    </button>
                 </div>
             </div>
             <p className={`${isSuccess ? "block" : "hidden"} text-md text-emerald-500 mx-auto my-5`}>Your password is updated</p>
             <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 onClick={() => {
-                    navigate("/")
+                    navigate("/login")
                 }}
             >
                 Back to login page

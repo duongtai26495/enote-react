@@ -38,7 +38,7 @@ const TaskList = ({ note, updateProgressState }) => {
             }
 
         } else {
-            console.log("Token end")
+            console.log("Token is expired")
         }
     }
     const setPage = (TYPE) => {
@@ -108,8 +108,8 @@ const TaskList = ({ note, updateProgressState }) => {
         )
     }
 
-    const getTaskInBackground = async () => {
-        let page = Number(currentPage) - 1
+    const getTaskInBackground = async () => { 
+        let page = currentPage > 0 ? Number(currentPage) - 1 : 0
         const result = await fetchApiData(`note/tasks/${note.id}?page=${page}&size=10&sort=${selectedSort}`, token)
         const maxPageResult = result.totalPages
         const data = result.content
@@ -117,7 +117,7 @@ const TaskList = ({ note, updateProgressState }) => {
             setTaskList(result.content);
         } else {
             setTaskList([])
-            setCurrentPage(1)
+            setCurrentPage(firstPage)
         }
         setEmptyList(result.empty)
         setElPerPage(result.totalElements)

@@ -24,6 +24,7 @@ const NoteList = () => {
     const [elementPerPage, setElPerPage] = useState(0)
     const [maxElelentPerPage, setMaxElPerPage] = useState(0)
     const [emptyList, setEmptyList] = useState(true)
+    const page = currentPage > 0 ? Number(currentPage) - 1 : 0
 
 
     useEffect(() => {
@@ -55,7 +56,6 @@ const NoteList = () => {
     }
 
     const getAllNoteInBackground = async () => {
-        let page = Number(currentPage) - 1
         let url = `workspace/get/${id}?page=${page}&size=12&sort=${selectedSort}`
         const result = await fetchApiData(url, token)
         const maxPageResult = result.totalPages
@@ -64,7 +64,7 @@ const NoteList = () => {
             setNoteList(result.content);
         } else {
             setNoteList([])
-            setCurrentPage(1)
+            setCurrentPage(firstPage)
         }
         setEmptyList(result.empty)
         setElPerPage(result.totalElements)

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { ACCESS_TOKEN, CURRENT_WS, WS_SELECTED_SORT, SORT_ITEMS, SUCCESS_RESULT } from '../utils/constants'
+import { ACCESS_TOKEN, CURRENT_WS, WS_SELECTED_SORT, SORT_ITEMS, SUCCESS_RESULT, CURRENT_WS_PAGE } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 
 import LoadingComponent from '../components/LoadingComponent'
@@ -20,6 +20,7 @@ const Home = () => {
   const [emptyList, setEmptyList] = useState(true)
   const firstPage = 1
   const token = Cookies.get(ACCESS_TOKEN)
+  const page = currentPage > 0 ? Number(currentPage) - 1 : 0
 
   const getWsAll = async () => {
     if (token && checkToken(token)) {
@@ -32,8 +33,15 @@ const Home = () => {
     document.title = "Space Application"
   }, [])
 
+  useEffect(() => {
+    getListWs()
+  }, [maxPage, deleteId])
+
+  useEffect(() => {
+    getWsAll()
+  }, [currentPage, selectedSort])
+
   const getWsInBackground = async () => {
-    let page = Number(currentPage) - 1
     const result = await fetchApiData(`workspace/all?page=${page + ""}&size=12&sort=${selectedSort}`, token)
     setMaxPage(result.totalPages)
     setEmptyList(result.empty)
@@ -44,7 +52,7 @@ const Home = () => {
       setWsList(data)
     } else {
       setWsList([])
-      setCurrentPage(1)
+      setCurrentPage(firstPage)
     }
     return result
   }
@@ -74,21 +82,13 @@ const Home = () => {
     if (deleteId) {
       newList = wsList.filter(item => item.id !== deleteId);
       await removeWsById()
-  }
-  if (newList?.length < maxElelentPerPage) {
+    }
+    if (newList?.length < maxElelentPerPage) {
       await getWsInBackground()
-  } else {
+    } else {
       setWsList(newList)
+    }
   }
-  }
-
-  useEffect(() => {
-    getListWs()
-  }, [maxPage, deleteId])
-
-  useEffect(() => {
-    getWsAll()
-  }, [currentPage, selectedSort])
 
   const RenderWsList = () => {
     return (
@@ -138,14 +138,14 @@ const Home = () => {
         if (currentPage > 1) {
           let current = Number(currentPage) - 1
           setCurrentPage(current)
-          localStorage.setItem("currentPage", current)
+          localStorage.setItem(CURRENT_WS_PAGE, current)
         }
         break;
       case "NEXT":
         if (currentPage < maxPage) {
           let current = Number(currentPage) + 1
           setCurrentPage(current)
-          localStorage.setItem("currentPage", current)
+          localStorage.setItem(CURRENT_WS_PAGE, current)
         }
         break;
     }
@@ -159,7 +159,7 @@ const Home = () => {
       <div className={`${isLoading ? "hidden" : "flex"} w-full h-full flex-col`}>
         <div className='w-full flex gap-5 justify-between items-center p-2 bg-slate-300 sticky top-0 z-40'>
           <div className='flex items-center gap-2'>
-            <p className='font-bold hidden lg:block text-xl'>Workspace</p>
+            <p className='font-bold hidden lg:block text-xl'>Workspaces</p>
             <div className={"flex flex-row gap-5 w-32"}>
               <button onClick={() => addWorkspace()}
                 disabled={isLoadingAdd}
