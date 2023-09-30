@@ -147,7 +147,7 @@ const NoteDetail = () => {
     }
 
     return (
-        <div className='w-full'>
+        <div className='w-full border rounded-lg shadow-lg my-5'>
             <div className='w-full flex flex-col lg:flex-row gap-2'>
                 <div className='w-full relative'>
 
@@ -199,9 +199,9 @@ const NoteDetail = () => {
 
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
-                    <div className='flex flex-col lg:flex-row justify-start py-2 px-2 lg:items-center gap-3 w-full bg-slate-300 border-b'>
-                        <Breadcrumbs text={"Back to home"} className={``} />
-                        <Link className='bg-white text-xs rounded-sm p-2' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
+                    <div className='flex flex-col lg:flex-row justify-start py-2 lg:items-center gap-3 w-full '>
+                        <Breadcrumbs text={"Back to home"} className={`bg-transparent`} />
+                        <Link className='bg-white border text-xs rounded-md p-2' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
                     </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>

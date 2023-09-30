@@ -54,7 +54,7 @@ const WorkspaceDetail = () => {
     
 
     return (
-        <div className='w-full flex flex-col relative'>
+        <div className='w-full flex flex-col relative shadow-lg my-5 rounded-lg border overflow-hidden'>
             <div className={`flex bg-teal-500 p-4 items-center justify-between flex-nowrap gap-2`}>
             <div className='w-full lg:w-2/3'>
                 <input type='text' 
@@ -72,7 +72,7 @@ const WorkspaceDetail = () => {
 
                 <p className='text-white text-sm whitespace-nowrap'>{workspace.created_at}</p>
             </div>
-            <Breadcrumbs text={"Back to home"} className={`w-full`} />
+            <Breadcrumbs text={"Back to home"} className={`w-full bg-transparent border-b`} />
 
             <NoteList/>
         </div>

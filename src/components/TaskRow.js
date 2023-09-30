@@ -62,7 +62,7 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
     const toggleNewState = () => setNewState(preState => !preState)
 
     return (
-        <div className={`h-fit bg-white shadow-md overflow-y-hidden transition-all bg-transparent my-1 flex-1 flex flex-row gap-5 justify-between items-center px-2 relative border`}>
+        <div className={`h-fit bg-white overflow-y-hidden transition-all bg-transparent my-1 flex-1 flex flex-row gap-5 justify-between items-center px-2 relative border`}>
             <div className={`${isOpenSetting ? "visible" : "invisible"} h-full w-full transition-all rounded-md z-10 overflow-hidden absolute top-0 left-0`}>
                 <div className='w-full h-full rounded-md flex flex-row items-center justify-center m-auto gap-3 border bg-opacity-50 bg-black'>
                     <button onClick={() => removeTask()} className=' p-1 rounded-md bg-orange-600 text-white text-sm'>Delete</button>

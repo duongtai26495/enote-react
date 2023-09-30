@@ -177,7 +177,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     const RenderTaskList = () => {
         return (
-            <div className={`h-fit w-full duration-500 overflow-y-hidden transition-all`}>
+            <div className={`h-fit w-full duration-500 overflow-y-hidden transition-all px-2`}>
                 {
                     taskList?.map((item, index) => (
                         <li
@@ -201,7 +201,7 @@ const TaskList = ({ note, updateProgressState }) => {
 
     return (
         <>
-            <div className='bg-slate-300 py-2 flex flex-row justify-between sticky z-40 top-0'>
+            <div className='bg-transparent py-2 flex flex-row justify-between sticky z-40 top-0'>
                 <PleaceholderTask />
                 <RenderSort />
             </div>
