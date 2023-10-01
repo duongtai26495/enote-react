@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next"
 
 
 const Header = ({ className }) => {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate()
     const [isLogout, setLogout] = useState(false)
@@ -74,7 +74,7 @@ const Header = ({ className }) => {
 
 
     const toggleLogoutBadge = () => setLogoutBadge(preState => !preState)
-    
+
 
     const handleSearchChange = (e) => {
         setSearchText(e.target.value);
@@ -116,10 +116,10 @@ const Header = ({ className }) => {
                             </g>
                         </svg>
                     </button>
-                    <div className="flex w-full lg:w-fit justify-between gap-2 lg:justify-center items-center pl-2">
+                    <div className="flex w-full justify-between gap-2 lg:justify-center items-center pl-2">
 
-                        <div className="w-fit mx-auto gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">
-                        
+                        <div className="w-fit lg:w-1/3 mx-auto gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">
+
                             <div className="flex w-full items-center border border-gray-300 rounded-md" >
                                 <input
                                     type="text"
@@ -140,22 +140,22 @@ const Header = ({ className }) => {
                                     </svg>
                                 </button>
                             </div>
-                            
+
                         </div>
-                        <Link to={"/chat-ai"} className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
-                                <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >
-                                    <path d="M8,11a1,1,0,1,0,1,1A1,1,0,0,0,8,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,12,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,16,11ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20Z"></path>
-                                </svg>
-                                <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
-                                <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
-                            </Link>
-                        <div className={`w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
                         
+                        <div className={`w-fit flex items-center gap-5 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
+                        <Link to={"/chat-ai"} className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
+                            <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >
+                                <path d="M8,11a1,1,0,1,0,1,1A1,1,0,0,0,8,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,12,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,16,11ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20Z"></path>
+                            </svg>
+                            <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
+                            <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
+                        </Link>
                             {
                                 userInfo &&
-                                <p onClick={toggleLogoutBadge} className="aspect-square lg:aspect-auto text-center w-full whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
+                                <p onClick={toggleLogoutBadge} className="aspect-square lg:aspect-auto text-center w-fit whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
                                     <CustomLazyLoadedImage
-                                        className={`aspect-square object-cover rounded-full w-full h-6`}
+                                        className={`aspect-square object-cover rounded-full w-6 h-6`}
                                         src={`${profileImage}`}
                                     />
                                     <span className="hidden lg:block">
@@ -191,7 +191,7 @@ const Header = ({ className }) => {
                                 </p>
                             </div>
                         </div>
-                        <LangSwitch className={``}/>
+                        <LangSwitch className={``} />
                     </div>
                 </nav>
 

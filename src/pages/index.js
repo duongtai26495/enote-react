@@ -1,5 +1,5 @@
 export {default as Home} from './HomePage'
-export {default as Layout} from './Layout'
+export {default as Layout} from './layout'
 export {default as AuthenLayout} from './AuthenLayout'
 export {default as NoteDetail} from './NoteDetail'
 export {default as UserProfile} from './UserProfile'

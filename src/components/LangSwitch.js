@@ -56,9 +56,9 @@ const LangSwitch = ({ className }) => {
     // )
 
     return (
-        <div className={`min-w-fit w-12 top-5 bg-white z-50 ${className}`} onClick={toggleOpen}>
+        <div className={`min-w-fit w-10 lg:w-32 top-5 bg-white z-50 ${className}`} onClick={toggleOpen}>
             <p className='cursor-pointer items-center w-full flex-nowrap gap-0 lg:gap-2  lg:p-2 lg:border justify-center flex text-sm rounded-md font-bold'>
-                <img src={setFlag(lang)} alt={selectedLang} className='w-8 h-8 object-contain' />
+                <img src={setFlag(lang)} alt={selectedLang} className='w-5 h-5 object-contain' />
                 <span className='hidden lg:block'>
                     {selectedLang}
                 </span>
