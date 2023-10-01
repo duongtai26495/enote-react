@@ -48,15 +48,15 @@ const LoginPage = () => {
     let error = false
     if (username.length < 5) {
       error = true
-      setUsernameErrMsg(t('authen.username_5_character_error_title'))
+      setUsernameErrMsg(t('authen.validate_username',{value:5}))
     }
     if (password.length < 5) {
       error = true
-      setPasswordErrMsg(t('authen.password_5_character_error_title'))
+      setPasswordErrMsg(t('authen.validate_password',{value:5}))
     }
 
     if (error) {
-      setCommonErrMsg(t('authen.common_error_title'))
+      setCommonErrMsg(t('authen.common_error'))
     } else {
       await handleLogin()
     }
@@ -120,7 +120,7 @@ const LoginPage = () => {
           <input
             type="text"
             className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-            placeholder={t('authen.username_title')}
+            placeholder={t('authen.username')}
             value={username}
             onKeyDown={(e) => e.key === 'Enter' ? passwordRef.current.focus() : null}
             onChange={(e) => setUsername(e.target.value)}
@@ -132,7 +132,7 @@ const LoginPage = () => {
           <input
             type="password"
             className={`${passwordErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-            placeholder={t('authen.password_title')}
+            placeholder={t('authen.password')}
             value={password}
             ref={passwordRef}
             onKeyDown={handleKeyPress}
@@ -146,18 +146,18 @@ const LoginPage = () => {
             <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
 
           </div>
-          <label htmlFor='rememberme' className="cursor-pointer text-sm text-gray-600">{t('authen.remember_me_title')}</label>
+          <label htmlFor='rememberme' className="cursor-pointer text-sm text-gray-600">{t('authen.remember_me')}</label>
         </div>
         <button className="bg-white border-2 w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
           onClick={checkInputLogin}>
-          {t('authen.login_title')}
+          {t('authen.login')}
         </button>
         <div className="mt-4">
           <p className="text-sm text-blue-600 my-2">
-            <Link to={"/forgot-password"}>{t('authen.forgot_password_title')}</Link>
+            <Link to={"/forgot-password"}>{t('authen.forgot_password')}</Link>
           </p>
           <p className="text-sm text-gray-600">
-           {t('authen.donot_have_account_title')} <Link className='font-bold' to="/register">{t('authen.register_title')}</Link>
+           {t('authen.donot_have_account')} <Link className='font-bold' to="/register">{t('authen.register')}</Link>
           </p>
         </div>
 

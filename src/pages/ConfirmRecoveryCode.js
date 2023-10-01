@@ -77,7 +77,7 @@ const ConfirmRecovery = () => {
                 setLoading(false)
             }
         } else {
-            setErrMsg("Format of code is incorrect")
+            setErrMsg(t('authen.code_format'))
             setLoading(false)
         }
     }
@@ -103,7 +103,7 @@ const ConfirmRecovery = () => {
                     <p className="text-gray-700 text-lg font-semibold mb-4">
                         {t('authen.recovery.email_sent_to',{email})}
                     </p>
-                    <p className='text-md'>{t('authen.check_email_title')}</p>
+                    <p className='text-md'>{t('authen.activate.check_email')}</p>
 
                     <input
                         type='text'
@@ -127,7 +127,7 @@ const ConfirmRecovery = () => {
                                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                                 :
                                 <span>
-                                    {t('authen.recovery.update_title')}
+                                    {t('authen.recovery.update')}
                                 </span>
                         }
                     </button>
@@ -135,7 +135,6 @@ const ConfirmRecovery = () => {
                 </div>
                 <div className={`${isResend ? "block" : "hidden"} my-2 px-2`}>
                     <p className='h-fit block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
-                    <p className='text-md text-center'>{t('authen.recovery.resend_recovery_code')}</p>
                     <button
                         disabled={isLoading}
                         onClick={() => sendRecoveryMail(email)}
@@ -145,7 +144,7 @@ const ConfirmRecovery = () => {
                                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                                 :
                                 <span>
-                                    {t('authen.activate.resend_email_title')}
+                                    {t('authen.recovery.resend_code')}
                                 </span>
                         }
                     </button>

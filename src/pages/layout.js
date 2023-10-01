@@ -10,21 +10,21 @@ import { checkActivateUser, checkToken, fetchApiData } from '../utils/functions'
 function Layout() {
 
   useEffect(() => {
-    const getSortItems = async () => {
-      const result = await fetchApiData("public/sort_value")
-      const result_task = await fetchApiData("public/task/sort_value")
-      const result_ws = await fetchApiData("public/ws-sort_value")
-      if (result && result.status !== 403) {
-        localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
-      }
-      if (result_task && result_task.status !== 403) {
-        localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
-      }
-      if (result_ws && result_ws.status !== 403) {
-        localStorage.setItem(SORT_WS_ITEMS, JSON.stringify(result_ws))
-      }
-    }
-    getSortItems()
+    // const getSortItems = async () => {
+    //   const result = await fetchApiData("public/sort_value")
+    //   const result_task = await fetchApiData("public/task/sort_value")
+    //   const result_ws = await fetchApiData("public/ws-sort_value")
+    //   if (result && result.status !== 403) {
+    //     localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
+    //   }
+    //   if (result_task && result_task.status !== 403) {
+    //     localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
+    //   }
+    //   if (result_ws && result_ws.status !== 403) {
+    //     localStorage.setItem(SORT_WS_ITEMS, JSON.stringify(result_ws))
+    //   }
+    // }
+    // getSortItems()
     checkLogin()
   }, [])
 

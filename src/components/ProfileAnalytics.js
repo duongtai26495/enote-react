@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ProgressBar from './ProgressBar'
 import Cookies from 'js-cookie'
-import { ACCESS_TOKEN } from '../utils/constants'
+import { ACCESS_TOKEN, SUCCESS_RESULT } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
+import { useTranslation } from 'react-i18next'
 const ProfileAnalytics = () => {
 
+  const {t} = useTranslation()
   const [noteCount, setNoteCount] = useState(0)
   const [taskCount, setTaskCount] = useState(0)
   const [finishTaskCount, setFinishTaskCount] = useState(0)
@@ -17,7 +19,7 @@ const ProfileAnalytics = () => {
     const getAnalytics = async () => {
         if(checkToken(token)){
             const result = await fetchApiData("user/analytics", token)
-            if(result.status === "SUCCESS"){
+            if(result.status === SUCCESS_RESULT){
                 const data = result.content
                 setWorkspaceCount(Number(data.workspaces))
                 setNoteCount(Number(data.notes))
@@ -43,7 +45,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-blue-600'>
               <span className='text-base analy-text'>
-                Workspaces
+                {t('analytics.workspaces')}
               </span>
               <span className='text-3xl font-bold'>
                 {workspaceCount}
@@ -59,7 +61,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-teal-600'>
               <span className='text-base analy-text'>
-                Notes
+                {t('analytics.notes')}
               </span>
               <span className='text-3xl font-bold'>
                 {noteCount}
@@ -75,7 +77,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-violet-600'>
               <span className='text-base analy-text'>
-                Tasks
+                {t('analytics.tasks')}
               </span>
               <span className='text-3xl font-bold'>
                 {taskCount}
@@ -91,7 +93,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-pink-600'>
               <span className='text-base analy-text'>
-                Finished Tasks
+                {t('analytics.finish_tasks')}
               </span>
               <span className='text-3xl font-bold'>
                 {finishTaskCount}
@@ -107,7 +109,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-lime-600'>
               <span className='text-base xl:whitespace-nowrap analy-text'>
-                Finished Notes
+                {t('analytics.finish_notes')}
               </span>
               <span className='text-2xl font-bold'>
                 {percentageFinishNote}
@@ -123,7 +125,7 @@ const ProfileAnalytics = () => {
             </span>
             <p className='flex flex-col px-4 pl-1 text-fuchsia-600'>
               <span className='text-base xl:whitespace-nowrap analy-text'>
-                Tasks Progress
+                {t('analytics.tasks_progress')}
               </span>
               <span className='text-2xl font-bold'>
                 {percentageFinishTask}%

@@ -7,9 +7,11 @@ import { useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { ACCESS_TOKEN, SUCCESS_RESULT } from '../utils/constants'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
+import { useTranslation } from 'react-i18next'
 
 const WorkspaceDetail = () => {
 
+    const {t} = useTranslation()
     const { id } = useParams()
     const [workspace, setWorkspace] = useState({})
     const [newNameWs, setNewNameWs] = useState(workspace.name)
@@ -72,7 +74,7 @@ const WorkspaceDetail = () => {
 
                 <p className='text-white text-sm whitespace-nowrap'>{workspace.created_at}</p>
             </div>
-            <Breadcrumbs text={"Back to home"} className={`w-full bg-transparent border-b`} />
+            <Breadcrumbs text={t('common.back_to_home')} className={`w-full bg-transparent border-b`} />
 
             <NoteList/>
         </div>

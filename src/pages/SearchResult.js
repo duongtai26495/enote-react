@@ -8,8 +8,10 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import NoteItem from '../components/NoteItem';
 import EmptyList from '../components/EmptyList';
 import Pagination from '../components/Pagination';
+import { useTranslation } from 'react-i18next';
 const SearchResult = () => {
 
+    const {t} = useTranslation()
     const navigate = useNavigate();
     let { name } = useParams();
     const token = Cookies.get(ACCESS_TOKEN)
@@ -73,7 +75,7 @@ const SearchResult = () => {
         <div className='w-full'>
             <div className='flex flex-row justify-between bg-slate-300'>
 
-                <Breadcrumbs text={"Back to previous"} localtion={-1} />
+                <Breadcrumbs text={t('common.back_to_previous')} localtion={-1} />
 
                 <Pagination
                     className={`${resultList?.length > 0 ? "flex" : "hidden"} overflow-hidden justify-end`}

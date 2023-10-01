@@ -1,15 +1,17 @@
 import Cookies from 'js-cookie'
 import React, { memo, useEffect, useMemo, useState, useRef } from 'react'
-import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS, CURRENT_NOTE_PAGE } from '../utils/constants'
+import { SELECTED_SORT, SORT_ITEMS, ACCESS_TOKEN, CURRENT_WS, CURRENT_NOTE_PAGE, SORTS } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 import NoteItem from './NoteItem'
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import EmptyList from './EmptyList'
 import Pagination from './Pagination'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const NoteList = () => {
 
+    const {t} = useTranslation()
     const { id } = useParams()
     const [noteList, setNoteList] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
@@ -163,25 +165,30 @@ const NoteList = () => {
     }
 
     const RenderSort = () => {
+        const sortValues = SORTS.filter((item, index) => (index >= 0 && index <= 7));
         return (
-            <select className='w-1/2 lg:w-fit bg-white border p-1 rounded-md text-sm' name='sort_note' id='sort_note'
-                value={selectedSort} onChange={(e) => sortHandle(e)}>
-                {sortValues?.map((item, index) => {
-                    return (
-                        <option key={index} value={item.value}>{item.name}</option>
-                    );
-                })}
-
-            </select>
+          <div className='w-fit flex gap-1 items-center font-bold'>
+          <label className='hidden lg:block text-sm'>{t('sorts.sorting')}</label>
+          <select className='w-full lg:w-fit bg-white border p-2 font-bold cursor-pointer rounded-md text-sm' name='sort_note' id='sort_note'
+            value={selectedSort} onChange={(e) => sortHandle(e)}>
+            {sortValues?.map((item, index) => {
+              return (
+                <option key={index} value={item.value}>{t(item.name)}</option>
+              );
+            })}
+    
+          </select>
+          </div>
         )
-    }
+      }
+    
 
     return (
         <div className='px-2'>
             <div className={`w-full p-2 gap-2 flex flex-row items-center justify-between bg-transparent h-fit sticky top-0 z-40`}>
                 <span onClick={() => { addNewNote() }}
                     className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-md p-1  bg-white text-black transition-all text-sm`}>
-                    Add note
+                    {t('note.add')}
                 </span>
                 <RenderSort />
 

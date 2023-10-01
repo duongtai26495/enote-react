@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ACCESS_TOKEN, URL_PREFIX } from '../utils/constants';
+import { ACCESS_TOKEN, SUCCESS_RESULT, URL_PREFIX } from '../utils/constants';
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions';
 import Cookies from 'js-cookie';
 import TaskList from '../components/TaskList';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ProgressBar from '../components/ProgressBar';
+import { useTranslation } from 'react-i18next';
 
 const NoteDetail = () => {
     const navigate = useNavigate();
-    let { id } = useParams();
+    const {t} = useTranslation()
+    const { id } = useParams();
     const token = Cookies.get(ACCESS_TOKEN)
     const [isUpdateProgress, setUpdateProgress] = useState(false)
     const [item, setItem] = useState({})
@@ -22,13 +24,13 @@ const NoteDetail = () => {
     const isMounted = useRef(false);
     const imageRef = useRef(null)
     const newNameRef = useRef(null)
-    const [changeImageLabel, setChangeImageLabel] = useState("Change Image")
+    const [changeImageLabel, setChangeImageLabel] = useState(t('common.change_image'))
 
     useEffect(() => {
         const getNoteDetail = async () => {
             if (checkToken(token)) {
                 const result = await fetchApiData(`note/get/` + id, token)
-                if (result.status === "SUCCESS") {
+                if (result.status === SUCCESS_RESULT) {
                     const data = result.content
                     let image = data.featured_image
                     let f_image = image ? URL_PREFIX + `public/image/${image}` : "https://source.unsplash.com/random"
@@ -69,7 +71,7 @@ const NoteDetail = () => {
             updateNoteById();
             newNameRef.current.blur();
         }
-    };
+    }
 
     const updateNoteById = () => {
         let newNote = item
@@ -92,7 +94,7 @@ const NoteDetail = () => {
             } else {
                 setItem({})
                 const result = await fetchApiData(`note/update`, token, "PUT", item)
-                if (result.status === "SUCCESS") {
+                if (result.status === SUCCESS_RESULT) {
                     const data = result.content
                     setItem(data)
                 }
@@ -106,13 +108,13 @@ const NoteDetail = () => {
             const data = new FormData()
             data.append('f_image', selectedImage)
             const result = await uploadDataFileApi(`note/upload/${item.id}`, token, "POST", data)
-            if (result.status === "SUCCESS") {
+            if (result.status === SUCCESS_RESULT) {
                 setFeaturedImage(URL_PREFIX + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
-                setChangeImageLabel("Image changed success")
+                setChangeImageLabel(t('common.image_changed'))
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("Change Image")
+                    setChangeImageLabel(t('common.change_image'))
                 }, 5000);
 
                 return () => clearTimeout(clear);
@@ -125,9 +127,9 @@ const NoteDetail = () => {
         if (file) {
             if (file.size > 5 * 1024 * 1024) {
                 setPreviewImage(null)
-                setChangeImageLabel("File too large (<5mb)")
+                setChangeImageLabel(t('common.file_too_large',{value: "<5mb"}))
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("Change Image")
+                    setChangeImageLabel(t('common.change_image'))
                 }, 5000);
 
                 return () => clearTimeout(clear);
@@ -166,11 +168,11 @@ const NoteDetail = () => {
                                 {
                                     previewImage ?
                                         <div className='w-full flex flex-row gap-3'>
-                                            <span onClick={() => upLoadSelectedImage()} className='text-center w-full  text-white rounded-md py-1 cursor-pointer px-2 bg-emerald-600'>
-                                                Update
+                                            <span onClick={() => upLoadSelectedImage()} className='text-center w-full whitespace-nowrap  text-white rounded-md py-1 cursor-pointer px-2 bg-emerald-600'>
+                                                {t('note.update')}
                                             </span>
-                                            <span onClick={() => setPreviewImage(null)} className='text-center w-full  text-white rounded-md py-1 cursor-pointer px-2 bg-orange-400'>
-                                                Cancel
+                                            <span onClick={() => setPreviewImage(null)} className='text-center w-full whitespace-nowrap  text-white rounded-md py-1 cursor-pointer px-2 bg-orange-400'>
+                                            {t('note.cancel')}
                                             </span>
                                         </div>
                                         :
@@ -200,8 +202,8 @@ const NoteDetail = () => {
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
                     <div className='flex flex-col lg:flex-row justify-start py-2 lg:items-center gap-3 w-full '>
-                        <Breadcrumbs text={"Back to home"} className={`bg-transparent`} />
-                        <Link className='bg-white border text-xs rounded-md p-2' to={`/workspace/${workspace.id}`} >Back to <strong>{workspace.name}</strong></Link>
+                        <Breadcrumbs text={t('common.back_to_home')} className={`bg-transparent`} />
+                        <Link className='bg-white border text-xs rounded-md p-2' to={`/workspace/${workspace.id}`} >{t('common.back_to',{value: workspace.name})}</Link>
                     </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>

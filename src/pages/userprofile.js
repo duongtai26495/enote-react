@@ -3,9 +3,11 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import ProfileCard from '../components/ProfileCard'
 import ProfileAnalytics from '../components/ProfileAnalytics'
 import CustomLazyLoadedImage from '../components/CustomLazyLoadedImage'
+import { useTranslation } from 'react-i18next'
 
 const UserProfile = () => {
 
+  const {t} = useTranslation()
   const [profileImage, setProfileImage] = useState("")
 
   const profileImageUrl = (value) => {
@@ -17,7 +19,7 @@ const UserProfile = () => {
     <>
       <div className={`w-full relative`}>
         <div className='w-full flex flex-col'>
-          <Breadcrumbs text={"Back to previous"} />
+          <Breadcrumbs text={t('common.back_to_previous')} />
         </div>
         <div className='w-full flex flex-col gap-3 sm:flex-row pt-5'>
           <div className={`w-full sm:w-1/3 `}>

@@ -1,7 +1,7 @@
 
 export const CURRENT_NAV_ITEM = "currentNavItem";
 
-export const URL_PREFIX = "http://192.168.1.21:8080/"
+export const URL_PREFIX = "http://192.168.1.20:8080/"
 
 export const ACCESS_TOKEN = "actk"
 export const REFRESH_TOKEN = "rftk"
@@ -40,8 +40,25 @@ export const CURRENT_WS_PAGE = "current_ws_page"
 export const SELECTED_LANG = "selected_lang"
 export const VI = "vi"
 export const EN = "en"
+export const ZH = "zh"
 
 export const LOCALES = [
-    {code:"vi",title:"Tiếng Việt"},
-    {code:"en",title:"English"}
+    {code:"vi",title:"Tiếng Việt", icon:"../assets/images/vie_lang.png"},
+    {code:"en",title:"English", icon:"../assets/images/eng_lang.png"},
+    {code:"zh",title:"汉语", icon:"../assets/images/zh_lang.png"}
 ]
+
+
+export const SORTS = [
+    {"name":'sorts.last_updated_desc',"value":"updated_at_desc"},
+    {"name":'sorts.last_updated_asc',"value":"updated_at_asc"},
+    {"name":'sorts.created_desc',"value":"created_at_desc"},
+    {"name":'sorts.created_asc',"value":"created_at_asc"},
+    {"name":'sorts.alphabet_a-z',"value":"a_z"},
+    {"name":'sorts.alphabet_z-a',"value":"z_a"},
+    {"name":'sorts.finished_desc',"value":"done_last_updated_asc"},
+    {"name":'sorts.finished_asc',"value":"done_last_updated_desc"},
+    {"name":'sorts.favorite_desc',"value":"favorite_desc"},
+    {"name":'sorts.favorite_asc',"value":"favorite_asc"}
+]
+

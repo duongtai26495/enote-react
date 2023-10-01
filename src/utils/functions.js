@@ -87,7 +87,7 @@ export const getTheTime = (time) => {
   const parsedDate = parse(timestamp, 'dd/MM/yy hh:mm:ss aa', new Date())
 
   const milliseconds = getTime(parsedDate);
-  const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true })
+  const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true})
   return capitalize(timeAgo)
 }
 

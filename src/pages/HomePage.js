@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { ACCESS_TOKEN, CURRENT_WS, WS_SELECTED_SORT, SORT_ITEMS, SUCCESS_RESULT, CURRENT_WS_PAGE, SORT_WS_ITEMS, DISPLAY_TYPE, GRID, COLS } from '../utils/constants'
+import { ACCESS_TOKEN, CURRENT_WS, WS_SELECTED_SORT, SORT_ITEMS, SUCCESS_RESULT, CURRENT_WS_PAGE, SORT_WS_ITEMS, DISPLAY_TYPE, GRID, COLS, SORTS } from '../utils/constants'
 import { checkToken, fetchApiData } from '../utils/functions'
 
 import LoadingComponent from '../components/LoadingComponent'
@@ -8,8 +8,10 @@ import WorkspaceCard from '../components/WorkspaceCard'
 import Pagination from '../components/Pagination'
 import ProfileAnalytics from '../components/ProfileAnalytics'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
+import { useTranslation } from 'react-i18next'
 const Home = () => {
 
+  const {t} = useTranslation()
   const [isLoading, setLoading] = useState(true)
   const [wsList, setWsList] = useState([])
   const [deleteId, setDeleteId] = useState(null)
@@ -140,18 +142,22 @@ const Home = () => {
   }
 
   const RenderSort = () => {
-    const sortValues = JSON.parse(localStorage.getItem(SORT_WS_ITEMS))
+
+    const sortValues =  SORTS.filter((item, index) => (index >= 0 && index <= 5) || index === 8 || index === 9);
 
     return (
+      <div className='w-fit flex gap-1 items-center font-bold'>
+      <label className='hidden lg:block text-sm'>{t('sorts.sorting')}</label>
       <select className='w-full lg:w-fit bg-white border p-2 font-bold cursor-pointer rounded-md text-sm' name='sort_note' id='sort_note'
         value={selectedSort} onChange={(e) => sortHandle(e)}>
         {sortValues?.map((item, index) => {
           return (
-            <option key={index} value={item.value}>{item.name}</option>
+            <option key={index} value={item.value}>{t(item.name)}</option>
           );
         })}
 
       </select>
+      </div>
     )
   }
 
@@ -183,12 +189,12 @@ const Home = () => {
         <div className={`${isLoading ? "hidden" : "flex"} bg-white bg-opacity-10 w-full h-full flex-col mt-5 mb-16 rounded-lg overflow-hidden border shadow-lg relative`}>
           <div className='w-full flex gap-5 justify-between items-center p-2 bg-white bg-opacity-50 sticky top-0 z-40'>
             <div className='flex items-center gap-2'>
-              <p className='font-bold hidden lg:block text-xl'>Workspaces</p>
+              <p className='font-bold hidden whitespace-nowrap lg:block text-xl'>{t('workspace.workspaces')}</p>
               <div className={"flex flex-row gap-5 w-14 min-w-fit"}>
                 <button onClick={() => addWorkspace()}
                   disabled={isLoadingAdd}
                   className='button_style-1 py-2 px-3 w-full border cursor-pointer transition-all rounded-md whitespace-nowrap text-black bg-white lg:hover:scale-105 font-bold text-sm'>
-                  {isLoadingAdd ? <LoadingComponent className={`w-full`} size={`w-5 h-5 mx-auto`} /> : <span className='text-center block'>Add+</span>}
+                  {isLoadingAdd ? <LoadingComponent className={`w-full`} size={`w-5 h-5 mx-auto`} /> : <span className='text-center block'>{t('workspace.add')}</span>}
                 </button>
               </div>
             </div>
@@ -207,10 +213,10 @@ const Home = () => {
             </div>
           </div>
           <div className={`w-full h-fit mt-2 px-2`}>
-            <div className={`${wsList?.length > 0 ? "border-none" : "border-b border-zinc-300"} w-full justify-between ${displayType === GRID ? "hidden" : "hidden lg:flex"} rounded-sm my-2 p-2 italic text-sm`}>
-              <p>Name</p>
-              <p>Time</p>
-              <p>Actions</p>
+            <div className={` w-full justify-between ${(displayType === GRID || wsList?.length < 1) ? "hidden" : "hidden lg:flex"} rounded-sm my-2 p-2 italic text-sm`}>
+              <p>{t('workspace.name')}</p>
+              <p>{t('workspace.time')}</p>
+              <p>{t('workspace.actions')}</p>
             </div>
             <RenderWsList />
           </div>

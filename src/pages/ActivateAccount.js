@@ -50,7 +50,7 @@ const ActivateAccount = () => {
         setSuccess(false)
       }
     } else {
-      setErrMsg(t('authen.activate.email_donot_exist_error'))
+      setErrMsg(t('authen.email_not_exist'))
       setLoading(false)
     }
   }
@@ -82,7 +82,7 @@ const ActivateAccount = () => {
         setLoading(false)
       }
     } else {
-      setErrMsg(t('authen.activate.code_format_wrong_error'))
+      setErrMsg(t('authen.activate.code_format'))
       setLoading(false)
     }
   }
@@ -96,10 +96,10 @@ const ActivateAccount = () => {
     <div className="register-form authen-box h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
       <div className="p-6">
         <div className=" mx-2">
-          <p className={`${isSuccess ? "block" : "hidden"} text-md font-bold text-green-600 text-center`}>{t('authen.activate.account_activated_title')}</p>
+          <p className={`${isSuccess ? "block" : "hidden"} text-md font-bold text-green-600 text-center`}>{t('authen.activate.activated_account')}</p>
           <div className={`${isSuccess || isResend ? "hidden" : "block"}`}>
-            <h1 className='font-bold text-center block text-xl'>{t('authen.activate.activate_account_title')}</h1>
-            <p className='text-md'>{t('authen.activate.check_email_title')}</p>
+            <h1 className='font-bold text-center block text-xl'>{t('authen.activate.activate_account')}</h1>
+            <p className='text-md text-center'>{t('authen.activate.check_email')}</p>
 
             <input
               type='text'
@@ -118,7 +118,7 @@ const ActivateAccount = () => {
                   <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                   :
                   <span>
-                    {t('authen.activate.submit_title')}
+                    {t('common.confirm')}
                   </span>
               }
             </button>
@@ -132,7 +132,7 @@ const ActivateAccount = () => {
                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                 :
                 <span>
-                  {t('authen.activate.resend_email_title')}
+                  {t('authen.activate.resend_code')}
                 </span>
             }
           </button>

@@ -3,9 +3,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CHECK_TYPE, ACCESS_TOKEN } from '../utils/constants'
 import loading_gif from '../assets/images/loading_gif.gif'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
+import { useTranslation } from 'react-i18next'
 
 const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId }) => {
 
+    const {t} = useTranslation()
     const [taskItem, setTaskItem ] = useState(task)
     const [newContent, setNewContent] = useState(taskItem.content)
     const [newState, setNewState] = useState(taskItem.done)
@@ -65,8 +67,8 @@ const TaskRow = ({ task, noteId, updatePercentage, isUpdateList, deleteTaskId })
         <div className={`h-fit bg-white overflow-y-hidden transition-all bg-transparent my-1 flex-1 flex flex-row gap-5 justify-between items-center px-2 relative border`}>
             <div className={`${isOpenSetting ? "visible" : "invisible"} h-full w-full transition-all rounded-md z-10 overflow-hidden absolute top-0 left-0`}>
                 <div className='w-full h-full rounded-md flex flex-row items-center justify-center m-auto gap-3 border bg-opacity-50 bg-black'>
-                    <button onClick={() => removeTask()} className=' p-1 rounded-md bg-orange-600 text-white text-sm'>Delete</button>
-                    <button onClick={toggleSubSetting} className=' p-1 rounded-md bg-slate-600 text-white text-sm'>Cancel</button>
+                    <button onClick={() => removeTask()} className=' p-1 rounded-md bg-orange-600 text-white text-sm'>{t('task.delete')}</button>
+                    <button onClick={toggleSubSetting} className=' p-1 rounded-md bg-slate-600 text-white text-sm'>{t('task.cancel')}</button>
                 </div>
             </div>
             <div className={`${isUpdateList && deleteTaskId === taskItem.id ? "visible" : "invisible"} absolute top-0 left-0 w-full h-full bg-white rounded-md flex flex-row items-center justify-center`}>

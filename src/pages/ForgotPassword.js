@@ -32,11 +32,11 @@ const ForgotPassword = () => {
         navigate("/confirm-recovery?email=" + email)
       }
       else {
-        setErrMsg(t('authen.email_donot_exist_error'))
+        setErrMsg(t('authen.email_not_exist'))
         setSending(false)
       }
     } else {
-      setErrMsg(t('authen.format_email_wrong_error_title'))
+      setErrMsg(t('authen.email_format'))
       emailRef.current.focus()
       setSending(false)
     }
@@ -55,7 +55,7 @@ const ForgotPassword = () => {
         <p className='text-base my-5'>{t('authen.recovery.forgot_password')}</p>
         <div className="mb-2">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            {t('authen.email_title')}
+            {t('authen.email')}
           </label>
           <input
             className={`appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errMsg ? "border-red-500" : ""}`}
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
               isSending ?
                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                 :
-                <span>{t('common.confirm_title')}</span>
+                <span>{t('common.confirm')}</span>
             }
           </button>
           <button
@@ -88,7 +88,7 @@ const ForgotPassword = () => {
             type="button"
             onClick={() => navigate(-1)}
           >
-            {t('common.back_title')}
+            {t('common.back')}
           </button>
 
         </div>

@@ -4,9 +4,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import Cookies from 'js-cookie'
 import { ACCESS_TOKEN, COLS, GRID, SUCCESS_RESULT } from '../utils/constants'
+import { useTranslation } from 'react-i18next'
 
 const WorkspaceCard = ({ wsItem, removeWs, type }) => {
 
+    const {t} = useTranslation()
     const [workspaceItem, setWorkspaceItem] = useState(wsItem)
     const [isConfirm, setConfirm] = useState(false)
     const [isUpdateName, setUpdateName] = useState(false)
@@ -79,10 +81,10 @@ const WorkspaceCard = ({ wsItem, removeWs, type }) => {
             <div className={`rounded mb-1 w-full flex py-4 px-2 relative border-b  border-b-slate-300 bg-white bg-opacity-50 overflow-hidden justify-between items-center lg:hover:bg-slate-300 transition-all`}>
                 <div className={`${isConfirm ? "flex" : "hidden"} justify-center items-center transition-all absolute top-0 left-0 bg-black bg-opacity-50 w-full h-full z-10 gap-2`}>
                     <button onClick={() => remove_workspace()} className='p-2 h-fit my-1 rounded-md bg-green-600 text-white font-bold text-sm'>
-                        Delete
+                        {t('workspace.delete')}
                     </button>
                     <button className='p-2 h-fit my-1 rounded-md bg-yellow-600 text-white font-bold text-sm' onClick={() => setConfirm(false)}>
-                        Cancel
+                        {t('workspace.cancel')}
                     </button>
                 </div>
                 <div className='py-2 w-1/2 lg:w-1/3 overflow-x-hidden'>
@@ -143,10 +145,10 @@ const WorkspaceCard = ({ wsItem, removeWs, type }) => {
             <div className={`rounded mb-5 w-full flex-col relative bg-transparent border shadow-sm overflow-hidden justify-between items-center lg:hover:shadow-lg transition-all`}>
                 <div className={`${isConfirm ? "flex" : "hidden"} justify-center items-center transition-all absolute top-0 left-0 bg-black bg-opacity-50 w-full h-full z-10 gap-2`}>
                     <button onClick={() => remove_workspace()} className='p-2 h-fit my-1 rounded-md bg-green-600 text-white font-bold text-sm'>
-                        Delete
+                        {t('workspace.delete')}
                     </button>
                     <button className='p-2 h-fit my-1 rounded-md bg-yellow-600 text-white font-bold text-sm' onClick={() => setConfirm(false)}>
-                        Cancel
+                        {t('workspace.cancel')}
                     </button>
                 </div>
                 <p className='hidden flex-col justify-center items-center w-full'>

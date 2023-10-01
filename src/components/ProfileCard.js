@@ -6,9 +6,11 @@ import Cookies from 'js-cookie'
 import profile_default from '../assets/images/default_profile.jpg'
 import { checkToken, fetchApiData, getTheTime, logoutAccount, uploadDataFileApi } from '../utils/functions'
 import LoadingComponent from './LoadingComponent'
+import { useTranslation } from 'react-i18next'
 
 const ProfileCard = ({ profileImageUrl }) => {
 
+    const {t} = useTranslation()
     const [user, setUser] = useState(JSON.parse(localStorage.getItem(LOCAL_USER)) ?? {})
     const token = Cookies.get(ACCESS_TOKEN)
     const [isUpdateName, setUpdateNameState] = useState(false)
@@ -17,8 +19,8 @@ const ProfileCard = ({ profileImageUrl }) => {
     const [selectedImage, setSelectedImage] = useState(null)
     const [profileImage, setProfileImage] = useState(user.profile_image ? URL_PREFIX + "public/image/" + user.profile_image : profile_default)
     const [previewImage, setPreviewImage] = useState(null)
-    const [changeImageLabel, setChangeImageLabel] = useState("Update image")
-    const [changePasswordLabel, setChangePwLabel] = useState("Update password")
+    const [changeImageLabel, setChangeImageLabel] = useState(t('common.change_image'))
+    const [changePasswordLabel, setChangePwLabel] = useState(t('user.update_password'))
     const [isLoadingAvt, setLoadingAvt] = useState(false)
     const [isUpdatePassword, setUpdatePasswordState] = useState(false)
     const [isLogout, setLogout] = useState(false)
@@ -30,7 +32,7 @@ const ProfileCard = ({ profileImageUrl }) => {
     const getUserProfile = async () => {
         if (checkToken(token)) {
             const result = await fetchApiData(`user/info/${user.username}`, token)
-            if (result.status === "SUCCESS") {
+            if (result.status === SUCCESS_RESULT) {
                 setUser(result.content)
                 localStorage.setItem(LOCAL_USER, JSON.stringify(result.content))
             } else {
@@ -55,7 +57,7 @@ const ProfileCard = ({ profileImageUrl }) => {
     const updateUserInfo = async (newUser) => {
         if (checkToken(token)) {
             const result = await fetchApiData(`user/update`, token, "PUT", JSON.stringify(newUser))
-            if (result.status === "SUCCESS") {
+            if (result.status === SUCCESS_RESULT) {
                 let updatedUser = result.content
                 setUser(updatedUser)
                 localStorage.removeItem(LOCAL_USER)
@@ -87,9 +89,9 @@ const ProfileCard = ({ profileImageUrl }) => {
             if (file.size > 5 * 1024 * 1024) {
                 setPreviewImage(null)
                 setLoadingAvt(false)
-                setChangeImageLabel("File too large (<5mb)")
+                setChangeImageLabel(t('common.file_too_large', {value: "<5mb"}))
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("Update image")
+                    setChangeImageLabel(t('common.change_image'))
                 }, 2000);
 
                 return () => clearTimeout(clear);
@@ -115,14 +117,14 @@ const ProfileCard = ({ profileImageUrl }) => {
             const data = new FormData()
             data.append('user_profile_image', selectedImage)
             const result = await uploadDataFileApi(`user/upload/image/${user.username}`, token, "POST", data)
-            if (result.status === "SUCCESS") {
+            if (result.status === SUCCESS_RESULT) {
                 setProfileImage(URL_PREFIX + "public/image/" + result.content)
                 setPreviewImage(null)
                 setSelectedImage(null)
                 setLoadingAvt(false)
-                setChangeImageLabel("Image changed success")
+                setChangeImageLabel(t('common.image_changed'))
                 let clear = setTimeout(() => {
-                    setChangeImageLabel("Update image")
+                    setChangeImageLabel(t('common.change_image'))
                 }, 5000);
 
                 return () => clearTimeout(clear);
@@ -142,7 +144,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                 const result = await fetchApiData("user/update-password", token, "PUT", JSON.stringify(newUser))
                 if (result.status === SUCCESS_RESULT) {
                     setUpdatePasswordState(false)
-                    setChangePwLabel("Password updated. Please login again.")
+                    setChangePwLabel(t('user.updated_password'))
                     let clear = setTimeout(() => {
                         logout()
                     }, 3000);
@@ -193,10 +195,10 @@ const ProfileCard = ({ profileImageUrl }) => {
                         previewImage ?
                             <div className='w-full flex flex-row gap-3'>
                                 <button disabled={isLoadingAvt} onClick={() => upLoadSelectedImage()} className={`${isLoadingAvt ? "cursor-wait" : "cursor-pointer"} text-center w-full border text-white p-2 bg-emerald-600`}>
-                                    Update
+                                {t('user.update')}
                                 </button>
                                 <button disabled={isLoadingAvt} onClick={() => setPreviewImage(null)} className={`${isLoadingAvt ? "cursor-wait" : "cursor-pointer"}ter text-center w-full border text-white p-2 bg-orange-400`}>
-                                    Cancel
+                                {t('user.cancel')}
                                 </button>
                             </div>
                             :
@@ -209,7 +211,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                         <input
                             type='text'
                             className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
-                            placeholder='First name'
+                            placeholder={t('authen.first_name')}
                             id='profile_f_name'
                             name='profile_f_name'
                             onChange={(e) => setNewFname(e.target.value)}
@@ -218,7 +220,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                         <input
                             type='text'
                             className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
-                            placeholder='Last name'
+                            placeholder={t('authen.last_name')}
                             id='profile_l_name'
                             name='profile_l_name'
                             onChange={(e) => setNewLname(e.target.value)}
@@ -226,14 +228,14 @@ const ProfileCard = ({ profileImageUrl }) => {
                         />
                     </div>
                     <div className={`flex transition-all flex-row gap-3`}>
-                        <span className='w-full text-center rounded border bg-emerald-700 text-white' onClick={() => { updateUserHandle() }}>Done</span>
-                        <span className='w-full text-center rounded border bg-amber-500 text-white' onClick={() => { setUpdateNameState(false) }}>Cancel</span>
+                        <span className='w-full text-center rounded border bg-emerald-700 text-white' onClick={() => { updateUserHandle() }}>{t('user.update')}</span>
+                        <span className='w-full text-center rounded border bg-amber-500 text-white' onClick={() => { setUpdateNameState(false) }}>{t('user.cancel')}</span>
                     </div>
                 </div>
-                <p className='text-sm text-gray-600'><strong>Username:</strong> {user.username}</p>
-                <p className='text-sm text-gray-600'><strong>Email:</strong> {user.email}</p>
-                <p className='text-sm text-gray-600'><strong>Joined at:</strong> {getTheTime(user.joined_at)}</p>
-                <p className='text-sm text-gray-600'><strong>Last edited:</strong> {getTheTime(user.updated_at)}</p>
+                <p className='text-sm text-gray-600'><strong>{t('user.username')}:</strong> {user.username}</p>
+                <p className='text-sm text-gray-600'><strong>{t('user.email')}:</strong> {user.email}</p>
+                <p className='text-sm text-gray-600'><strong>{t('user.joinded_at')}:</strong> {getTheTime(user.joined_at)}</p>
+                <p className='text-sm text-gray-600'><strong>{t('user.updated_at')}:</strong> {getTheTime(user.updated_at)}</p>
                 <p onClick={toggleUpdatePassword}
                     className={`${isUpdatePassword ? "hidden" : "flex"} lg:hover:shadow-md text-slate-700 border p-2 font-bold cursor-pointer transition-all text-sm w-full justify-center mx-auto text-center `}>
                     {changePasswordLabel}
@@ -242,7 +244,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                     <input
                         type='password'
                         className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
-                        placeholder='New password'
+                        placeholder={t('user.new_password')}
                         id='new_pw'
                         name='new_pw'
                         autoFocus
@@ -252,7 +254,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                     <input
                         type='password'
                         className='w-full px-2 py-1 rounded text-black bg-slate-100 border'
-                        placeholder='Confirm new password'
+                        placeholder={t('user.confirm_password')}
                         id='confirm_new_pw'
                         name='confirm_new_pw'
                         onChange={(e) => setNewPwConfirm(e.target.value)}
@@ -260,10 +262,10 @@ const ProfileCard = ({ profileImageUrl }) => {
                     />
                     <div className='w-full flex flex-row gap-3'>
                         <span onClick={() => changePasswordHandle()} className='cursor-pointer text-center w-full border text-white p-2 bg-emerald-600'>
-                            Update
+                        {t('user.update')}
                         </span>
                         <span onClick={() => setUpdatePasswordState(false)} className='cursor-pointer text-center w-full border text-white p-2 bg-orange-400'>
-                            Cancel
+                        {t('user.cancel')}
                         </span>
                     </div>
                 </div>
@@ -272,7 +274,7 @@ const ProfileCard = ({ profileImageUrl }) => {
                         isLogout ?
                             <LoadingComponent size={`w-5 h-5`} className={`flex`} />
                             :
-                            <span className=''>Log out</span>
+                            <span className=''>{t('user.logout')}</span>
                     }
                 </button>
             </div>

@@ -4,8 +4,10 @@ import { ACCESS_TOKEN } from '../utils/constants'
 import { checkToken, fetchApiData, getTheTime, uploadDataFileApi } from '../utils/functions'
 import { Link } from 'react-router-dom'
 import ProgressBar from './ProgressBar'
+import { useTranslation } from 'react-i18next'
 
 const NoteItem = ({ note, removeNote, subclass }) => {
+    const {t} = useTranslation()
     const [item, setItem] = useState(note)
     const [newName, setNewName] = useState(note.name)
     const [newDone, setNewDone] = useState(note.done)
@@ -70,8 +72,8 @@ const NoteItem = ({ note, removeNote, subclass }) => {
             <div className={`relative border p-2 flex flex-col rounded-lg ${item.done ? "bg-teal-500 " : "bg-transparent shadow-sm"} transition-all lg:hover:-translate-y-1`}>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
-                        <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Finish</li>
-                        <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>Delete</li>
+                        <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>{t('note.finish')}</li>
+                        <li onClick={() => { removeHandle() }} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>{t('note.delete')}</li>
                     </ul>
 
                 </div>

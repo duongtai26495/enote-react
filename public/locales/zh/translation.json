@@ -1,0 +1,120 @@
+{
+    "common": {
+        "confirm": "确认",
+        "back": "返回",
+        "time_ago": "{{time}}前",
+        "back_to_home": "返回主页",
+        "back_to_previous": "返回上一页",
+        "back_to": "返回{{value}}",
+        "change_image": "更改图片",
+        "image_changed": "图片更改成功",
+        "file_too_large": "文件大小过大{{value}}",
+        "search": "搜索一些东西.."
+    },
+    "workspace": {
+        "workspaces": "您的工作区",
+        "add": "添加",
+        "name": "名称",
+        "time": "创建于",
+        "actions": "操作",
+        "delete": "删除",
+        "update": "更新",
+        "cancel": "取消"
+    },
+    "note": {
+        "notes": "笔记",
+        "add": "添加",
+        "finish": "完成",
+        "delete": "删除",
+        "update": "更新",
+        "cancel": "取消"
+    },
+    "analytics": {
+        "workspaces": "工作区",
+        "notes": "笔记",
+        "tasks": "任务",
+        "finish_tasks": "已完成任务",
+        "finish_notes": "已完成笔记",
+        "tasks_progress": "任务进度"
+    },
+    "task": {
+        "tasks": "任务",
+        "new_task": "新任务",
+        "new_note": "新笔记",
+        "delete": "删除",
+        "update": "更新",
+        "cancel": "取消"
+    },
+    "user": {
+        "profile": "个人资料",
+        "logout": "登出",
+        "updated_password": "密码已更新，请重新登录。",
+        "done": "完成",
+        "update": "更新",
+        "cancel": "取消",
+        "username": "用户名",
+        "email": "电子邮件",
+        "joinded_at": "加入于",
+        "updated_at": "更新于",
+        "new_password": "新密码",
+        "confirm_password": "确认新密码",
+        "update_password": "更新密码"
+    },
+    "sorts": {
+        "sorting": "排序：",
+        "last_updated_desc": "最后更新，新到旧",
+        "last_updated_asc": "最后更新，旧到新",
+        "created_desc": "最新创建",
+        "created_asc": "最早创建",
+        "alphabet_a-z": "字母顺序, A到Z",
+        "alphabet_z-a": "字母逆序, Z到A",
+        "finished_desc": "已完成，新到旧",
+        "finished_asc": "已完成，旧到新",
+        "favorite_desc": "收藏夹，新到旧",
+        "favorite_asc": "收藏夹，旧到新"
+    },
+    "authen": {
+        "recovery": {
+            "forgot_password": "请输入您的电子邮件以接收密码恢复代码",
+            "email_sent_to": "邮件已发送至{{email}}",
+            "new_password": "输入新密码",
+            "update": "更新密码",
+            "resend_code": "重新发送密码恢复代码",
+            "password_updated": "您的密码已成功更新"
+        },
+        "login_greeting": "欢迎回来！",
+        "register_greeting": "你好！",
+        "username": "用户名",
+        "password": "密码",
+        "remember_me": "记住我",
+        "first_name": "名字",
+        "last_name": "姓氏",
+        "email": "电子邮件",
+        "gender": "性别",
+        "male": "男性",
+        "female": "女性",
+        "unknown_gender": "未知",
+        "back_to_login": "返回登录页面",
+        "login": "登录",
+        "register": "注册",
+        "forgot_password": "忘记密码？",
+        "donot_have_account": "还没有账号？",
+        "validate_username": "用户名必须至少包含{{value}}个字符",
+        "validate_password": "密码必须至少包含{{value}}个字符",
+        "common_error": "发生了错误。",
+        "validate_name": "名字必须至少包含{{value}}个字符",
+        "email_format": "电子邮件格式不正确",
+        "check_email": "您可以使用此电子邮件",
+        "check_username": "您可以使用此用户名",
+        "username_exist": "无法使用此用户名",
+        "email_exist": "无法使用此电子邮件",
+        "email_not_exist": "电子邮件不存在",
+        "activate": {
+            "check_email": "请检查您的收件箱以获取激活码",
+            "resend_code": "重新发送激活码",
+            "activate_account": "激活账户",
+            "code_format": "激活码格式不正确",
+            "activated_account": "账户激活成功"
+        }
+    }
+}

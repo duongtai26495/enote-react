@@ -48,23 +48,23 @@ const RegisterPage = () => {
 
         let err = false
         if (firstName.length < 3 || lastName.length < 3) {
-            setErrNameMsg(t('authen.name_3_character_error_title'))
+            setErrNameMsg(t('authen.validate_name',{value:3}))
             err = true
         }
         if (username.length < 5) {
-            setErrUnameMsg(t('authen.username_5_character_error_title'))
+            setErrUnameMsg(t('authen.validate_username',{value:5}))
             err = true
         }
         if (!validateEmail(email)) {
-            setErrEmailMsg(t('authen.format_email_wrong_error_title'))
+            setErrEmailMsg(t('authen.email_format'))
             err = true
         }
-        if (password.length < 5) {
-            setErrPasswordMsg(t('authen.password_5_character_error_title'))
+        if (password.length < 6) {
+            setErrPasswordMsg(t('authen.validate_password',{value:6}))
             err = true
         }
         if (err) {
-            setErrCommonMsg(t('authen.common_error_title'))
+            setErrCommonMsg(t('authen.common_error'))
         } else {
             await handleRegister()
         }
@@ -145,11 +145,11 @@ const RegisterPage = () => {
                 </div>
                 <AuthenLogo />
                 <div className=" mx-2">
-                    <h2 className="text-2xl font-semibold mb-4">{t('authen.register_title')}</h2>
+                    <h2 className="text-2xl font-semibold mb-4">{t('authen.register_greeting')}</h2>
                     <div className='flex gap-3'>
                         <input
                             type="text"
-                            placeholder={t('authen.first_name_title')}
+                            placeholder={t('authen.first_name')}
                             value={firstName}
                             onKeyDown={(e) => e.key === 'Enter' ? lastNameRef.current.focus() : null}
                             name='register_f_name'
@@ -159,7 +159,7 @@ const RegisterPage = () => {
                         />
                         <input
                             type="text"
-                            placeholder={t('authen.last_name_title')}
+                            placeholder={t('authen.last_name')}
                             ref={lastNameRef}
                             name='register_l_name'
                             onKeyDown={(e) => e.key === 'Enter' ? usernameRef.current.focus() : null}
@@ -178,12 +178,12 @@ const RegisterPage = () => {
                         <svg className={`${checkedDone ? "flex" : "hidden"} ${isUsernameExist ? "hidden" : "flex"} w-5 h-5 fill-green-500`} version="1.1" viewBox="0 0 18 15" xmlns="http://www.w3.org/2000/svg"><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g className='fill-green-600' id="Core" transform="translate(-423.000000, -47.000000)"><g id="check" transform="translate(423.000000, 47.500000)"><path d="M6,10.2 L1.8,6 L0.4,7.4 L6,13 L18,1 L16.6,-0.4 L6,10.2 Z" id="Shape" /></g></g></g></svg>
 
                         <span className={`text-sm ${checkedDone ? "flex" : "hidden"} ${isUsernameExist ? "text-red-500" : "text-green-500"} `}>
-                            {isUsernameExist ? t('authen.valid_username_error') : t('authen.valid_username_ok')}
+                            {isUsernameExist ? t('authen.username_exist') : t('authen.username_available')}
                         </span>
                     </div>
                     <input
                         type="text"
-                        placeholder={t('authen.username_title')}
+                        placeholder={t('authen.username')}
                         value={username}
                         name='username'
                         ref={usernameRef}
@@ -202,12 +202,12 @@ const RegisterPage = () => {
                         <svg className={`${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "hidden" : "flex"} w-5 h-5 fill-green-500`} version="1.1" viewBox="0 0 18 15" xmlns="http://www.w3.org/2000/svg"><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g className='fill-green-600' id="Core" transform="translate(-423.000000, -47.000000)"><g id="check" transform="translate(423.000000, 47.500000)"><path d="M6,10.2 L1.8,6 L0.4,7.4 L6,13 L18,1 L16.6,-0.4 L6,10.2 Z" id="Shape" /></g></g></g></svg>
 
                         <span className={`text-sm ${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "text-red-500" : "text-green-500"} `}>
-                            {isEmailExist ?  t('authen.valid_email_error') : t('authen.valid_email_ok')}
+                            {isEmailExist ?  t('authen.email_exist') : t('authen.email_available')}
                         </span>
                     </div>
                     <input
                         type="email"
-                        placeholder={t('authen.email_title')}
+                        placeholder={t('authen.email')}
                         value={email}
                         name='email'
                         ref={emailRef}
@@ -220,7 +220,7 @@ const RegisterPage = () => {
                     <p className={`text-red-600  whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errEmailMsg}</p>
                     <input
                         type="password"
-                        placeholder={t('authen.password_title')}
+                        placeholder={t('authen.password')}
                         name='password'
                         id='password'
                         onKeyDown={handleKeyPress}
@@ -232,20 +232,20 @@ const RegisterPage = () => {
                     <p className={`text-red-600 whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errPasswordMsg}</p>
 
                     <div className="mb-2 w-full flex items-center">
-                        <label className='w-full'>{t('authen.gender_title')}</label>
+                        <label className='w-full'>{t('authen.gender')}</label>
                         <select
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                             className="p-2 border rounded-lg bg-white bg-opacity-60"
                         >
-                            <option value="MALE">{t('authen.male_title')}</option>
-                            <option value="FEMALE">{t('authen.female_title')}</option>
-                            <option value="UNKNOWN">{t('authen.unknown_gender_title')}</option>
+                            <option value="MALE">{t('authen.male')}</option>
+                            <option value="FEMALE">{t('authen.female')}</option>
+                            <option value="UNKNOWN">{t('authen.unknown_gender')}</option>
                         </select>
                     </div>
                     <div className="mt-4 flex flex-col w-full">
                         <button onClick={() => checkInputRegister()} className="bg-white font-bold border-2 w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
-                            {t('authen.register_title')}
+                            {t('authen.register')}
                         </button>
                         <Link to="/login" className="text-gray-500 mt-5 mb-3 text-sm hover:text-slate-800 font-bold">{t('authen.back_to_login')}</Link>
                     </div>
