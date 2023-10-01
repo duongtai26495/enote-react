@@ -9,7 +9,6 @@ import { checkActivateUser, checkToken, fetchApiData } from '../utils/functions'
 
 function Layout() {
 
-
   useEffect(() => {
     const getSortItems = async () => {
       const result = await fetchApiData("public/sort_value")

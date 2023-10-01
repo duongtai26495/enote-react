@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchApiData } from '../utils/functions';
 import { AUTO_SEND_RECOVERY, SUCCESS_RESULT } from '../utils/constants';
 import LoadingComponent from '../components/LoadingComponent';
+import { useTranslation } from 'react-i18next';
 
 const ConfirmRecovery = () => {
     useEffect(() => {
         document.title = "Confirm recovery"
     }, [])
+    const {t} = useTranslation()
     const navigate = useNavigate()
     const { search } = useLocation();
     const params = new URLSearchParams(search);
@@ -99,9 +101,9 @@ const ConfirmRecovery = () => {
                         />
                     </svg>
                     <p className="text-gray-700 text-lg font-semibold mb-4">
-                        Email sent to {email}
+                        {t('authen.recovery.email_sent_to',{email})}
                     </p>
-                    <p className='text-md'>Check your email to get the code</p>
+                    <p className='text-md'>{t('authen.check_email_title')}</p>
 
                     <input
                         type='text'
@@ -114,7 +116,7 @@ const ConfirmRecovery = () => {
                         type='password'
                         onChange={e => setPassword(e)}
                         className='text-xl outline-none p-2 w-full rounded-md border bg-white mt-2 text-center block'
-                        placeholder='New password'
+                        placeholder={t('authen.recovery.new_password')}
                     />
                     <button
                         disabled={isLoading}
@@ -125,7 +127,7 @@ const ConfirmRecovery = () => {
                                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                                 :
                                 <span>
-                                    Update
+                                    {t('authen.recovery.update_title')}
                                 </span>
                         }
                     </button>
@@ -133,7 +135,7 @@ const ConfirmRecovery = () => {
                 </div>
                 <div className={`${isResend ? "block" : "hidden"} my-2 px-2`}>
                     <p className='h-fit block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
-                    <p className='text-md'>Resend the recovery code</p>
+                    <p className='text-md text-center'>{t('authen.recovery.resend_recovery_code')}</p>
                     <button
                         disabled={isLoading}
                         onClick={() => sendRecoveryMail(email)}
@@ -143,20 +145,20 @@ const ConfirmRecovery = () => {
                                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                                 :
                                 <span>
-                                    Re-Send
+                                    {t('authen.activate.resend_email_title')}
                                 </span>
                         }
                     </button>
                 </div>
             </div>
-            <p className={`${isSuccess ? "block" : "hidden"} text-md text-emerald-500 mx-auto my-5`}>Your password is updated</p>
+            <p className={`${isSuccess ? "block" : "hidden"} text-md text-emerald-500 mx-auto my-5`}>{t('authen.recovery.password_updated')}</p>
             <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mb-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 onClick={() => {
                     navigate("/login")
                 }}
             >
-                Back to login page
+                {t('authen.back_to_login')}
             </button>
         </div>
     )

@@ -3,9 +3,10 @@ import LoadingComponent from '../components/LoadingComponent'
 import { ACTIVATE_EMAIL, AUTO_SEND, SUCCESS_RESULT } from '../utils/constants'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchApiData, logoutAccount } from '../utils/functions'
+import { useTranslation } from 'react-i18next'
 
 const ActivateAccount = () => {
-
+  const {t, i18n} = useTranslation()
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const [activateEmail, setActivateEmail] = useState("")
@@ -49,7 +50,7 @@ const ActivateAccount = () => {
         setSuccess(false)
       }
     } else {
-      setErrMsg("Email do not exist")
+      setErrMsg(t('authen.activate.email_donot_exist_error'))
       setLoading(false)
     }
   }
@@ -68,7 +69,7 @@ const ActivateAccount = () => {
         code: activateCode
       })
       const result = await fetchApiData("public/activate-account", null, "POST", data)
-      console.log(result)
+
       if (result.status === SUCCESS_RESULT) {
         setSuccess(true)
         localStorage.removeItem(AUTO_SEND)
@@ -81,7 +82,7 @@ const ActivateAccount = () => {
         setLoading(false)
       }
     } else {
-      setErrMsg("Format of code is incorrect")
+      setErrMsg(t('authen.activate.code_format_wrong_error'))
       setLoading(false)
     }
   }
@@ -95,10 +96,10 @@ const ActivateAccount = () => {
     <div className="register-form authen-box h-fit register-form lg:w-96 max-w-sm flex items-center justify-center absolute">
       <div className="p-6">
         <div className=" mx-2">
-          <p className={`${isSuccess ? "block" : "hidden"} text-md font-bold text-green-600 text-center`}>Your account is activated</p>
+          <p className={`${isSuccess ? "block" : "hidden"} text-md font-bold text-green-600 text-center`}>{t('authen.activate.account_activated_title')}</p>
           <div className={`${isSuccess || isResend ? "hidden" : "block"}`}>
-            <h1 className='font-bold text-center block text-xl'>Activate your account</h1>
-            <p className='text-md'>Check your email to get the code</p>
+            <h1 className='font-bold text-center block text-xl'>{t('authen.activate.activate_account_title')}</h1>
+            <p className='text-md'>{t('authen.activate.check_email_title')}</p>
 
             <input
               type='text'
@@ -117,7 +118,7 @@ const ActivateAccount = () => {
                   <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                   :
                   <span>
-                    Submit
+                    {t('authen.activate.submit_title')}
                   </span>
               }
             </button>
@@ -131,12 +132,12 @@ const ActivateAccount = () => {
                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                 :
                 <span>
-                  Re-Send
+                  {t('authen.activate.resend_email_title')}
                 </span>
             }
           </button>
           <p className='h-5 block text-center text-red-500 font-bold text-md my-2'>{errorMsg}</p>
-          <button onClick={() => backToLogin()} className='w-full text-center block mx-auto mt-7 p-2 rounded-md border lg:hover:shadow-lg transition-all'>Back to login</button>
+          <button onClick={() => backToLogin()} className='w-full text-center block mx-auto mt-7 p-2 rounded-md border lg:hover:shadow-lg transition-all'>{t('authen.back_to_login')}</button>
         </div>
       </div>
     </div>

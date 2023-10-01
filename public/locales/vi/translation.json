@@ -1,0 +1,50 @@
+{
+    "common":{
+        "confirm_title":"Xác nhận",
+        "back_title":"Quay lại"
+    },
+    "authen":{
+        "recovery":{
+            "forgot_password":"Mời nhập email của bạn để lấy mã khôi phục mật khẩu",
+            "email_sent_to":"Email đã gửi đến {{email}}",
+            "new_password":"Nhập mật khẩu mới",
+            "update_title":"Cập nhật mật khẩu",
+            "resend_recovery_code":"Gửi lại mã khôi phục",
+            "password_updated":"Mật khẩu của bạn đã được cập nhật"
+        },
+        "login_greeting":"Chào mừng trở lại!",
+        "username_title":"Tên đăng nhập",
+        "password_title":"Mật khẩu",
+        "remember_me_title":"Ghi nhớ tài khoản",
+        "first_name_title":"Họ",
+        "last_name_title":"Tên",
+        "email_title":"Email",
+        "gender_title":"Giới tính",
+        "male_title":"Nam",
+        "female_title":"Nữ",
+        "unknown_gender_title":"Không xác định",
+        "back_to_login":"Quay lại trang đăng nhập",
+        "login_title":"Đăng nhập",
+        "register_title":"Đăng ký",
+        "forgot_password_title":"Quên mật khẩu ?",
+        "donot_have_account_title":"Chưa có tài khoản ?",
+        "username_5_character_error_title":"Tên đăng nhập phải có 5 ký tự trở lên",
+        "password_5_character_error_title":"Mật khẩu phải có 5 ký tự trở lên",
+        "common_error_title":"Đã có lỗi xảy ra.",
+        "name_3_character_error_title":"Tên phải có 3 ký tự trở lên",
+        "format_email_wrong_error_title":"Định dạng email không chính xác",
+        "valid_email_ok":"Bạn có thể sử dụng email này",
+        "valid_username_ok":"Bạn có thể sử dụng tên đăng nhập này",
+        "valid_username_error":"Username này không thể sử dụng",
+        "valid_email_error":"Email này không thể sử dụng",
+        "check_email_title":"Kiểm tra hộp thư để lấy mã kích hoạt",
+        "activate":{
+            "resend_email_title":"Lấy lại mã kích hoạt",
+            "activate_account_title":"Kích hoạt tài khoản",
+            "submit_title":"Xác nhận",
+            "email_donot_exist_error": "Email không tồn tại",
+            "code_format_wrong_error":"Sai định dạng mã kích hoạt",
+            "account_activated_title":"Kích hoạt tài khoản thành công"
+        }
+    }
+}

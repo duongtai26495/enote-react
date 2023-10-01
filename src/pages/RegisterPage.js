@@ -4,8 +4,11 @@ import { fetchApiData, validateEmail } from '../utils/functions';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthenLogo from '../components/AuthenLogo';
 import LoadingComponent from '../components/LoadingComponent';
+import { useTranslation } from 'react-i18next';
 
 const RegisterPage = () => {
+
+    const { t, i18n } = useTranslation()
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
@@ -45,23 +48,23 @@ const RegisterPage = () => {
 
         let err = false
         if (firstName.length < 3 || lastName.length < 3) {
-            setErrNameMsg("Name must have more than 3 characters")
+            setErrNameMsg(t('authen.name_3_character_error_title'))
             err = true
         }
         if (username.length < 5) {
-            setErrUnameMsg("Username must have more than 5 characters")
+            setErrUnameMsg(t('authen.username_5_character_error_title'))
             err = true
         }
         if (!validateEmail(email)) {
-            setErrEmailMsg("Format of email is incorrect")
+            setErrEmailMsg(t('authen.format_email_wrong_error_title'))
             err = true
         }
-        if (password.length < 6) {
-            setErrPasswordMsg("Password must have more than 6 character")
+        if (password.length < 5) {
+            setErrPasswordMsg(t('authen.password_5_character_error_title'))
             err = true
         }
         if (err) {
-            setErrCommonMsg("Something went wrong !")
+            setErrCommonMsg(t('authen.common_error_title'))
         } else {
             await handleRegister()
         }
@@ -142,11 +145,11 @@ const RegisterPage = () => {
                 </div>
                 <AuthenLogo />
                 <div className=" mx-2">
-                    <h2 className="text-2xl font-semibold mb-4">Đăng ký</h2>
+                    <h2 className="text-2xl font-semibold mb-4">{t('authen.register_title')}</h2>
                     <div className='flex gap-3'>
                         <input
                             type="text"
-                            placeholder="Họ"
+                            placeholder={t('authen.first_name_title')}
                             value={firstName}
                             onKeyDown={(e) => e.key === 'Enter' ? lastNameRef.current.focus() : null}
                             name='register_f_name'
@@ -156,7 +159,7 @@ const RegisterPage = () => {
                         />
                         <input
                             type="text"
-                            placeholder="Tên"
+                            placeholder={t('authen.last_name_title')}
                             ref={lastNameRef}
                             name='register_l_name'
                             onKeyDown={(e) => e.key === 'Enter' ? usernameRef.current.focus() : null}
@@ -174,13 +177,13 @@ const RegisterPage = () => {
                         <svg className={`${checkedDone ? "flex" : "hidden"} ${isUsernameExist && checkedDone ? "flex" : "hidden"} w-5 h-5`} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><polygon fillRule="evenodd" points="8 9.414 3.707 13.707 2.293 12.293 6.586 8 2.293 3.707 3.707 2.293 8 6.586 12.293 2.293 13.707 3.707 9.414 8 13.707 12.293 12.293 13.707 8 9.414" /></svg>
                         <svg className={`${checkedDone ? "flex" : "hidden"} ${isUsernameExist ? "hidden" : "flex"} w-5 h-5 fill-green-500`} version="1.1" viewBox="0 0 18 15" xmlns="http://www.w3.org/2000/svg"><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g className='fill-green-600' id="Core" transform="translate(-423.000000, -47.000000)"><g id="check" transform="translate(423.000000, 47.500000)"><path d="M6,10.2 L1.8,6 L0.4,7.4 L6,13 L18,1 L16.6,-0.4 L6,10.2 Z" id="Shape" /></g></g></g></svg>
 
-                        <span className={`${checkedDone ? "flex" : "hidden"} ${isUsernameExist ? "text-red-500" : "text-green-500"} `}>
-                            {isUsernameExist ? "This username already taken" : "You can get this username"}
+                        <span className={`text-sm ${checkedDone ? "flex" : "hidden"} ${isUsernameExist ? "text-red-500" : "text-green-500"} `}>
+                            {isUsernameExist ? t('authen.valid_username_error') : t('authen.valid_username_ok')}
                         </span>
                     </div>
                     <input
                         type="text"
-                        placeholder="Tên người dùng"
+                        placeholder={t('authen.username_title')}
                         value={username}
                         name='username'
                         ref={usernameRef}
@@ -198,13 +201,13 @@ const RegisterPage = () => {
                         <svg className={`${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "flex" : "hidden"} w-5 h-5`} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><polygon fillRule="evenodd" points="8 9.414 3.707 13.707 2.293 12.293 6.586 8 2.293 3.707 3.707 2.293 8 6.586 12.293 2.293 13.707 3.707 9.414 8 13.707 12.293 12.293 13.707 8 9.414" /></svg>
                         <svg className={`${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "hidden" : "flex"} w-5 h-5 fill-green-500`} version="1.1" viewBox="0 0 18 15" xmlns="http://www.w3.org/2000/svg"><title /><desc /><defs /><g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="1"><g className='fill-green-600' id="Core" transform="translate(-423.000000, -47.000000)"><g id="check" transform="translate(423.000000, 47.500000)"><path d="M6,10.2 L1.8,6 L0.4,7.4 L6,13 L18,1 L16.6,-0.4 L6,10.2 Z" id="Shape" /></g></g></g></svg>
 
-                        <span className={`${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "text-red-500" : "text-green-500"} `}>
-                            {isEmailExist ? "This email already taken" : "You can get this email"}
+                        <span className={`text-sm ${checkedEmailDone ? "flex" : "hidden"} ${isEmailExist ? "text-red-500" : "text-green-500"} `}>
+                            {isEmailExist ?  t('authen.valid_email_error') : t('authen.valid_email_ok')}
                         </span>
                     </div>
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder={t('authen.email_title')}
                         value={email}
                         name='email'
                         ref={emailRef}
@@ -217,7 +220,7 @@ const RegisterPage = () => {
                     <p className={`text-red-600  whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errEmailMsg}</p>
                     <input
                         type="password"
-                        placeholder="Mật khẩu"
+                        placeholder={t('authen.password_title')}
                         name='password'
                         id='password'
                         onKeyDown={handleKeyPress}
@@ -229,22 +232,22 @@ const RegisterPage = () => {
                     <p className={`text-red-600 whitespace-nowrap text-sm text-start w-full mb-5 h-3`}>{errPasswordMsg}</p>
 
                     <div className="mb-2 w-full flex items-center">
-                        <label className='w-full'>Giới tính:</label>
+                        <label className='w-full'>{t('authen.gender_title')}</label>
                         <select
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                             className="p-2 border rounded-lg bg-white bg-opacity-60"
                         >
-                            <option value="MALE">Nam</option>
-                            <option value="FEMALE">Nữ</option>
-                            <option value="UNKNOWN">Không xác định</option>
+                            <option value="MALE">{t('authen.male_title')}</option>
+                            <option value="FEMALE">{t('authen.female_title')}</option>
+                            <option value="UNKNOWN">{t('authen.unknown_gender_title')}</option>
                         </select>
                     </div>
                     <div className="mt-4 flex flex-col w-full">
-                        <button onClick={()=>checkInputRegister()} className="bg-white font-bold border-2 w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
-                            Đăng ký
+                        <button onClick={() => checkInputRegister()} className="bg-white font-bold border-2 w-full text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2">
+                            {t('authen.register_title')}
                         </button>
-                        <Link to="/login" className="text-gray-500 mt-5 mb-3 text-sm hover:text-slate-800 font-bold">Quay lại trang đăng nhập</Link>
+                        <Link to="/login" className="text-gray-500 mt-5 mb-3 text-sm hover:text-slate-800 font-bold">{t('authen.back_to_login')}</Link>
                     </div>
 
                     <p className='text-red-600 text-center w-full my-5 h-3'>{errCommonMsg}</p>

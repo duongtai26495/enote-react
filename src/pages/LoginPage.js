@@ -9,9 +9,10 @@ import { SUCCESS_RESULT, USERNAME_LOCAL, ACCESS_TOKEN, URL_PREFIX, LOCAL_USER, R
 import AuthenLogo from '../components/AuthenLogo';
 import { IS_REMEMBER } from '../utils/constants';
 import LoadingComponent from '../components/LoadingComponent';
-import { el } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
+  const {t , i18n} = useTranslation()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(localStorage.getItem(IS_REMEMBER) ?? false);
@@ -47,15 +48,15 @@ const LoginPage = () => {
     let error = false
     if (username.length < 5) {
       error = true
-      setUsernameErrMsg("Username must have more than 5 characters")
+      setUsernameErrMsg(t('authen.username_5_character_error_title'))
     }
     if (password.length < 5) {
       error = true
-      setPasswordErrMsg("Password must have more than 5 characters")
+      setPasswordErrMsg(t('authen.password_5_character_error_title'))
     }
 
     if (error) {
-      setCommonErrMsg("Something went wrong ! Please check again")
+      setCommonErrMsg(t('authen.common_error_title'))
     } else {
       await handleLogin()
     }
@@ -114,12 +115,12 @@ const LoginPage = () => {
       </div>
       <div className="p-6 w-full">
         <AuthenLogo />
-        <h2 className="text-2xl font-semibold my-4 text-left">Đăng nhập</h2>
+        <h2 className="text-2xl font-semibold my-4 text-left">{t('authen.login_greeting')}</h2>
         <div className="mb-4">
           <input
             type="text"
             className={`${usernameErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-            placeholder="Nhập tên đăng nhập"
+            placeholder={t('authen.username_title')}
             value={username}
             onKeyDown={(e) => e.key === 'Enter' ? passwordRef.current.focus() : null}
             onChange={(e) => setUsername(e.target.value)}
@@ -131,7 +132,7 @@ const LoginPage = () => {
           <input
             type="password"
             className={`${passwordErrorMsg ? "border-red-500" : ""} mb-2 p-2 border rounded-lg w-full bg-white bg-opacity-60 outline-none`}
-            placeholder="Nhập mật khẩu"
+            placeholder={t('authen.password_title')}
             value={password}
             ref={passwordRef}
             onKeyDown={handleKeyPress}
@@ -145,18 +146,18 @@ const LoginPage = () => {
             <span className={`remember_button border ${rememberMe ? "remember_true" : "remember_false"}`}></span>
 
           </div>
-          <label htmlFor='rememberme' className="cursor-pointer text-sm text-gray-600">Ghi nhớ tên đăng nhập</label>
+          <label htmlFor='rememberme' className="cursor-pointer text-sm text-gray-600">{t('authen.remember_me_title')}</label>
         </div>
         <button className="bg-white border-2 w-full  font-bold text-slate-600 px-4 hover:shadow-md transition-shadow py-2 rounded-lg mr-2"
           onClick={checkInputLogin}>
-          Đăng nhập
+          {t('authen.login_title')}
         </button>
         <div className="mt-4">
           <p className="text-sm text-blue-600 my-2">
-            <Link to={"/forgot-password"}>Quên mật khẩu?</Link>
+            <Link to={"/forgot-password"}>{t('authen.forgot_password_title')}</Link>
           </p>
           <p className="text-sm text-gray-600">
-            Chưa có tài khoản? <Link className='font-bold' to="/register">Đăng ký ngay</Link>
+           {t('authen.donot_have_account_title')} <Link className='font-bold' to="/register">{t('authen.register_title')}</Link>
           </p>
         </div>
 

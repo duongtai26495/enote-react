@@ -1,0 +1,50 @@
+{
+    "common":{
+        "confirm_title":"Confirm",
+        "back_title":"Back"
+    },
+    "authen":{
+        "recovery":{
+            "email_sent_to":"Email sent to {{email}}",
+            "new_password":"Enter your new password",
+            "update_title":"Update password",
+            "resend_recovery_code":"Re-send recovery code",
+            "password_updated":"Your password is updated",
+            "forgot_password":"Please enter your registered email to recovery your account."
+        },
+        "login_greeting":"Welcome back!",
+        "username_title":"Username",
+        "password_title":"Password",
+        "remember_me_title":"Remember me!",
+        "first_name_title":"First name",
+        "last_name_title":"Last name",
+        "email_title":"Email",
+        "gender_title":"Gender",
+        "male_title":"Male",
+        "female_title":"Female",
+        "unknown_gender_title":"Unknown",
+        "back_to_login":"Back to login page",
+        "login_title":"Login",
+        "register_title":"Register",
+        "forgot_password_title":"Forgot password ?",
+        "donot_have_account_title":"Don't have an account ?",
+        "username_5_character_error_title":"Username must have more than 5 characters",
+        "password_5_character_error_title":"Password must have more than 5 characters",
+        "common_error_title":"Something went wrong.",
+        "name_3_character_error_title":"Names must have more than 3 characters",
+        "format_email_wrong_error_title":"Emails format is incorrect",
+        "valid_email_ok":"You can get this email",
+        "valid_username_ok":"You can get this username",
+        "valid_username_error":"This username already taken",
+        "valid_email_error":"This email already taken",
+        "activate":{
+            "activate_account_title":"Activate your account",
+            "check_email_title":"Check your email to get the code",
+            "submit_title":"Submit",
+            "email_donot_exist_error": "Email do not exist",
+            "code_format_wrong_error":"Code format is incorrect",
+            "resend_email_title":"Re-send",
+            "account_activated_title":"Your account is activated"
+        }
+    }
+}

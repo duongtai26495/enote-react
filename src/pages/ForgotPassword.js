@@ -5,9 +5,10 @@ import { fetchApiData } from '../utils/functions';
 import LoadingComponent from '../components/LoadingComponent';
 import { AUTO_SEND_RECOVERY, SUCCESS_RESULT } from '../utils/constants';
 import LoadingAnimation from '../components/LoadingAnimation';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPassword = () => {
-
+  const {t, i18n} = useTranslation()
   const [isLoading, setLoading] = useState(false)
   const [isSending, setSending] = useState(false)
   const [errMsg, setErrMsg] = useState("")
@@ -31,11 +32,11 @@ const ForgotPassword = () => {
         navigate("/confirm-recovery?email=" + email)
       }
       else {
-        setErrMsg("Email do not exist")
+        setErrMsg(t('authen.email_donot_exist_error'))
         setSending(false)
       }
     } else {
-      setErrMsg("Email format is incorrect")
+      setErrMsg(t('authen.format_email_wrong_error_title'))
       emailRef.current.focus()
       setSending(false)
     }
@@ -51,10 +52,10 @@ const ForgotPassword = () => {
         <LoadingComponent />
       </div>
       <div className="p-6 w-full">
-        <p className='text-base my-5'>Please enter your registered email to recovery your account.</p>
+        <p className='text-base my-5'>{t('authen.recovery.forgot_password')}</p>
         <div className="mb-2">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Email Address
+            {t('authen.email_title')}
           </label>
           <input
             className={`appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errMsg ? "border-red-500" : ""}`}
@@ -79,7 +80,7 @@ const ForgotPassword = () => {
               isSending ?
                 <LoadingComponent className={`flex mx-auto justify-center`} size='p-2 h-5 w-5' />
                 :
-                <span>Confirm</span>
+                <span>{t('common.confirm_title')}</span>
             }
           </button>
           <button
@@ -87,7 +88,7 @@ const ForgotPassword = () => {
             type="button"
             onClick={() => navigate(-1)}
           >
-            Back
+            {t('common.back_title')}
           </button>
 
         </div>

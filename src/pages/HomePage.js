@@ -180,7 +180,7 @@ const Home = () => {
     <>
       <LoadingComponent className={`${isLoading ? "block m-auto" : "hidden"}`} />
 
-        <div className={`${isLoading ? "hidden" : "flex"} bg-transparent w-full h-full flex-col mt-5 mb-16 rounded-lg overflow-hidden border shadow-lg relative`}>
+        <div className={`${isLoading ? "hidden" : "flex"} bg-white bg-opacity-10 w-full h-full flex-col mt-5 mb-16 rounded-lg overflow-hidden border shadow-lg relative`}>
           <div className='w-full flex gap-5 justify-between items-center p-2 bg-white bg-opacity-50 sticky top-0 z-40'>
             <div className='flex items-center gap-2'>
               <p className='font-bold hidden lg:block text-xl'>Workspaces</p>

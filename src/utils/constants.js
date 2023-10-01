@@ -1,7 +1,7 @@
 
 export const CURRENT_NAV_ITEM = "currentNavItem";
 
-export const URL_PREFIX = "http://192.168.1.20:8080/"
+export const URL_PREFIX = "http://192.168.1.21:8080/"
 
 export const ACCESS_TOKEN = "actk"
 export const REFRESH_TOKEN = "rftk"
@@ -37,3 +37,11 @@ export const COLS = "cols"
 export const CURRENT_NOTE_PAGE = "current_note_page"
 export const CURRENT_TASK_PAGE = "current_task_page"
 export const CURRENT_WS_PAGE = "current_ws_page"
+export const SELECTED_LANG = "selected_lang"
+export const VI = "vi"
+export const EN = "en"
+
+export const LOCALES = [
+    {code:"vi",title:"Tiếng Việt"},
+    {code:"en",title:"English"}
+]
