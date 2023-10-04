@@ -9,7 +9,7 @@ i18n
 .use(LanguageDetector)
 .use(initReactI18next)
 .init({
-    debug:true,
+    debug:false,
     fallbackLang: EN,
 });
 i18n.changeLanguage(localStorage.getItem("i18nextLng") ?? VI)

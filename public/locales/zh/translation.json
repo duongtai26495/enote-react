@@ -9,7 +9,10 @@
         "change_image": "更改图片",
         "image_changed": "图片更改成功",
         "file_too_large": "文件大小过大{{value}}",
-        "search": "搜索一些东西.."
+        "search": "搜索一些东西..",
+        "home":"主页",
+        "all_workspace":"Workspaces",
+        "updated_at":"Updated at {{value}}"
     },
     "workspace": {
         "workspaces": "您的工作区",
@@ -19,7 +22,9 @@
         "actions": "操作",
         "delete": "删除",
         "update": "更新",
-        "cancel": "取消"
+        "cancel": "取消",
+        "set_as_default":"Set at default",
+        "remove_default":"Remove default"
     },
     "note": {
         "notes": "笔记",

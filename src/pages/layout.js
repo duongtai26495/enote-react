@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { ACCESS_TOKEN, SORT_ITEMS, SORT_TASK_ITEMS, SORT_WS_ITEMS } from '../utils/constants';
+import { ACCESS_TOKEN, PRIMARY_WS } from '../utils/constants';
 import Cookies from 'js-cookie';
 import { checkActivateUser, checkToken, fetchApiData } from '../utils/functions';
 
@@ -10,34 +10,20 @@ import { checkActivateUser, checkToken, fetchApiData } from '../utils/functions'
 function Layout() {
 
   useEffect(() => {
-    // const getSortItems = async () => {
-    //   const result = await fetchApiData("public/sort_value")
-    //   const result_task = await fetchApiData("public/task/sort_value")
-    //   const result_ws = await fetchApiData("public/ws-sort_value")
-    //   if (result && result.status !== 403) {
-    //     localStorage.setItem(SORT_ITEMS, JSON.stringify(result))
-    //   }
-    //   if (result_task && result_task.status !== 403) {
-    //     localStorage.setItem(SORT_TASK_ITEMS, JSON.stringify(result_task))
-    //   }
-    //   if (result_ws && result_ws.status !== 403) {
-    //     localStorage.setItem(SORT_WS_ITEMS, JSON.stringify(result_ws))
-    //   }
-    // }
-    // getSortItems()
+
     checkLogin()
   }, [])
 
-
-
   const navigate = useNavigate()
+
+
   const checkLogin = async () => {
     const token = Cookies.get(ACCESS_TOKEN)
     if (checkToken(token)) {
       let isActivated = await checkActivateUser(token)
       if (!isActivated) {
         navigate("/activate-account")
-      }
+      } 
     } else {
       navigate("/login?unlogin")
     }

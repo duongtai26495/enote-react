@@ -9,7 +9,10 @@
         "change_image": "Change image",
         "image_changed": "Image changed success",
         "file_too_large": "File size too large {{value}}",
-        "search":"Search something.."
+        "search":"Search something..",
+        "home":"Home",
+        "all_workspace":"Workspaces",
+        "updated_at":"Updated at {{value}}"
     },
     "workspace": {
         "workspaces": "Your space",
@@ -19,7 +22,9 @@
         "actions": "Actions",
         "delete": "Delete",
         "update": "Update",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "set_as_default":"Set at default",
+        "remove_default":"Remove default"
     },
     "note": {
         "notes": "Note",

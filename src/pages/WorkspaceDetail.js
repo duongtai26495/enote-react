@@ -5,17 +5,18 @@ import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Cookies from 'js-cookie'
-import { ACCESS_TOKEN, SUCCESS_RESULT } from '../utils/constants'
+import { ACCESS_TOKEN, PRIMARY_WS, SUCCESS_RESULT } from '../utils/constants'
 import { checkToken, fetchApiData, getTheTime } from '../utils/functions'
 import { useTranslation } from 'react-i18next'
 
 const WorkspaceDetail = () => {
 
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const { id } = useParams()
     const [workspace, setWorkspace] = useState({})
     const [newNameWs, setNewNameWs] = useState(workspace.name)
     const newNameRef = useRef(null)
+    const [default_ws, setDefaultWs] = useState(localStorage.getItem(PRIMARY_WS) ?? 0)
 
     useEffect(() => {
         const getWorkspaceById = async () => {
@@ -32,16 +33,26 @@ const WorkspaceDetail = () => {
         getWorkspaceById()
     }, [id])
 
+    const setWsDefault = () => {
+        localStorage.removeItem(PRIMARY_WS)
+        localStorage.setItem(PRIMARY_WS, workspace.id)
+        setDefaultWs(workspace.id)
+    }
+    const removeWsDefault = () => {
+        localStorage.removeItem(PRIMARY_WS)
+        setDefaultWs(0)
+    }
+
     const updateWs = async () => {
         const token = Cookies.get(ACCESS_TOKEN)
-        if(token && checkToken(token)){
+        if (token && checkToken(token)) {
 
             let newName = newNameWs
             let newWs = workspace
             workspace.name = newName
-            
-            const result = await fetchApiData("workspace/update", token, "PUT",newWs)
-            if(result.status === SUCCESS_RESULT){
+
+            const result = await fetchApiData("workspace/update", token, "PUT", newWs)
+            if (result.status === SUCCESS_RESULT) {
                 setWorkspace(result.content)
                 setNewNameWs(result.content.name)
             }
@@ -52,31 +63,45 @@ const WorkspaceDetail = () => {
             await updateWs()
             newNameRef.current.blur()
         }
-      };
-    
+    };
+
 
     return (
         <div className='w-full flex flex-col relative shadow-lg my-5 rounded-lg border overflow-hidden'>
-            <div className={`flex bg-teal-500 p-4 items-center justify-between flex-nowrap gap-2`}>
-            <div className='w-full lg:w-2/3'>
-                <input type='text' 
-                id='new_name_ws'
-                name='new_name_ws'
-                onBlur={updateWs}
-                ref={newNameRef}
-                className='text-xl text-white font-bold bg-transparent w-full'
-                onKeyDown={handleKeyPress}
-                onChange={(e)=>setNewNameWs(e.target.value)}
-                defaultValue={newNameWs}
-                />
-                <p className='text-white whitespace-nowrap text-xs'>{workspace.updated_at ? getTheTime(workspace.updated_at) : ""}</p>
-            </div>
-
+            <div className={`flex flex-col lg:flex-row bg-teal-500 p-4 items-start lg:items-center justify-between flex-nowrap gap-2`}>
+                <div className='w-full lg:w-2/3'>
+                    {/* <input type='text'
+                            id='new_name_ws'
+                            name='new_name_ws'
+                            onBlur={updateWs}
+                            ref={newNameRef}
+                            className='text-xl text-white font-bold bg-transparent w-full'
+                            onKeyDown={handleKeyPress}
+                            onChange={(e) => setNewNameWs(e.target.value)}
+                            defaultValue={newNameWs}
+                        /> */}
+                    <p className='text-xl text-white font-bold bg-transparent w-full'>{workspace.name}</p>
+                    <p className='text-white whitespace-nowrap text-xs w-fit'>{workspace.updated_at ? t('common.updated_at',{value: getTheTime(workspace.updated_at)}) : ""}</p>
+                </div>
                 <p className='text-white text-sm whitespace-nowrap'>{workspace.created_at}</p>
-            </div>
-            <Breadcrumbs text={t('common.back_to_home')} className={`w-full bg-transparent border-b`} />
 
-            <NoteList/>
+                <div className=' gap-2 hidden'>
+                    <button onClick={() => setWsDefault()}
+                        disabled={default_ws === workspace.id}
+                        className={`text-sm text-slate-900 whitespace-nowrap rounded-md bg-white p-2 shadow lg:hover:shadow-lg transition-all`}>
+                        {t('workspace.set_as_default')}
+                    </button>
+                    <button onClick={() => removeWsDefault()}
+                        disabled={default_ws !== workspace.id}
+                        className={`${default_ws === workspace.id ? "bg-white" : "bg-slate-300"} text-sm text-slate-900 whitespace-nowrap rounded-md  p-2 shadow lg:hover:shadow-lg transition-all`}>
+                        {t('workspace.remove_default')}
+                    </button>
+                </div>
+            </div>
+
+            <Breadcrumbs localtion={"/"} text={t('common.back_to_home')} className={`${default_ws !== workspace.id ? "flex" : "hidden"} w-full bg-transparent border-b`} />
+
+            <NoteList />
         </div>
     )
 }

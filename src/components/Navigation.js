@@ -13,7 +13,8 @@ import {
     ActivateAccount, 
     AuthenLayout, 
     ForgotPassword, 
-    ChatAssistants } from '../pages';
+    ChatAssistants, 
+    Dashboard} from '../pages';
 import SearchResult from '../pages/SearchResult';
 
 const Navigation = () => {
@@ -34,6 +35,7 @@ const Navigation = () => {
                     <Route path='/chat-ai' element={<ChatAssistants />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/workspace/:id" element={<WorkspaceDetail />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                 </Route>
             </Routes>
         </Router>

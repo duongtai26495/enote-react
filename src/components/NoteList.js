@@ -185,9 +185,9 @@ const NoteList = () => {
 
     return (
         <div className='px-2'>
-            <div className={`w-full p-2 gap-2 flex flex-row items-center justify-between bg-transparent h-fit sticky top-0 z-40`}>
+            <div className={`w-full py-2 gap-2 flex flex-row items-center justify-between bg-transparent h-fit sticky top-0 z-40`}>
                 <span onClick={() => { addNewNote() }}
-                    className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-md p-1  bg-white text-black transition-all text-sm`}>
+                    className={`cursor-pointer button_style-1 whitespace-nowrap lg:hover:bg-slate-200 w-1/3 lg:w-fit h-fit font-bold px-2 text-center rounded-sm p-1  bg-white text-black transition-all text-sm`}>
                     {t('note.add')}
                 </span>
                 <RenderSort />

@@ -49,20 +49,6 @@ const Header = ({ className }) => {
     }
 
 
-    // useEffect(() => {
-    //     function handleClickOutside(event) {
-    //         if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
-    //             if(isLogoutBadge){setLogoutBadge(false)}
-    //         }
-    //     }
-
-    //     document.addEventListener('mousedown', handleClickOutside);
-
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, []);
-
     const userInfo = JSON.parse(localStorage.getItem(LOCAL_USER))
     let profileImage = ""
 
@@ -100,9 +86,10 @@ const Header = ({ className }) => {
 
     return (
         <div className={`mx-auto w-full bg-white border-b ${className}`}>
-            <div className="p-3 w-full lg:max-w-screen-xl mx-auto">
-                <nav className="flex flex-row justify-between relative">
-                    <button className="flex items-center justify-center lg:space-x-2 flex-row " onClick={() => { returnHomePage() }}>
+            <div className="py-3 w-full lg:max-w-screen-xl mx-auto">
+                <nav className="flex flex-row justify-start relative gap-2">
+
+                    <button className="w-1/3 lg:w-fit flex px-3 items-center justify-start lg:space-x-2 flex-row " onClick={() => { returnHomePage() }}>
                         <svg className="w-12 h-12 fill-teal-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 898.63 772.08">
                             <g id="Layer_2">
                                 <g id="Layer_1-2">
@@ -116,66 +103,75 @@ const Header = ({ className }) => {
                             </g>
                         </svg>
                     </button>
-                    <div className="flex w-full justify-between gap-2 lg:justify-center items-center pl-2">
 
-                        <div className="w-fit lg:w-1/3 mx-auto gap-3 flex flex-row-reverse items-center justify-end lg:flex-row">
+                    <div className="invisible absolute lg:relative left-0 top-14 lg:top-0 bg-white lg:bg-transparent w-full lg:w-1/3 gap-3 flex items-center justify-start lg:flex-row">
+                        <ul className="flex gap-2">
+                            <li className="text-sm h-fit w-fit">
+                            <Link className="p-2 border rounded-md lg:hover:shadow-md transition-all" to={"/"}>{t('common.home')}</Link></li>
 
-                            <div className="flex w-full items-center border border-gray-300 rounded-md" >
-                                <input
-                                    type="text"
-                                    placeholder={t('common.search')}
-                                    value={searchText}
-                                    onChange={handleSearchChange}
-                                    onKeyDown={handleKeyPress}
-                                    className="px-2 py-1 w-full rounded-l focus:outline-none focus:border-blue-500"
-                                />
-                                <button
-                                    onClick={handleSubmit}
-                                    type="submit"
-                                    className=" text-white transition-all px-2 py-1 rounded-r focus:outline-none lg:hover:fill-white lg:hover:bg-blue-600"
-                                >
-                                    <svg className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 " width="26" height="26" viewBox="0 0 24 24" id="search"><g data-name="Layer 2">
-                                        <path d="m20.71 19.29-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8 7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 11a6 6 0 1 1 6 6 6 6 0 0 1-6-6z" data-name="search"></path>
-                                    </g>
-                                    </svg>
-                                </button>
-                            </div>
+                            <li className="text-sm h-fit w-fit">
+                            <Link className="p-2 border rounded-md lg:hover:shadow-md transition-all " to={"/dashboard"}>{t('common.all_workspace')}</Link></li>
+                        </ul>
+                    </div>
 
+                    <div className="flex w-full lg:w-2/3 px-3 lg:px-0 justify-between gap-2 lg:justify-center items-center ">
+                        <div className="flex w-2/3 lg:w-full items-center border border-gray-300 rounded-md" >
+                            <input
+                                type="text"
+                                placeholder={t('common.search')}
+                                value={searchText}
+                                onChange={handleSearchChange}
+                                onKeyDown={handleKeyPress}
+                                className="px-2 py-1 w-full rounded-l focus:outline-none focus:border-blue-500"
+                            />
+                            <button
+                                onClick={handleSubmit}
+                                type="submit"
+                                className=" text-white transition-all px-2 py-1 rounded-r focus:outline-none lg:hover:fill-white lg:hover:bg-blue-600"
+                            >
+                                <svg className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 " width="26" height="26" viewBox="0 0 24 24" id="search"><g data-name="Layer 2">
+                                    <path d="m20.71 19.29-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8 7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 11a6 6 0 1 1 6 6 6 6 0 0 1-6-6z" data-name="search"></path>
+                                </g>
+                                </svg>
+                            </button>
                         </div>
-                        
-                        <div className={`w-fit flex items-center gap-5 relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
-                        <Link to={"/chat-ai"} className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
-                            <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >
-                                <path d="M8,11a1,1,0,1,0,1,1A1,1,0,0,0,8,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,12,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,16,11ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20Z"></path>
-                            </svg>
-                            <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
-                            <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
-                        </Link>
-                            {
-                                userInfo &&
-                                <p onClick={toggleLogoutBadge} className="aspect-square lg:aspect-auto text-center w-fit whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
-                                    <CustomLazyLoadedImage
-                                        className={`aspect-square object-cover rounded-full w-6 h-6`}
-                                        src={`${profileImage}`}
-                                    />
-                                    <span className="hidden lg:block">
-                                        <strong>{userInfo.f_name} {userInfo.l_name}</strong>
-                                    </span>
-                                    <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} hidden lg:block transition-all fill-slate-700 h-3 w-3`} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 330 330">
-                                        <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
+                        <div className={`w-1/3 lg:w-full justify-end flex items-center gap-0 lg:gap-3 relative focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 `}>
+
+                            <Link to={"/chat-ai"} className="relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 ">
+                                <svg width="24" height="24" viewBox="0 0 24 24" id="chat" >
+                                    <path d="M8,11a1,1,0,1,0,1,1A1,1,0,0,0,8,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,12,11Zm4,0a1,1,0,1,0,1,1A1,1,0,0,0,16,11ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20Z"></path>
+                                </svg>
+                                <div className="animate-ping w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto duration-200"></div>
+                                <div className=" w-1.5 h-1.5 bg-red-700 rounded-full absolute -top-1 -right-1 m-auto shadow-lg"></div>
+                            </Link>
+                            <div onClick={toggleLogoutBadge} className="min-w-fit cursor-pointer text-center w-fit whitespace-nowrap justify-end px-2 flex flex-row gap-2 items-center text-slate-700">
+                                <CustomLazyLoadedImage
+                                    className={`aspect-square object-cover rounded-full w-6 h-6`}
+                                    src={`${profileImage}`}
+                                />
+                                {
+                                    userInfo &&
+                                    <>
+                                        <span className="hidden lg:block">
+                                            <strong>{userInfo.f_name} {userInfo.l_name}</strong>
+                                        </span>
+                                        <svg className={`${isLogoutBadge ? "rotate-180" : "rotate-0"} hidden lg:block transition-all fill-slate-700 h-3 w-3`} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 330 330">
+                                            <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
                                     c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
                                     s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
-                                    </svg>
-                                </p>}
+                                        </svg>
+                                    </>
+                                }
+                            </div>
                             <div
                                 ref={accountMenuRef}
-                                className={`w-fit border gap-2 flex flex-col px-4 py-2 absolute z-50 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
-                                <p className="flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white rounded-sm lg:hover:shadow-lg shadow transition-all p-2 " onClick={() => { profileDirect() }}>
+                                className={`w-fit border absolute z-50 right-0 top-10 ${isLogoutBadge ? "h-fit opacity-100" : "h-0 opacity-0"} overflow-hidden transition-all bg-white rounded-lg`}>
+                                <p className="flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white rounded-sm lg:hover:bg-slate-100 transition-all p-2 " onClick={() => { profileDirect() }}>
                                     <span className="text-sm">{t('user.profile')}</span>
                                     <svg width="21" height="21" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="info" /><g id="icons"><g id="user"><ellipse cx="12" cy="8" rx="5" ry="6" /><path d="M21.8,19.1c-0.9-1.8-2.6-3.3-4.8-4.2c-0.6-0.2-1.3-0.2-1.8,0.1c-1,0.6-2,0.9-3.2,0.9s-2.2-0.3-3.2-0.9    C8.3,14.8,7.6,14.7,7,15c-2.2,0.9-3.9,2.4-4.8,4.2C1.5,20.5,2.6,22,4.1,22h15.8C21.4,22,22.5,20.5,21.8,19.1z" /></g></g></svg>
                                 </p>
-                                <p className={`flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white rounded-sm lg:hover:shadow-lg shadow transition-all p-2 `}
+                                <p className={`flex cursor-pointer flex-row gap-2 whitespace-nowrap justify-between items-center bg-white rounded-sm lg:hover:bg-slate-100 transition-all p-2 `}
                                     onClick={() => logout()} >
                                     {
                                         isLogout
@@ -191,7 +187,6 @@ const Header = ({ className }) => {
                                 </p>
                             </div>
                         </div>
-                        <LangSwitch className={``} />
                     </div>
                 </nav>
 

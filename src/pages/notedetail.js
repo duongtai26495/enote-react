@@ -193,17 +193,22 @@ const NoteDetail = () => {
                                     defaultValue={item.name}
                                     ref={newNameRef}
                                     placeholder={'Note title'} />
-                                <span className={`h-fit lg:h-5 text-sm text-slate-200 italic`}>{item.created_at}</span>
-                                <span className={`h-fit lg:h-5 text-sm text-slate-200 italic`}>{item.updated_at && getTheTime(item.updated_at)}</span>
+                                <span className={`h-fit lg:h-5 text-sm flex items-center gap-1 text-slate-200 italic`}>
+                            <svg className='w-4 h-4' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs></defs><title/><g dataname="Layer 15" id="Layer_15"><path className="fill-white" d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"/><path className="fill-white" d="M20.24,21.66l-4.95-4.95A1,1,0,0,1,15,16V8h2v7.59l4.66,4.65Z"/></g></svg>                                
+                                {item.created_at}</span>
+                                <span className={`h-fit lg:h-5 text-sm flex items-center gap-1 text-slate-200 italic`}>
+                            <svg className='w-4 h-4' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs></defs><title/><g dataname="Layer 15" id="Layer_15"><path className="fill-white" d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"/><path className="fill-white" d="M20.24,21.66l-4.95-4.95A1,1,0,0,1,15,16V8h2v7.59l4.66,4.65Z"/></g></svg>
+                                {item.updated_at && getTheTime(item.updated_at)}</span>
                             </div>
                             <ProgressBar style={"fill-white"} percentage={item.progress} />
                         </div>
 
                         <div className='absolute top-0 left-0 h-full w-full bg-black opacity-60 z-0'></div>
                     </div>
-                    <div className='flex flex-col lg:flex-row justify-start py-2 lg:items-center gap-3 w-full '>
-                        <Breadcrumbs text={t('common.back_to_home')} className={`bg-transparent`} />
-                        <Link className='bg-white border text-xs rounded-md p-2' to={`/workspace/${workspace.id}`} >{t('common.back_to',{value: workspace.name})}</Link>
+                    <div className='flex justify-start p-2 items-center gap-0 w-full '>
+                        <Link className='bg-transparent lg:hover:text-slate-900 font-bold text-teal-600 border text-xs rounded-md p-2' to={`/`} >{t('common.home')}</Link>
+                        /
+                        <Link className='bg-transparent lg:hover:text-slate-900 font-bold text-teal-600 border text-xs rounded-md p-2' to={`/workspace/${workspace.id}`} >{workspace.name}</Link>
                     </div>
                     <TaskList note={item} updateProgressState={updateProgressState} />
                 </div>

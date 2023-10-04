@@ -9,7 +9,10 @@
         "change_image": "Cập nhật ảnh",
         "image_changed": "Thay đổi ảnh thành công",
         "file_too_large": "Kích thước quá lớn {{value}}",
-        "search":"Tìm kiếm thứ gì đó.."
+        "search":"Tìm kiếm thứ gì đó..",
+        "home":"Trang chủ",
+        "all_workspace":"Workspaces",
+        "updated_at":"Cập nhật lúc {{value}}"
     },
     "workspace": {
         "workspaces": "Góc làm việc",
@@ -19,7 +22,9 @@
         "actions": "Hành động",
         "delete": "Xóa",
         "update": "Cập nhật",
-        "cancel": "Hủy bỏ"
+        "cancel": "Hủy bỏ",
+        "set_as_default":"Đặt làm mặc định",
+        "remove_default":"Gỡ mặc định"
     },
     "note": {
         "notes": "Ghi chú",

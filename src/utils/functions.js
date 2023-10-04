@@ -88,7 +88,7 @@ export const getTheTime = (time) => {
 
   const milliseconds = getTime(parsedDate);
   const timeAgo = formatDistanceToNow(milliseconds, { addSuffix: true})
-  return capitalize(timeAgo)
+  return timeAgo
 }
 
 export const validateEmail = (email) => {

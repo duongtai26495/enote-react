@@ -27,7 +27,7 @@ export const HOMEPAGE_ANALYTICS = "homepage_analytics"
 export const DETAILPAGE_ANALYTICS = "detailpage_analytics"
 export const IS_REMEMBER = "isRememberMe"
 export const USERNAME_LOCAL = "uname_local"
-
+export const PRIMARY_WS = "primary_ws"
 export const SUCCESS_RESULT = "SUCCESS"
 
 export const DISPLAY_TYPE = "ws_display_type"
@@ -43,9 +43,9 @@ export const EN = "en"
 export const ZH = "zh"
 
 export const LOCALES = [
-    {code:"vi",title:"Tiếng Việt", icon:"../assets/images/vie_lang.png"},
-    {code:"en",title:"English", icon:"../assets/images/eng_lang.png"},
-    {code:"zh",title:"汉语", icon:"../assets/images/zh_lang.png"}
+    {code:"vi",title:"Tiếng Việt"},
+    {code:"en",title:"English"},
+    {code:"zh",title:"汉语"}
 ]
 
 

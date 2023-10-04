@@ -201,9 +201,6 @@ footer {
   margin: auto;
 }
 
-.cls-1 {
-  fill: none;
-}
 
 .bg-page {
   background-size: cover;
@@ -356,5 +353,6 @@ footer {
 }
 
 .background-blur{
-  background-image: linear-gradient(60deg,  #2ca6ce2a, #ffffff, #2ca6ce2a);
+  background-image: linear-gradient(60deg, #d6d6d6 ,  #4cd2ff31, #2ca6ce36);
 }
+.cls-1{fill:#101820;}
