@@ -24,7 +24,9 @@
         "update": "Cập nhật",
         "cancel": "Hủy bỏ",
         "set_as_default":"Đặt làm mặc định",
-        "remove_default":"Gỡ mặc định"
+        "remove_default":"Gỡ mặc định",
+        "confirm_delete":"Bạn có chắc muốn xóa {{value}} ?",
+        "note_count":"Ghi chú"
     },
     "note": {
         "notes": "Ghi chú",

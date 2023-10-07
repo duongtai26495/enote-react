@@ -69,7 +69,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
     return (
         <div className={`w-full block break-inside-avoid py-3 relative ${subclass}`}>
 
-            <div className={`relative border p-2 flex flex-col rounded-lg ${item.done ? "bg-teal-500 " : "bg-white shadow-sm"} transition-all lg:hover:-translate-y-1`}>
+            <div className={`relative border p-2 flex flex-col rounded-lg ${item.done ? "bg-teal-500 " : "bg-white shadow-sm"} border-white transition-all lg:hover:bg-opacity-0`}>
                 <div className={`${isOpenSetting ? "flex" : "hidden"} z-10 transition-all shadow right-8 absolute top-2 bg-white border rounded`}>
                     <ul className='flex flex-col rounded'>
                         <li onClick={toggleUpdate} className='py-1 px-2 text-sm cursor-pointer lg:hover:bg-slate-300 transition-all'>{t('note.finish')}</li>
@@ -105,7 +105,7 @@ const NoteItem = ({ note, removeNote, subclass }) => {
                 <Link to={"/note/" + note.id} className='w-full flex flex-col justify-between items-center relative'>
                     <ProgressBar percentage={note.progress} style={`${item.done ? "fill-white" : "fill-slate-400 "} `} />
                     <span className={`${item.done ? "text-white" : "text-slate-800"} h-fit text-xs italic flex items-center gap-1`}>
-                    <svg className='w-4 h-4' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs></defs><title/><g dataname="Layer 15" id="Layer_15"><path class="cls-1" d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"/><path className="cls-1" d="M20.24,21.66l-4.95-4.95A1,1,0,0,1,15,16V8h2v7.59l4.66,4.65Z"/></g></svg>
+                    <svg className='w-4 h-4' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs></defs><title/><g dataname="Layer 15" id="Layer_15"><path className="cls-1" d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"/><path className="cls-1" d="M20.24,21.66l-4.95-4.95A1,1,0,0,1,15,16V8h2v7.59l4.66,4.65Z"/></g></svg>
                     {item.updated_at && t('common.updated_at',{value:getTheTime(item.updated_at)})}
                     </span>
                 </Link>

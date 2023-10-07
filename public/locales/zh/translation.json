@@ -24,7 +24,9 @@
         "update": "更新",
         "cancel": "取消",
         "set_as_default":"Set at default",
-        "remove_default":"Remove default"
+        "remove_default":"Remove default",
+        "confirm_delete":"Bạn có chắc muốn xóa {{value}} ?",
+        "note_count":"Notes"
     },
     "note": {
         "notes": "笔记",

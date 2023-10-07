@@ -9,6 +9,7 @@ import Pagination from '../components/Pagination'
 import ProfileAnalytics from '../components/ProfileAnalytics'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import { useTranslation } from 'react-i18next'
+import PlanCard from '../components/PlanCard'
 const Home = () => {
 
   const { t } = useTranslation()
@@ -105,7 +106,7 @@ const Home = () => {
 
       return (
         wsList?.map((item, index) => (
-          <WorkspaceCard type={COLS} key={index} removeWs={removeWs} wsItem={item} />
+          <PlanCard key={index} removeWs={removeWs} item={item} />
         ))
       )
     }
@@ -214,9 +215,11 @@ const Home = () => {
         </div>
         <div className={`w-full h-fit mt-2 px-2`}>
           <div className={` w-full justify-between ${(displayType === GRID || wsList?.length < 1) ? "hidden" : "hidden lg:flex"} rounded-sm my-2 p-2 italic text-sm`}>
-            <p>{t('workspace.name')}</p>
-            <p>{t('workspace.time')}</p>
-            <p>{t('workspace.actions')}</p>
+            <div className='w-4/6 lg:w-5/6 flex items-center'>
+            <p className='w-4/6'>{t('workspace.name')}</p>
+            <p className='w-2/6 text-center'>{t('workspace.note_count')}</p>
+            </div>
+            <p className='w-2/6 lg:w-1/6 text-end'>{t('workspace.actions')}</p>
           </div>
           <RenderWsList />
         </div>

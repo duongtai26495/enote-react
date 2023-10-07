@@ -94,7 +94,7 @@ const NoteList = () => {
                 <Masonry>
                     {
                         noteList?.map((item, index) => (
-                            <NoteItem key={item.id} removeNote={removeNote} note={item} subclass={``} />
+                            <NoteItem key={item.id} removeNote={removeNote} note={item} subclassName={``} />
                         ))
                     }
                 </Masonry>

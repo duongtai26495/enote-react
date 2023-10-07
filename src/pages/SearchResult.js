@@ -64,7 +64,7 @@ const SearchResult = () => {
                 <Masonry>
                     {
                         resultList?.map((item, index) => (
-                            <NoteItem note={item} key={item.id} subclass={``} />
+                            <NoteItem note={item} key={item.id} subclassName={``} />
                         ))
                     }
                 </Masonry>

@@ -24,7 +24,9 @@
         "update": "Update",
         "cancel": "Cancel",
         "set_as_default":"Set at default",
-        "remove_default":"Remove default"
+        "remove_default":"Remove default",
+        "confirm_delete":"Are you sure want to delete {{value}} ?",
+        "note_count":"Ghi chú"
     },
     "note": {
         "notes": "Note",
